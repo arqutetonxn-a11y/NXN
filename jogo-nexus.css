@@ -1,0 +1,19 @@
+
+.nexus-gate{border-color:rgba(83,216,255,.34);background:radial-gradient(circle at top,rgba(24,184,255,.08),transparent 38%),rgba(0,0,0,.94)}
+.nexus-game-shell{display:grid;gap:18px}
+.nexus-game-header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+.nexus-kicker{display:inline-block;margin-bottom:6px;color:rgba(83,216,255,.72);font-size:.72rem;font-weight:900;letter-spacing:2px}
+.nexus-game-header h2{margin:0;color:#53d8ff;letter-spacing:2px;text-shadow:0 0 18px rgba(83,216,255,.25)}
+.nexus-progress-box{min-width:120px;padding:10px 14px;border:1px solid rgba(83,216,255,.24);border-radius:12px;background:rgba(0,0,0,.58);text-align:center}
+.nexus-progress-box span,.nexus-progress-box strong{display:block}.nexus-progress-box span{color:rgba(255,255,255,.45);font-size:.65rem;letter-spacing:1.5px}.nexus-progress-box strong{margin-top:4px;color:#53d8ff;font-size:1.1rem}
+.nexus-game-panel{min-height:330px;padding:18px;border:1px solid rgba(83,216,255,.18);border-radius:16px;background:rgba(0,0,0,.72)}
+.nexus-status-row{display:flex;justify-content:space-between;gap:12px;margin-bottom:18px;color:#7897a6;font-family:"Courier New",monospace;font-size:.8rem}
+.nexus-content{display:grid;place-items:center;min-height:250px}.nexus-intro,.nexus-stage-card,.nexus-win-card{width:min(620px,100%);text-align:center}
+.nexus-symbol{display:grid;place-items:center;width:72px;height:72px;margin:0 auto 14px;border:1px solid rgba(83,216,255,.35);border-radius:18px;color:#53d8ff;background:rgba(83,216,255,.05);font-size:2rem;box-shadow:0 0 24px rgba(83,216,255,.12)}
+.nexus-stage-card h3,.nexus-win-card h3{color:#53d8ff}.nexus-sequence{display:flex;justify-content:center;gap:10px;margin:22px 0;flex-wrap:wrap}
+.nexus-key{width:72px;height:72px;border:1px solid rgba(83,216,255,.30);border-radius:14px;background:rgba(83,216,255,.05);color:#dff8ff;font-size:1.3rem;font-weight:900;cursor:pointer;transition:.18s ease}
+.nexus-key:hover,.nexus-key.is-lit{color:#000;background:#53d8ff;box-shadow:0 0 25px rgba(83,216,255,.38);transform:translateY(-2px)}
+.nexus-options{display:grid;gap:10px;margin-top:18px}.nexus-options button{min-height:44px;border:1px solid rgba(83,216,255,.24);border-radius:10px;background:rgba(83,216,255,.04);color:#e5f7ff;cursor:pointer}
+.nexus-options button:hover{background:rgba(83,216,255,.12)}.nexus-input-row{display:flex;gap:10px;margin-top:18px}.nexus-input-row input{flex:1;min-width:0;padding:12px;border:1px solid rgba(83,216,255,.30);border-radius:10px;background:#020608;color:#fff}
+.nexus-message{min-height:24px;margin-top:14px;color:#84dfff}.nexus-message.is-error{color:#ff7185}.nexus-win-card{padding:24px;border:1px solid rgba(83,216,255,.38);border-radius:18px;background:radial-gradient(circle at top,rgba(83,216,255,.10),transparent 45%),#000;box-shadow:0 0 40px rgba(83,216,255,.12)}
+@media(max-width:620px){.nexus-game-header{flex-direction:column}.nexus-progress-box{width:100%}.nexus-key{width:62px;height:62px}.nexus-input-row{flex-direction:column}}
