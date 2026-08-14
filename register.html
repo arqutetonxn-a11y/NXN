@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cadastro • Cyber-Nexis</title>
+  <meta name="description" content="Tela de cadastro restrita da Cyber-Nexis.">
+
+  <link rel="stylesheet" href="Styles.css">
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+  <script src="particles-config.js" defer></script>
+
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-shell {
+      width: min(100%, 480px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .auth-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(26px, 6vw, 40px);
+      border: 1px solid rgba(24, 184, 255, 0.30);
+      border-radius: 18px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(0, 0, 0, 0.96),
+          rgba(0, 0, 0, 0.90)
+        );
+      box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.72),
+        0 0 30px rgba(24, 184, 255, 0.08),
+        inset 0 0 28px rgba(24, 184, 255, 0.015);
+    }
+
+    .auth-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(
+          110deg,
+          transparent 18%,
+          rgba(83, 216, 255, 0.035),
+          transparent 58%
+        );
+      transform: translateX(-120%);
+      animation: auth-scan 5s linear infinite;
+    }
+
+    @keyframes auth-scan {
+      0% {
+        transform: translateX(-120%);
+        opacity: 0;
+      }
+
+      18% {
+        opacity: 1;
+      }
+
+      45% {
+        transform: translateX(120%);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateX(120%);
+        opacity: 0;
+      }
+    }
+
+    .auth-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .auth-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      color: #53d8ff;
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 2.1px;
+      text-transform: uppercase;
+    }
+
+    .auth-kicker::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #27c2ff;
+      box-shadow: 0 0 16px rgba(39, 194, 255, 0.75);
+    }
+
+    .auth-card h1 {
+      margin: 0;
+      color: #eef9ff;
+      font-size: clamp(1.8rem, 7vw, 2.8rem);
+      line-height: 1.05;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 0 0 18px rgba(24, 184, 255, 0.18);
+    }
+
+    .auth-subtitle {
+      margin: 14px 0 26px;
+      color: #8ba5b4;
+      line-height: 1.7;
+    }
+
+    .auth-form {
+      display: grid;
+      gap: 15px;
+    }
+
+    .auth-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .auth-field label {
+      color: #7fcfee;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .auth-field input {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid rgba(24, 184, 255, 0.27);
+      border-radius: 11px;
+      background: rgba(0, 0, 0, 0.82);
+      color: #eef9ff;
+      outline: none;
+      box-shadow: inset 0 0 16px rgba(24, 184, 255, 0.02);
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .auth-field input::placeholder {
+      color: rgba(184, 203, 216, 0.34);
+    }
+
+    .auth-field input:focus {
+      border-color: rgba(83, 216, 255, 0.72);
+      box-shadow:
+        0 0 0 3px rgba(24, 184, 255, 0.08),
+        inset 0 0 16px rgba(24, 184, 255, 0.025);
+    }
+
+    .password-field input {
+      padding-right: 52px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 7px;
+      width: 38px;
+      min-height: 38px;
+      transform: translateY(-50%);
+      border: 1px solid rgba(24, 184, 255, 0.15);
+      border-radius: 9px;
+      background: rgba(24, 184, 255, 0.045);
+      color: #8bdfff;
+      cursor: pointer;
+    }
+
+    .auth-actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .auth-primary,
+    .auth-secondary {
+      width: 100%;
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 900;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .auth-primary {
+      border: 1px solid rgba(83, 216, 255, 0.55);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(18, 141, 197, 0.95),
+          rgba(7, 82, 119, 0.96)
+        );
+      color: #effbff;
+      box-shadow: 0 0 20px rgba(24, 184, 255, 0.16);
+    }
+
+    .auth-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 0 28px rgba(24, 184, 255, 0.25);
+    }
+
+    .auth-secondary {
+      border: 1px solid rgba(24, 184, 255, 0.24);
+      background: rgba(24, 184, 255, 0.035);
+      color: #9fdfff;
+    }
+
+    .auth-secondary:hover {
+      transform: translateY(-1px);
+      border-color: rgba(83, 216, 255, 0.55);
+      background: rgba(24, 184, 255, 0.08);
+    }
+
+    .auth-primary:disabled {
+      cursor: wait;
+      opacity: 0.62;
+    }
+
+    .feedback {
+      min-height: 24px;
+      margin: 4px 0 0;
+      color: #ff6f86;
+      font-size: 0.92rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .feedback.ok {
+      color: #5fe6bc;
+    }
+
+    .system-note {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(24, 184, 255, 0.14);
+      color: #6f8794;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .system-note strong {
+      color: #53d8ff;
+    }
+
+    @media (max-width: 520px) {
+      .auth-page {
+        place-items: start center;
+        padding: 18px 12px 28px;
+      }
+
+      .auth-shell {
+        width: 100%;
+      }
+
+      .auth-card {
+        padding: 22px 18px;
+        border-radius: 14px;
+      }
+
+      .auth-card h1 {
+        font-size: clamp(1.6rem, 9vw, 2.2rem);
+      }
+
+      .auth-subtitle {
+        margin-bottom: 22px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .auth-page {
+        padding-inline: 8px;
+      }
+
+      .auth-card {
+        padding-inline: 14px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .auth-card::before {
+        animation: none;
+      }
+    }
+  </style>
+
+</head>
+
+<body class="auth-page">
+  <div id="particles-js" aria-hidden="true"></div>
+
+  <main class="auth-shell">
+    <section class="auth-card" aria-labelledby="register-title">
+      <div class="auth-content">
+      <span class="auth-kicker">Cyber-Nexis // Cadastro</span>
+      <h1 id="register-title">Criar Conta</h1>
+
+      <p class="auth-subtitle">
+        Solicite uma identidade de acesso. A senha precisa ter no mínimo 10 caracteres.
+      </p>
+
+      <form id="registerForm" class="auth-form" autocomplete="on">
+        <div class="auth-field">
+          <label for="email">Email operacional</label>
+          <div class="input-wrap">
+            <input id="email" name="email" type="email" placeholder="operador@email.com" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label for="senha">Senha</label>
+          <div class="input-wrap password-field">
+            <input id="senha" name="senha" type="password" placeholder="mínimo 10 caracteres" autocomplete="new-password" minlength="10" required>
+            <button class="toggle-password" type="button" aria-label="Mostrar senha">◉</button>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label for="confirmarSenha">Confirmar senha</label>
+          <div class="input-wrap password-field">
+            <input id="confirmarSenha" name="confirmarSenha" type="password" placeholder="repita a senha" autocomplete="new-password" minlength="10" required>
+          </div>
+        </div>
+
+        <div class="auth-actions">
+          <button id="btnRegister" class="auth-primary" type="submit">Registrar</button>
+          <a class="auth-secondary" href="login.html">Voltar ao login</a>
+        </div>
+
+        <p id="feedback" class="feedback" aria-live="polite"></p>
+      </form>
+
+      <p class="system-note">
+        <strong>Status:</strong> conta criada no Authentication; confirme o e-mail antes de entrar.
+      </p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { register, getCurrentUser } from "./site.js";
+
+    const HOME_PAGE = "Index.html";
+    const form = document.getElementById("registerForm");
+    const btnRegister = document.getElementById("btnRegister");
+    const feedback = document.getElementById("feedback");
+    const emailInput = document.getElementById("email");
+    const senhaInput = document.getElementById("senha");
+    const confirmarSenhaInput = document.getElementById("confirmarSenha");
+    const togglePassword = document.querySelector(".toggle-password");
+
+    function setFeedback(message, type = "error") {
+      feedback.textContent = message;
+      feedback.classList.toggle("ok", type === "ok");
+    }
+
+    function traduzirErroFirebase(error) {
+      const code = error?.code || "";
+      const mensagens = {
+        "auth/email-already-in-use": "Este email já está cadastrado.",
+        "auth/invalid-email": "Email inválido. Verifique e tente novamente.",
+        "auth/weak-password": "Senha fraca. Use pelo menos 10 caracteres.",
+        "auth/operation-not-allowed": "Cadastro por email e senha não está ativado no Firebase.",
+        "auth/network-request-failed": "Falha de conexão. Verifique sua internet.",
+        "auth/missing-fields": "Informe e-mail e senha."
+      };
+      return mensagens[code] || error?.message || "Falha ao criar conta.";
+    }
+
+    function setLoading(isLoading) {
+      btnRegister.disabled = isLoading;
+      btnRegister.textContent = isLoading ? "Criando..." : "Registrar";
+    }
+
+    togglePassword.addEventListener("click", () => {
+      const isPassword = senhaInput.type === "password";
+      senhaInput.type = isPassword ? "text" : "password";
+      confirmarSenhaInput.type = isPassword ? "text" : "password";
+      togglePassword.setAttribute("aria-label", isPassword ? "Ocultar senhas" : "Mostrar senhas");
+      togglePassword.textContent = isPassword ? "◎" : "◉";
+      senhaInput.focus();
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const email = emailInput.value.trim();
+      const senha = senhaInput.value;
+      const confirmarSenha = confirmarSenhaInput.value;
+
+      if (!email || !senha || !confirmarSenha) {
+        setFeedback("Preencha todos os campos.");
+        return;
+      }
+
+      if (senha.length < 10) {
+        setFeedback("A senha precisa ter no mínimo 10 caracteres.");
+        return;
+      }
+
+      if (senha !== confirmarSenha) {
+        setFeedback("As senhas não coincidem.");
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setFeedback("Criando identidade operacional...", "ok");
+        await register(email, senha);
+        setFeedback("Conta criada. Enviamos um e-mail de verificação.", "ok");
+        window.location.replace("login.html?registered=1");
+      } catch (error) {
+        console.error("Erro ao criar conta:", error);
+        setFeedback(traduzirErroFirebase(error));
+        setLoading(false);
+      }
+    });
+
+    getCurrentUser((user) => {
+      if (user?.emailVerified) window.location.replace(HOME_PAGE);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+CYBER-NEXIS — PASTA XNX
+
+1. Coloque todas as imagens originais dentro da pasta Imagem, mantendo os nomes usados no HTML.
+2. Preencha firebase-config.js com os dados do seu aplicativo Web no Firebase Console.
+3. Ative Authentication > E-mail/Senha.
+4. Nesta etapa, Firestore, Realtime Database e Storage continuam bloqueados por segurança.
+5. Execute o site por servidor local ou Firebase Hosting; não abra os HTML diretamente por file://.
+
+Fluxo seguro atual:
+Cadastro -> e-mail de verificação -> login -> páginas internas.

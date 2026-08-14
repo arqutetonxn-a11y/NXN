@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Manual Operacional — Cyber-Nexis</title>
+  <meta
+    name="description"
+    content="Manual operacional interno da Cyber-Nexis."
+  >
+  <meta name="theme-color" content="#000000">
+
+  <link rel="stylesheet" href="Styles.css">
+
+  <script type="module">
+    import { protectPage } from "./site.js";
+    protectPage("login.html");
+  </script>
+
+  <style>
+    .manual-page{min-height:100vh}
+    .manual-shell{width:min(980px,calc(100% - 32px));margin-inline:auto;padding:26px 0 58px;position:relative;z-index:1}
+    .manual-header{text-align:center;display:grid;justify-items:center;gap:12px;margin-bottom:24px}
+    .manual-logo{width:min(250px,70vw);filter:drop-shadow(0 0 18px rgba(24,184,255,.18))}
+    .manual-kicker{color:rgba(83,216,255,.72);font-size:.74rem;font-weight:900;letter-spacing:2px;text-transform:uppercase}
+    .manual-title{margin:0;color:#32bfff;font-size:clamp(1.55rem,4vw,2.45rem);text-transform:uppercase;letter-spacing:1.4px}
+    .manual-doctrine{margin:8px 0 0;padding:16px 18px;border-left:3px solid #53d8ff;background:rgba(24,184,255,.04);color:#eef9ff;font-weight:800}
+    .manual-card{padding:clamp(22px,4vw,34px);border:1px solid rgba(24,184,255,.26);border-radius:16px;background:rgba(0,0,0,.9);box-shadow:0 20px 54px rgba(0,0,0,.58)}
+    .manual-section{opacity:0;transform:translateY(22px);transition:.55s ease}
+    .manual-section.visible{opacity:1;transform:none}
+    .manual-section h2{margin:0 0 14px;color:#5bd4ff;font-size:clamp(1.08rem,2.5vw,1.45rem);text-transform:uppercase;letter-spacing:.8px}
+    .manual-section h3{color:#8cddff;margin:20px 0 8px}
+    .manual-section p,.manual-section li{color:#b7c9d4;line-height:1.72}
+    .manual-section ul,.manual-section ol{padding-left:22px}
+    .manual-level-grid,.manual-divisions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+    .manual-level,.manual-division{padding:15px;border:1px solid rgba(24,184,255,.16);border-radius:11px;background:rgba(24,184,255,.025)}
+    .manual-level strong,.manual-division strong{color:#53d8ff}
+    .manual-divider{border:0;border-top:1px solid rgba(24,184,255,.14);margin:30px 0}
+    .manual-footer{margin-top:34px;padding-top:18px;border-top:1px solid rgba(24,184,255,.16);color:#708996;text-align:center;font-size:.84rem}
+    @media(max-width:700px){.manual-shell{width:min(100% - 20px,980px)}.manual-card{padding:18px}.manual-level-grid,.manual-divisions{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.manual-section{opacity:1;transform:none;transition:none}}
+  </style>
+</head>
+
+<body class="manual-page">
+  <div id="particles-js" aria-hidden="true"></div>
+
+  <main class="manual-shell">
+    <header class="manual-header">
+      <img src="Imagem/Logotipo.png" alt="Logotipo Cyber-Nexis" class="manual-logo">
+      <span class="manual-kicker">CYBER-NEXIS // DOCUMENTO INTERNO</span>
+      <h1 class="manual-title">Manual Operacional</h1>
+      <p class="manual-doctrine">
+        Conhecimento concede capacidade. Autorização concede autoridade.
+        Nenhum membro deve confundir os dois.
+      </p>
+    </header>
+
+    <article class="manual-card">
+
+      <section class="manual-section">
+        <h2>1. Finalidade da Organização</h2>
+        <p>
+          A Cyber-Nexis existe para pesquisar, identificar, documentar e auxiliar na correção
+          de vulnerabilidades em sistemas digitais dentro de ambientes autorizados.
+        </p>
+        <p>
+          A organização atua com pesquisa defensiva, auditoria, educação, resposta a incidentes,
+          inteligência técnica e testes de segurança previamente autorizados.
+        </p>
+      </section>
+
+      <hr class="manual-divider">
+
+      <section class="manual-section">
+        <h2>2. Estrutura Hierárquica</h2>
+        <p>
+          A hierarquia define responsabilidade e autoridade. Ela não substitui competência técnica
+          e não concede permissão automática para acessar sistemas ou dados.
+        </p>
+
+        <div class="manual-level-grid">
+          <div class="manual-level"><strong>N5 — Líder Comandante</strong><p>Estratégia, contratos, governança e autoridade final.</p></div>
+          <div class="manual-level"><strong>N4 — Conselheiro</strong><p>Ética, compliance, auditoria e supervisão de comandantes.</p></div>
+          <div class="manual-level"><strong>N3 — Comandante de Divisão</strong><p>Coordena uma especialidade e valida operações dentro do escopo.</p></div>
+          <div class="manual-level"><strong>N2 — Operador</strong><p>Executa atividades técnicas autorizadas e documentadas.</p></div>
+          <div class="manual-level"><strong>N1 — Iniciado</strong><p>Treina e participa apenas sob supervisão.</p></div>
+          <div class="manual-level"><strong>N0 — Observador</strong><p>Acesso educacional e observacional, sem autoridade operacional.</p></div>
+        </div>
+      </section>
+
+      <hr class="manual-divider">
+
+      <section class="manual-section">
+        <h2>3. Divisões Especializadas</h2>
+
+        <div class="manual-divisions">
+          <div class="manual-division"><strong>01. Inteligência Cibernética</strong><p>Pesquisa de ameaças, indicadores, vulnerabilidades e inteligência técnica.</p></div>
+          <div class="manual-division"><strong>02. Segurança da Informação</strong><p>Defesa, hardening, controle de acesso, vulnerabilidades e resposta a incidentes.</p></div>
+          <div class="manual-division"><strong>03. Red Team Ético</strong><p>Pentest e simulações ofensivas exclusivamente em ambientes autorizados.</p></div>
+          <div class="manual-division"><strong>04. Fatores Humanos</strong><p>Conscientização e engenharia social defensiva com autorização.</p></div>
+          <div class="manual-division"><strong>05. Contrainteligência</strong><p>OPSEC, riscos internos, vazamentos e revisão de acessos.</p></div>
+          <div class="manual-division"><strong>06. Administração e Finanças</strong><p>Contratos, orçamento, compras e rastreabilidade financeira.</p></div>
+          <div class="manual-division"><strong>07. Operações de Campo</strong><p>Auditorias físicas autorizadas, inventário, implantação e suporte.</p></div>
+          <div class="manual-division"><strong>08. IA Estratégica e Automação</strong><p>Automação defensiva e análise assistida com supervisão humana.</p></div>
+        </div>
+      </section>
+
+      <hr class="manual-divider">
+
+      <section class="manual-section">
+        <h2>4. Processo de Integração</h2>
+        <ol>
+          <li>Cadastro e triagem inicial.</li>
+          <li>Avaliação de fundamentos técnicos e ética.</li>
+          <li>Entrada como Observador N0 ou Iniciado N1.</li>
+          <li>Treinamento em laboratórios próprios ou autorizados.</li>
+          <li>Avaliação prática e revisão de conduta.</li>
+          <li>Promoção somente após aprovação humana e registro interno.</li>
+        </ol>
+      </section>
+
+      <hr class="manual-divider">
+
+      <section class="manual-section">
+        <h2>5. Progressão e Promoção</h2>
+        <p>XP pode registrar experiência, mas não determina promoção sozinho.</p>
+        <ul>
+          <li>Treinamento concluído</li>
+          <li>Avaliações práticas</li>
+          <li>Histórico disciplinar</li>
+          <li>Competência compatível com a função</li>
+          <li>Aprovação do responsável pelo nível superior</li>
+          <li>Necessidade real de acesso adicional</li>
+        </ul>
+      </section>
+
+      <hr class="manual-divider">
+
+      <section class="manual-section">
+        <h2>6. Protocolo de Operações</h2>
+        <ol>
+          <li><b>Autorização:</b> identificar proprietário e documento de autorização.</li>
+          <li><b>Escopo:</b> definir ativos, métodos permitidos, horários e limites.</li>
+          <li><b>Preparação:</b> equipe, ferramentas, backups e critérios de interrupção.</li>
+          <li><b>Execução:</b> aplicar o menor impacto necessário.</li>
+          <li><b>Evidência:</b> registrar apenas o necessário para demonstrar a falha.</li>
+          <li><b>Relatório:</b> explicar risco, reprodução segura e recomendação.</li>
+          <li><b>Correção:</b> apoiar validação do reparo quando autorizado.</li>
+          <li><b>Encerramento:</b> revogar acessos temporários e arquivar registros.</li>
+        </ol>
+      </section>
+
+      <hr class="manual-divider">
+
+      <section class="manual-section">
+        <h2>7. Segurança Interna</h2>
+        <ul>
+          <li>Contas e credenciais são individuais.</li>
+          <li>Privilégios seguem o princípio do menor acesso necessário.</li>
+          <li>Informações sensíveis não são armazenadas em páginas públicas.</li>
+          <li>Ações administrativas relevantes devem gerar auditoria.</li>
+          <li>Segredos, tokens e chaves não devem permanecer no HTML do cliente.</li>
+          <li>Autenticação e autorização devem ser aplicadas no backend e no Firebase.</li>
+        </ul>
+      </section>
+
+      <hr class="manual-divider">
+
+      <section class="manual-section">
+        <h2>8. Vulnerabilidades e Divulgação Responsável</h2>
+        <p>
+          Vulnerabilidades encontradas são documentadas e comunicadas primeiro ao responsável pelo sistema.
+          Dados de terceiros não são publicados para provar capacidade técnica.
+        </p>
+        <p>
+          Qualquer divulgação externa deve respeitar contrato, prazo de correção, legislação aplicável e
+          autorização correspondente.
+        </p>
+      </section>
+
+      <hr class="manual-divider">
+
+      <section class="manual-section">
+        <h2>9. Incidentes Operacionais</h2>
+        <p>
+          Se uma operação causar impacto inesperado, encontrar dados altamente sensíveis ou ultrapassar
+          acidentalmente o escopo, o operador deve interromper a atividade e escalar o incidente.
+        </p>
+        <ol>
+          <li>Parar a ação.</li>
+          <li>Preservar logs e evidências.</li>
+          <li>Notificar o comandante responsável.</li>
+          <li>Registrar o ocorrido.</li>
+          <li>Aguardar nova autorização antes de continuar.</li>
+        </ol>
+      </section>
+
+      <hr class="manual-divider">
+
+      <section class="manual-section">
+        <h2>10. Disciplina e Auditoria</h2>
+        <p>
+          Violações são avaliadas pela gravidade, impacto, intenção, reincidência e cooperação durante a revisão.
+          Autoridade operacional pode ser suspensa imediatamente durante investigação.
+        </p>
+      </section>
+
+      <footer class="manual-footer">
+        Cyber-Nexis // Manual Operacional V2<br>
+        Acesso condicionado ao nível e à necessidade funcional.
+      </footer>
+
+    </article>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="particles-config.js"></script>
+
+  <script>
+    const sections = document.querySelectorAll(".manual-section");
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14 });
+
+      sections.forEach((section) => observer.observe(section));
+    } else {
+      sections.forEach((section) => section.classList.add("visible"));
+    }
+  </script>
+</body>
+</html>

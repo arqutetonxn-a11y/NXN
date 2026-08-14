@@ -1,0 +1,11 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ETAPA 1: negação total por padrão.
+    // Nenhum cliente Web, autenticado ou não, pode ler ou gravar documentos.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

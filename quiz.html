@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Teste de Talento em Tecnologia | Cyber-Nexis</title>
+  <meta
+    name="description"
+    content="Quiz de conhecimentos em tecnologia e segurança digital da Cyber-Nexis."
+  >
+  <meta name="theme-color" content="#000000">
+
+  <link rel="stylesheet" href="Styles.css">
+
+  <style>
+    .quiz-page {
+      min-height: 100vh;
+    }
+
+    .quiz-shell {
+      width: min(980px, calc(100% - 32px));
+      margin-inline: auto;
+      padding: 24px 0 58px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quiz-header {
+      display: grid;
+      justify-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+      text-align: center;
+    }
+
+    .quiz-logo {
+      width: min(260px, 72vw);
+      filter:
+        drop-shadow(0 0 14px rgba(24, 184, 255, 0.18))
+        drop-shadow(0 0 34px rgba(24, 184, 255, 0.07));
+    }
+
+    .quiz-kicker {
+      color: rgba(83, 216, 255, 0.72);
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .quiz-card {
+      padding: clamp(20px, 4vw, 32px);
+      border: 1px solid rgba(24, 184, 255, 0.26);
+      border-radius: 16px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(0, 0, 0, 0.95),
+          rgba(0, 0, 0, 0.89)
+        );
+      box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.56),
+        inset 0 0 24px rgba(24, 184, 255, 0.012);
+    }
+
+    .quiz-title {
+      margin: 0 0 18px;
+      color: #32bfff;
+      font-size: clamp(1.45rem, 4vw, 2.2rem);
+      line-height: 1.2;
+      letter-spacing: 1.1px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .quiz-statusbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(24, 184, 255, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background:
+        linear-gradient(
+          90deg,
+          #0b7fc2,
+          #53d8ff
+        );
+      box-shadow: 0 0 12px rgba(83, 216, 255, 0.28);
+      transition: width 0.25s ease;
+    }
+
+    .timer {
+      min-width: 170px;
+      padding: 8px 12px;
+      border: 1px solid rgba(24, 184, 255, 0.20);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.72);
+      color: #9ddfff;
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    #time {
+      color: #53d8ff;
+      font-weight: 900;
+    }
+
+    .step {
+      display: grid;
+      gap: 16px;
+    }
+
+    .step h2 {
+      margin: 0;
+      color: #5bd4ff;
+      font-size: 1rem;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+    }
+
+    .question-text {
+      margin: 12px 0 8px;
+      color: #bfeaff;
+      font-weight: 800;
+      line-height: 1.55;
+    }
+
+    .step label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 6px 0;
+      padding: 10px 12px;
+      border: 1px solid rgba(24, 184, 255, 0.12);
+      border-radius: 10px;
+      background: rgba(24, 184, 255, 0.025);
+      color: #b8cbd8;
+      cursor: pointer;
+      transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        color 0.2s ease;
+    }
+
+    .step label:hover {
+      border-color: rgba(83, 216, 255, 0.34);
+      background: rgba(24, 184, 255, 0.055);
+      color: #eaf8ff;
+    }
+
+    .step input[type="radio"] {
+      flex: 0 0 auto;
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: #18b8ff;
+    }
+
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .next,
+    .prev,
+    #finalizar,
+    #email-form button {
+      min-height: 46px;
+      padding: 10px 18px;
+      border: 1px solid rgba(83, 216, 255, 0.46);
+      border-radius: 10px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(18, 141, 197, 0.95),
+          rgba(7, 82, 119, 0.96)
+        );
+      color: #effbff;
+      cursor: pointer;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      box-shadow: 0 0 16px rgba(24, 184, 255, 0.10);
+    }
+
+    .prev {
+      background: rgba(24, 184, 255, 0.045);
+      color: #8bdfff;
+    }
+
+    #resultado {
+      margin-top: 24px;
+      padding: 20px;
+      border: 1px solid rgba(24, 184, 255, 0.22);
+      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.72);
+    }
+
+    #pontuacao {
+      margin: 0 0 16px;
+      color: #5fe6bc;
+      text-align: center;
+    }
+
+    #email-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    #email-form input {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 13px;
+      border: 1px solid rgba(24, 184, 255, 0.25);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.82);
+      color: #eef9ff;
+      outline: none;
+    }
+
+    #status {
+      min-height: 24px;
+      margin: 12px 0 0;
+      text-align: center;
+    }
+
+    @media (max-width: 700px) {
+      .quiz-shell {
+        width: min(100% - 20px, 980px);
+        padding-top: 16px;
+      }
+
+      .quiz-card {
+        padding: 18px;
+        border-radius: 13px;
+      }
+
+      .quiz-statusbar {
+        grid-template-columns: 1fr;
+      }
+
+      .timer {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .quiz-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .next,
+      .prev,
+      #finalizar,
+      #email-form button {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .quiz-card {
+        padding: 15px;
+      }
+
+      .question-text {
+        font-size: 0.94rem;
+      }
+
+      .step label {
+        padding: 9px 10px;
+      }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+</head>
+
+<body class="quiz-page">
+
+  <div id="particles-js" aria-hidden="true"></div>
+
+  <main class="quiz-shell">
+
+    <header class="quiz-header">
+      <img
+        src="Imagem/Logotipo.png"
+        alt="Logotipo Cyber-Nexis"
+        class="quiz-logo"
+      >
+
+      <span class="quiz-kicker">
+        Cyber-Nexis // Avaliação Técnica
+      </span>
+    </header>
+
+    <section class="quiz-card">
+
+      <h1 class="quiz-title">
+        Teste seu talento em tecnologia
+      </h1>
+
+      <div class="quiz-statusbar">
+        <div class="progress-container" aria-label="Progresso do teste">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div class="timer">
+          Tempo restante:
+          <span id="time">60</span>
+          segundos
+        </div>
+      </div>
+
+      <form id="quiz-form">
+
+        <div class="step">
+          <h2>Etapa 01</h2>
+
+          <p class="question-text">1) Quando você acessa um site HTTPS, o que garante a criptografia?</p>
+          <label><input type="radio" name="q1" value="DNS"> DNS</label>
+          <label><input type="radio" name="q1" value="TLS"> TLS + Certificado Digital</label>
+          <label><input type="radio" name="q1" value="Firewall"> Firewall</label>
+          <label><input type="radio" name="q1" value="Roteador"> Roteador</label>
+
+          <p class="question-text">2) O que ocorre primeiro ao acessar um domínio?</p>
+          <label><input type="radio" name="q2" value="IP"> Resolução DNS</label>
+          <label><input type="radio" name="q2" value="HTML"> Download HTML</label>
+          <label><input type="radio" name="q2" value="Firewall"> Validação Firewall</label>
+          <label><input type="radio" name="q2" value="Ping"> Ping automático</label>
+
+          <p class="question-text">3) O que é um ataque de phishing?</p>
+          <label><input type="radio" name="q3" value="EmailFalso"> Email ou site falso para roubo de dados</label>
+          <label><input type="radio" name="q3" value="Malware"> Malware automático</label>
+          <label><input type="radio" name="q3" value="ForcaBruta"> Tentativa de senha</label>
+          <label><input type="radio" name="q3" value="Firewall"> Bloqueio de firewall</label>
+
+          <p class="question-text">4) Qual protocolo é usado para enviar emails seguros?</p>
+          <label><input type="radio" name="q4" value="SMTP"> SMTP</label>
+          <label><input type="radio" name="q4" value="SMTPS"> SMTPS (SMTP + SSL/TLS)</label>
+          <label><input type="radio" name="q4" value="POP3"> POP3</label>
+          <label><input type="radio" name="q4" value="HTTP"> HTTP</label>
+
+          <p class="question-text">5) O que significa VPN?</p>
+          <label><input type="radio" name="q5" value="RedeVirtual"> Rede Virtual Privada</label>
+          <label><input type="radio" name="q5" value="Virus"> Virus Protegido</label>
+          <label><input type="radio" name="q5" value="IP"> IP Virtual</label>
+          <label><input type="radio" name="q5" value="Firewall"> Firewall Avançado</label>
+
+          <div class="quiz-actions">
+            <button type="button" class="next">Próximo</button>
+          </div>
+        </div>
+
+        <div class="step" hidden>
+          <h2>Etapa 02</h2>
+
+          <p class="question-text">6) O que caracteriza força bruta?</p>
+          <label><input type="radio" name="q6" value="ZeroDay"> Zero Day</label>
+          <label><input type="radio" name="q6" value="Senha"> Tentativas massivas de senha</label>
+          <label><input type="radio" name="q6" value="Fisico"> Ataque físico</label>
+          <label><input type="radio" name="q6" value="Malware"> Malware automático</label>
+
+          <p class="question-text">7) Qual a função do firewall?</p>
+          <label><input type="radio" name="q7" value="Bloquear"> Bloquear ou liberar tráfego de rede</label>
+          <label><input type="radio" name="q7" value="Criptografar"> Criptografar dados</label>
+          <label><input type="radio" name="q7" value="DNS"> Resolver domínios</label>
+          <label><input type="radio" name="q7" value="Ping"> Ping automático</label>
+
+          <p class="question-text">8) O que é um ataque DDoS?</p>
+          <label><input type="radio" name="q8" value="Negacao"> Sobrecarga de serviço por múltiplas requisições</label>
+          <label><input type="radio" name="q8" value="Phishing"> Email falso</label>
+          <label><input type="radio" name="q8" value="Malware"> Instalação de vírus</label>
+          <label><input type="radio" name="q8" value="ForcaBruta"> Força bruta</label>
+
+          <p class="question-text">9) O que é autenticação multifator?</p>
+          <label><input type="radio" name="q9" value="SenhaUnica"> Apenas senha única</label>
+          <label><input type="radio" name="q9" value="MFA"> Uso de mais de um fator (senha + código)</label>
+          <label><input type="radio" name="q9" value="Biometria"> Apenas biometria</label>
+          <label><input type="radio" name="q9" value="Captcha"> Apenas captcha</label>
+
+          <p class="question-text">10) Qual é o objetivo do SSL/TLS?</p>
+          <label><input type="radio" name="q10" value="Criptografia"> Garantir criptografia entre cliente e servidor</label>
+          <label><input type="radio" name="q10" value="DNS"> Resolver DNS</label>
+          <label><input type="radio" name="q10" value="Firewall"> Filtrar tráfego</label>
+          <label><input type="radio" name="q10" value="Malware"> Detectar malware</label>
+
+          <div class="quiz-actions">
+            <button type="button" class="prev">Voltar</button>
+            <button type="button" class="next">Próximo</button>
+          </div>
+        </div>
+
+        <div class="step" hidden>
+          <h2>Etapa 03</h2>
+
+          <p class="question-text">11) Vulnerabilidade descoberta. Ação correta?</p>
+          <label><input type="radio" name="q11" value="Explorar"> Explorar</label>
+          <label><input type="radio" name="q11" value="Publicar"> Publicar</label>
+          <label><input type="radio" name="q11" value="Reportar"> Reportar responsável</label>
+          <label><input type="radio" name="q11" value="Ignorar"> Ignorar</label>
+
+          <p class="question-text">12) O que é um Zero Day?</p>
+          <label><input type="radio" name="q12" value="Falha"> Vulnerabilidade desconhecida sem patch</label>
+          <label><input type="radio" name="q12" value="Ataque"> Ataque conhecido</label>
+          <label><input type="radio" name="q12" value="DNS"> Problema de DNS</label>
+          <label><input type="radio" name="q12" value="Firewall"> Bloqueio de firewall</label>
+
+          <p class="question-text">13) O que é engenharia social?</p>
+          <label><input type="radio" name="q13" value="Manipulacao"> Manipulação psicológica para obter informações</label>
+          <label><input type="radio" name="q13" value="Senha"> Ataque de senha</label>
+          <label><input type="radio" name="q13" value="Malware"> Malware</label>
+          <label><input type="radio" name="q13" value="DDoS"> DDoS</label>
+
+          <p class="question-text">14) Qual comando verifica conectividade em rede?</p>
+          <label><input type="radio" name="q14" value="Ping"> Ping</label>
+          <label><input type="radio" name="q14" value="Traceroute"> Traceroute</label>
+          <label><input type="radio" name="q14" value="IPConfig"> ipconfig</label>
+          <label><input type="radio" name="q14" value="Netstat"> netstat</label>
+
+          <p class="question-text">15) O que é malware?</p>
+          <label><input type="radio" name="q15" value="SoftwareMalicioso"> Software malicioso</label>
+          <label><input type="radio" name="q15" value="Hardware"> Componente físico</label>
+          <label><input type="radio" name="q15" value="DNS"> Problema de DNS</label>
+          <label><input type="radio" name="q15" value="Firewall"> Bloqueio de firewall</label>
+
+          <div class="quiz-actions">
+            <button type="button" class="prev">Voltar</button>
+            <button type="button" class="next">Próximo</button>
+          </div>
+        </div>
+
+        <div class="step" hidden>
+          <h2>Etapa 04</h2>
+
+          <p class="question-text">16) O que é criptografia simétrica?</p>
+          <label><input type="radio" name="q16" value="MesmaChave"> Mesma chave para criptografar e descriptografar</label>
+          <label><input type="radio" name="q16" value="DiferenteChave"> Chave diferente</label>
+          <label><input type="radio" name="q16" value="Senha"> Apenas senha</label>
+          <label><input type="radio" name="q16" value="Firewall"> Firewall avançado</label>
+
+          <p class="question-text">17) O que é criptografia assimétrica?</p>
+          <label><input type="radio" name="q17" value="ChavesDiferentes"> Chaves diferentes para criptografar e descriptografar</label>
+          <label><input type="radio" name="q17" value="MesmaChave"> Mesma chave</label>
+          <label><input type="radio" name="q17" value="Senha"> Apenas senha</label>
+          <label><input type="radio" name="q17" value="Firewall"> Firewall</label>
+
+          <p class="question-text">18) O que é um certificado digital?</p>
+          <label><input type="radio" name="q18" value="ProvaIdentidade"> Prova de identidade de site ou pessoa</label>
+          <label><input type="radio" name="q18" value="Malware"> Software malicioso</label>
+          <label><input type="radio" name="q18" value="Senha"> Senha</label>
+          <label><input type="radio" name="q18" value="VPN"> VPN</label>
+
+          <p class="question-text">19) O que é SQL Injection?</p>
+          <label><input type="radio" name="q19" value="InjecaoSQL"> Inserção maliciosa de comandos SQL</label>
+          <label><input type="radio" name="q19" value="XSS"> Ataque XSS</label>
+          <label><input type="radio" name="q19" value="Firewall"> Bloqueio de firewall</label>
+          <label><input type="radio" name="q19" value="DNS"> DNS falso</label>
+
+          <p class="question-text">20) Qual a melhor prática para senhas?</p>
+          <label><input type="radio" name="q20" value="Complexa"> Senha longa, única e complexa</label>
+          <label><input type="radio" name="q20" value="1234"> Senha simples</label>
+          <label><input type="radio" name="q20" value="SenhaUnica"> Reusar mesma senha</label>
+          <label><input type="radio" name="q20" value="SenhaEsquecida"> Anotar em papel</label>
+
+          <div class="quiz-actions">
+            <button type="button" class="prev">Voltar</button>
+            <button type="button" id="finalizar">Finalizar</button>
+          </div>
+        </div>
+
+      </form>
+
+      <div id="resultado" hidden>
+        <h3 id="pontuacao"></h3>
+
+        <form id="email-form">
+          <input
+            type="text"
+            id="nome"
+            placeholder="Seu nome"
+            maxlength="80"
+            required
+          >
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Seu email"
+            maxlength="120"
+            required
+          >
+
+          <button type="submit">
+            Enviar Resultado
+          </button>
+        </form>
+
+        <p id="status" aria-live="polite"></p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="particles-config.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      emailjs.init("_wMmR0Rqn5VoasHqR");
+
+      const steps = document.querySelectorAll(".step");
+      const progressBar = document.getElementById("progress-bar");
+      const timeEl = document.getElementById("time");
+      const resultado = document.getElementById("resultado");
+      const pontuacaoEl = document.getElementById("pontuacao");
+      const status = document.getElementById("status");
+      const finalizarBtn = document.getElementById("finalizar");
+
+      const gabarito = {
+        q1: "TLS",
+        q2: "IP",
+        q3: "EmailFalso",
+        q4: "SMTPS",
+        q5: "RedeVirtual",
+        q6: "Senha",
+        q7: "Bloquear",
+        q8: "Negacao",
+        q9: "MFA",
+        q10: "Criptografia",
+        q11: "Reportar",
+        q12: "Falha",
+        q13: "Manipulacao",
+        q14: "Ping",
+        q15: "SoftwareMalicioso",
+        q16: "MesmaChave",
+        q17: "ChavesDiferentes",
+        q18: "ProvaIdentidade",
+        q19: "InjecaoSQL",
+        q20: "Complexa"
+      };
+
+      let current = 0;
+      let tempo = 60;
+      let quizFinalizado = false;
+
+      function mostrarEtapa(index) {
+        steps.forEach((step, stepIndex) => {
+          step.hidden = stepIndex !== index;
+        });
+
+        progressBar.style.width =
+          ((index + 1) / steps.length) * 100 + "%";
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }
+
+      function coletarRespostas() {
+        let pontos = 0;
+
+        for (const pergunta in gabarito) {
+          const marcada = document.querySelector(
+            `input[name="${pergunta}"]:checked`
+          );
+
+          if (
+            marcada &&
+            marcada.value === gabarito[pergunta]
+          ) {
+            pontos++;
+          }
+        }
+
+        return pontos;
+      }
+
+      function finalizarQuiz() {
+        if (quizFinalizado) {
+          return;
+        }
+
+        quizFinalizado = true;
+        clearInterval(timer);
+
+        const pontos = coletarRespostas();
+
+        pontuacaoEl.textContent =
+          `Pontuação final: ${pontos} de ${Object.keys(gabarito).length}`;
+
+        resultado.hidden = false;
+        finalizarBtn.disabled = true;
+
+        resultado.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+
+      document.querySelectorAll(".next").forEach((button) => {
+        button.addEventListener("click", () => {
+          if (current < steps.length - 1) {
+            current++;
+            mostrarEtapa(current);
+          }
+        });
+      });
+
+      document.querySelectorAll(".prev").forEach((button) => {
+        button.addEventListener("click", () => {
+          if (current > 0) {
+            current--;
+            mostrarEtapa(current);
+          }
+        });
+      });
+
+      finalizarBtn.addEventListener("click", finalizarQuiz);
+
+      const timer = setInterval(() => {
+        tempo--;
+        timeEl.textContent = tempo;
+
+        if (tempo <= 0) {
+          tempo = 0;
+          timeEl.textContent = "0";
+          finalizarQuiz();
+        }
+      }, 1000);
+
+      document
+        .getElementById("email-form")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const form = event.currentTarget;
+          const button = form.querySelector("button");
+          const nome = document.getElementById("nome").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const pontos = coletarRespostas();
+
+          button.disabled = true;
+          button.textContent = "Enviando...";
+          status.textContent = "Transmitindo resultado...";
+          status.style.color = "#53d8ff";
+
+          try {
+            await emailjs.send(
+              "service_h21ez1j",
+              "template_v2qaj2p",
+              {
+                nome_usuario: nome,
+                email_usuario: email,
+                pontuacao_final: pontos
+              }
+            );
+
+            status.textContent =
+              "Resultado enviado com sucesso!";
+            status.style.color = "#5fe6bc";
+          } catch (error) {
+            console.error("Erro ao enviar resultado:", error);
+
+            status.textContent =
+              "Não foi possível enviar o resultado.";
+            status.style.color = "#ff6f86";
+          } finally {
+            button.disabled = false;
+            button.textContent = "Enviar Resultado";
+          }
+        });
+
+      mostrarEtapa(0);
+    });
+  </script>
+
+</body>
+</html>

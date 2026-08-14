@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Cyber-Nexis • Chat Restrito</title>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+<script src="particles-config.js" defer></script>
+
+<style>
+  :root{
+    --red:#ff1744;
+    --red-strong:#ff0f0f;
+    --red-dark:#7a0014;
+    --bg:#000;
+    --panel:#08080b;
+    --panel-2:#111116;
+    --line:rgba(255,23,68,.28);
+    --line-strong:rgba(255,23,68,.55);
+    --text:#f4f4f6;
+    --text-soft:rgba(255,255,255,.72);
+    --muted:rgba(255,255,255,.45);
+    --green:#00ff88;
+    --safe-top:env(safe-area-inset-top);
+    --safe-bottom:env(safe-area-inset-bottom);
+    --radius:18px;
+    font-family:"Segoe UI", Roboto, Arial, sans-serif;
+  }
+
+  *{box-sizing:border-box}
+
+  html,body{
+    height:100%;
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+  }
+
+  body{
+    min-height:100vh;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+    -webkit-text-size-adjust:100%;
+    background:
+      radial-gradient(circle at top left, rgba(255,23,68,.18), transparent 34%),
+      radial-gradient(circle at bottom right, rgba(255,23,68,.10), transparent 38%),
+      #000;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:0;
+    background:
+      linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.026) 1px, transparent 1px);
+    background-size:38px 38px;
+    mask-image:linear-gradient(to bottom, rgba(0,0,0,.75), transparent 86%);
+  }
+
+  #particles-js{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+  }
+
+  .chat-app{
+    position:relative;
+    z-index:1;
+    width:100vw;
+    height:100dvh;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    background:
+      linear-gradient(180deg, rgba(8,0,3,.86), rgba(0,0,0,.96)),
+      #000;
+    border:1px solid var(--line-strong);
+    box-shadow:
+      inset 0 0 44px rgba(255,23,68,.055),
+      0 0 44px rgba(255,23,68,.12);
+  }
+
+  .chat-app::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    z-index:2;
+    background:linear-gradient(rgba(255,255,255,.035) 50%, transparent 50%);
+    background-size:100% 4px;
+    opacity:.06;
+  }
+
+  /* ===============================
+     TOPO
+  =================================*/
+
+  .topbar{
+    position:relative;
+    z-index:3;
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:calc(14px + var(--safe-top)) 18px 14px;
+    border-bottom:1px solid var(--line-strong);
+    background:
+      radial-gradient(circle at top, rgba(255,23,68,.22), transparent 52%),
+      linear-gradient(180deg, rgba(15,0,5,.96), rgba(5,5,8,.92));
+    box-shadow:0 18px 36px rgba(0,0,0,.42);
+  }
+
+  .topbar::before{
+    content:"";
+    position:absolute;
+    left:18px;
+    right:18px;
+    bottom:0;
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(255,23,68,.9), transparent);
+  }
+
+  .top-left-wrap{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    min-width:0;
+  }
+
+  .brand-mark{
+    width:42px;
+    height:42px;
+    flex:0 0 42px;
+    border-radius:12px;
+    border:1px solid var(--line-strong);
+    display:grid;
+    place-items:center;
+    color:#fff;
+    font-weight:900;
+    letter-spacing:-2px;
+    background:
+      radial-gradient(circle, rgba(255,23,68,.34), transparent 58%),
+      rgba(255,23,68,.08);
+    box-shadow:0 0 24px rgba(255,23,68,.28);
+  }
+
+  .brand-text{
+    min-width:0;
+  }
+
+  .top-left{
+    font-size:clamp(1rem, 3vw, 1.55rem);
+    line-height:1.05;
+    font-weight:950;
+    letter-spacing:1.6px;
+    color:#fff;
+    text-transform:uppercase;
+    text-shadow:0 0 16px rgba(255,23,68,.52);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .top-subtitle{
+    margin-top:3px;
+    color:var(--muted);
+    font-size:.72rem;
+    letter-spacing:1.4px;
+    text-transform:uppercase;
+  }
+
+  .role-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-left:2px;
+    padding:6px 10px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    color:#ff8fa0;
+    background:rgba(255,23,68,.075);
+    font-size:.75rem;
+    font-weight:800;
+    white-space:nowrap;
+  }
+
+  .role-badge::before{
+    content:"";
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 12px var(--green);
+  }
+
+  .top-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex:0 0 auto;
+  }
+
+  .home-link{
+    min-height:38px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:9px 12px;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:999px;
+    color:rgba(255,255,255,.78);
+    text-decoration:none;
+    font-weight:850;
+    font-size:.76rem;
+    letter-spacing:1px;
+    background:rgba(255,255,255,.04);
+    transition:.22s ease;
+  }
+
+  .home-link:hover{
+    color:#fff;
+    border-color:var(--line-strong);
+    box-shadow:0 0 18px rgba(255,23,68,.22);
+  }
+
+  .top-stats{
+    display:flex;
+    gap:8px;
+  }
+
+  .stat{
+    min-width:94px;
+    padding:9px 11px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    color:#ff6b80;
+    background:
+      linear-gradient(180deg, rgba(255,23,68,.08), rgba(0,0,0,.34)),
+      rgba(10,10,12,.86);
+    font-weight:900;
+    font-size:.75rem;
+    text-align:center;
+    letter-spacing:.6px;
+    box-shadow:inset 0 0 18px rgba(255,23,68,.06);
+  }
+
+  /* ===============================
+     MENSAGENS
+  =================================*/
+
+  .messages{
+    position:relative;
+    z-index:1;
+    flex:1 1 auto;
+    padding:22px;
+    overflow:auto;
+    scroll-behavior:smooth;
+    background:
+      radial-gradient(circle at top, rgba(255,23,68,.07), transparent 34%),
+      rgba(0,0,0,.62);
+  }
+
+  .messages::-webkit-scrollbar{width:10px}
+  .messages::-webkit-scrollbar-track{background:rgba(255,255,255,.035)}
+  .messages::-webkit-scrollbar-thumb{
+    background:rgba(255,23,68,.38);
+    border-radius:999px;
+  }
+
+  .empty-state{
+    height:100%;
+    min-height:320px;
+    display:grid;
+    place-items:center;
+    text-align:center;
+    color:var(--muted);
+    padding:28px;
+  }
+
+  .empty-card{
+    width:min(520px, 94%);
+    padding:28px;
+    border:1px solid var(--line);
+    border-radius:24px;
+    background:rgba(12,12,15,.62);
+    box-shadow:0 0 36px rgba(255,23,68,.08);
+  }
+
+  .empty-card strong{
+    display:block;
+    color:#ff405f;
+    font-size:1.1rem;
+    letter-spacing:1.8px;
+    margin-bottom:8px;
+    text-transform:uppercase;
+  }
+
+  .message{
+    display:flex;
+    gap:12px;
+    align-items:flex-end;
+    width:min(860px, 96%);
+    margin:0 0 16px;
+    animation:messageIn .24s ease both;
+  }
+
+  @keyframes messageIn{
+    from{opacity:0; transform:translateY(10px)}
+    to{opacity:1; transform:translateY(0)}
+  }
+
+  .message.mine{
+    margin-left:auto;
+    flex-direction:row-reverse;
+  }
+
+  .avatar{
+    width:50px;
+    height:50px;
+    flex:0 0 50px;
+    border-radius:16px;
+    border:1px solid var(--line-strong);
+    background:#111;
+    background-size:cover;
+    background-position:center;
+    box-shadow:
+      0 0 18px rgba(255,23,68,.26),
+      inset 0 0 14px rgba(0,0,0,.52);
+  }
+
+  .message-body{
+    max-width:min(690px, calc(100vw - 105px));
+    padding:12px 14px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px 18px 18px 4px;
+    background:
+      linear-gradient(135deg, rgba(255,23,68,.095), rgba(255,255,255,.025)),
+      rgba(12,12,15,.9);
+    box-shadow:
+      0 14px 30px rgba(0,0,0,.35),
+      inset 0 0 24px rgba(255,23,68,.03);
+  }
+
+  .message.mine .message-body{
+    border-color:rgba(255,23,68,.24);
+    border-radius:18px 18px 4px 18px;
+    background:
+      linear-gradient(135deg, rgba(255,23,68,.30), rgba(120,0,24,.55)),
+      rgba(22,0,6,.92);
+    box-shadow:
+      0 14px 32px rgba(0,0,0,.38),
+      0 0 18px rgba(255,23,68,.16);
+  }
+
+  .meta-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:5px;
+  }
+
+  .bubble{
+    color:#ff8fa0;
+    font-weight:950;
+    letter-spacing:.8px;
+    font-size:.86rem;
+  }
+
+  .message.mine .bubble{
+    color:#fff;
+  }
+
+  .time{
+    color:rgba(255,255,255,.45);
+    font-size:.72rem;
+    white-space:nowrap;
+  }
+
+  .text{
+    color:rgba(255,255,255,.86);
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+    font-size:.99rem;
+    line-height:1.48;
+  }
+
+  .message img.attachment{
+    max-width:min(320px, 72vw);
+    display:block;
+    margin-top:10px;
+    border:1px solid var(--line-strong);
+    border-radius:14px;
+    background:#000;
+    box-shadow:0 0 20px rgba(255,23,68,.16);
+  }
+
+  /* ===============================
+     COMPOSER
+  =================================*/
+
+  .composer{
+    position:relative;
+    z-index:4;
+    flex:0 0 auto;
+    display:flex;
+    align-items:flex-end;
+    gap:10px;
+    padding:12px 14px calc(12px + var(--safe-bottom));
+    border-top:1px solid var(--line-strong);
+    background:
+      linear-gradient(180deg, rgba(10,10,13,.96), rgba(4,4,5,.98));
+    box-shadow:0 -18px 42px rgba(0,0,0,.42);
+  }
+
+  .input-wrap{
+    flex:1;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    min-height:54px;
+    max-height:150px;
+    padding:8px 12px;
+    border-radius:18px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.055);
+    box-shadow:inset 0 0 20px rgba(255,23,68,.035);
+  }
+
+  .input-wrap:focus-within{
+    border-color:rgba(0,255,136,.65);
+    box-shadow:
+      0 0 20px rgba(0,255,136,.12),
+      inset 0 0 20px rgba(255,23,68,.035);
+  }
+
+  textarea#message-input{
+    flex:1;
+    width:100%;
+    min-height:28px;
+    max-height:118px;
+    background:transparent;
+    border:0;
+    outline:none;
+    color:#fff;
+    font-size:1rem;
+    line-height:1.35;
+    resize:none;
+    overflow:auto;
+    font-family:inherit;
+  }
+
+  textarea#message-input::placeholder{
+    color:rgba(255,255,255,.42);
+  }
+
+  .attach,
+  button.send{
+    flex:0 0 auto;
+    width:54px;
+    height:54px;
+    border-radius:17px;
+    border:1px solid var(--line-strong);
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    user-select:none;
+    transition:.22s ease;
+  }
+
+  .attach{
+    color:#ff6b80;
+    background:rgba(255,23,68,.08);
+    font-size:1.25rem;
+  }
+
+  .attach:hover{
+    color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 0 20px rgba(255,23,68,.22);
+  }
+
+  button.send{
+    width:auto;
+    min-width:96px;
+    padding:0 18px;
+    color:#fff;
+    font-weight:950;
+    letter-spacing:.9px;
+    background:linear-gradient(135deg, #ff1744, #8a0018);
+    box-shadow:0 0 22px rgba(255,23,68,.28);
+  }
+
+  button.send:hover{
+    transform:translateY(-2px);
+    box-shadow:0 0 30px rgba(255,23,68,.45);
+  }
+
+  button.send:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+    transform:none;
+  }
+
+  /* ===============================
+     MODAL
+  =================================*/
+
+  .overlay{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px;
+    background:
+      radial-gradient(circle at center, rgba(255,23,68,.16), transparent 45%),
+      rgba(0,0,0,.82);
+    backdrop-filter:blur(10px);
+  }
+
+  .role-modal{
+    width:min(620px, 96vw);
+    padding:28px;
+    border-radius:26px;
+    border:1px solid var(--line-strong);
+    color:#eee;
+    text-align:center;
+    background:
+      radial-gradient(circle at top, rgba(255,23,68,.20), transparent 44%),
+      linear-gradient(180deg, rgba(12,12,16,.98), rgba(1,1,3,.98));
+    box-shadow:
+      0 0 54px rgba(255,23,68,.20),
+      0 28px 90px rgba(0,0,0,.75);
+  }
+
+  .role-modal h2{
+    margin:0 0 8px;
+    color:#fff;
+    font-size:clamp(1.35rem, 4vw, 2.2rem);
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    text-shadow:0 0 20px rgba(255,23,68,.52);
+  }
+
+  .role-modal p{
+    margin:0 auto;
+    max-width:470px;
+    color:var(--text-soft);
+    line-height:1.55;
+  }
+
+  .roles{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:14px;
+    margin-top:22px;
+  }
+
+  .role-card{
+    position:relative;
+    padding:18px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.10);
+    cursor:pointer;
+    background:
+      linear-gradient(180deg, rgba(255,23,68,.075), rgba(255,255,255,.025)),
+      rgba(5,5,7,.92);
+    transition:.22s ease;
+  }
+
+  .role-card:hover,
+  .role-card.is-selected{
+    transform:translateY(-3px);
+    border-color:var(--line-strong);
+    box-shadow:0 0 26px rgba(255,23,68,.22);
+  }
+
+  .role-card.is-selected::after{
+    content:"SELECIONADO";
+    position:absolute;
+    top:10px;
+    right:10px;
+    padding:4px 8px;
+    border-radius:999px;
+    color:#001b0d;
+    background:var(--green);
+    font-size:.64rem;
+    font-weight:950;
+    letter-spacing:.8px;
+  }
+
+  .role-avatar{
+    width:92px;
+    height:92px;
+    margin:0 auto 10px;
+    border-radius:24px;
+    border:1px solid var(--line-strong);
+    background:#090909;
+    background-size:cover;
+    background-position:center;
+    box-shadow:0 0 28px rgba(255,23,68,.25);
+  }
+
+  .role-card strong{
+    display:block;
+    margin-bottom:6px;
+    color:#ff5a70;
+    letter-spacing:.8px;
+    text-transform:uppercase;
+  }
+
+  .role-desc{
+    font-size:.83rem;
+    color:var(--text-soft);
+    line-height:1.45;
+  }
+
+  .choose-btn{
+    margin-top:20px;
+    min-height:48px;
+    width:100%;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:999px;
+    background:linear-gradient(135deg, #ff1744, #8a0018);
+    color:#fff;
+    padding:12px 18px;
+    font-weight:950;
+    letter-spacing:1px;
+    cursor:pointer;
+    box-shadow:0 0 22px rgba(255,23,68,.28);
+  }
+
+  /* ===============================
+     ACESSIBILIDADE / RESPONSIVO
+  =================================*/
+
+  [tabindex]:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  a:focus-visible{
+    outline:2px solid var(--green);
+    outline-offset:3px;
+  }
+
+  @media(max-width:900px){
+    .topbar{
+      align-items:flex-start;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .top-actions{
+      width:100%;
+      justify-content:space-between;
+    }
+
+    .top-stats{
+      flex:1;
+      justify-content:flex-end;
+    }
+
+    .stat{
+      min-width:82px;
+      font-size:.68rem;
+      padding:8px 9px;
+    }
+  }
+
+  @media(max-width:560px){
+    .chat-app{
+      border:0;
+    }
+
+    .topbar{
+      padding-inline:12px;
+    }
+
+    .brand-mark{
+      width:38px;
+      height:38px;
+      flex-basis:38px;
+    }
+
+    .top-left{
+      max-width:calc(100vw - 86px);
+    }
+
+    .top-subtitle{
+      display:none;
+    }
+
+    .role-badge{
+      font-size:.68rem;
+      padding:5px 8px;
+    }
+
+    .home-link{
+      display:none;
+    }
+
+    .top-actions{
+      gap:8px;
+    }
+
+    .top-stats{
+      width:100%;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+    }
+
+    .stat{
+      min-width:0;
+      width:100%;
+    }
+
+    .messages{
+      padding:14px 12px;
+    }
+
+    .message{
+      width:100%;
+      gap:9px;
+      margin-bottom:13px;
+    }
+
+    .avatar{
+      width:42px;
+      height:42px;
+      flex-basis:42px;
+      border-radius:14px;
+    }
+
+    .message-body{
+      max-width:calc(100vw - 74px);
+      padding:10px 12px;
+      border-radius:16px 16px 16px 4px;
+    }
+
+    .message.mine .message-body{
+      border-radius:16px 16px 4px 16px;
+    }
+
+    .text{
+      font-size:.94rem;
+    }
+
+    .composer{
+      gap:8px;
+      padding-inline:10px;
+    }
+
+    .attach,
+    button.send{
+      height:50px;
+      width:50px;
+      border-radius:15px;
+    }
+
+    button.send{
+      min-width:72px;
+      padding-inline:12px;
+      font-size:.78rem;
+    }
+
+    .input-wrap{
+      min-height:50px;
+      border-radius:16px;
+      padding:8px 10px;
+    }
+
+    .roles{
+      grid-template-columns:1fr;
+    }
+
+    .role-modal{
+      padding:22px;
+      border-radius:22px;
+    }
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    *, *::before, *::after{
+      animation:none!important;
+      transition:none!important;
+      scroll-behavior:auto!important;
+    }
+  }
+</style>
+
+<script type="module">
+  import { protectPage } from "./site.js";
+  protectPage("login.html");
+</script>
+</head>
+
+<body>
+<div id="particles-js"></div>
+
+<div class="chat-app" role="application" aria-labelledby="app-title">
+  <header class="topbar">
+    <div class="top-left-wrap">
+      <div class="brand-mark" aria-hidden="true">CN</div>
+      <div class="brand-text">
+        <div class="top-left" id="app-title">CHAT DE CONVERSAS</div>
+        <div class="top-subtitle">Cyber-Nexis // Canal temporário</div>
+      </div>
+      <div id="role-display" class="role-badge" aria-live="polite">Tipo: —</div>
+    </div>
+
+    <div class="top-actions">
+      <a class="home-link" href="Index.html" aria-label="Voltar ao portal">PORTAL</a>
+      <div class="top-stats" aria-hidden="false">
+        <div class="stat" id="people-count" aria-live="polite">PESSOAS: 0</div>
+        <div class="stat" id="conv-count" aria-live="polite">MENSAGENS: 0</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="messages" id="messages" aria-live="polite" aria-label="Lista de mensagens">
+    <div class="empty-state" id="empty-state">
+      <div class="empty-card">
+        <strong>Canal silencioso</strong>
+        <span>Aguardando a primeira transmissão do operador.</span>
+      </div>
+    </div>
+  </main>
+
+  <form id="composer" class="composer" aria-label="Enviar mensagem">
+    <label for="file" class="attach" title="Anexar imagem" role="button" tabindex="0" aria-label="Anexar imagem">📎</label>
+    <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/gif" style="display:none" aria-hidden="true">
+
+    <div class="input-wrap">
+      <textarea id="message-input" placeholder="Escrever mensagem..." aria-label="Escrever mensagem" rows="1" maxlength="2000"></textarea>
+    </div>
+
+    <button type="submit" class="send" id="send-button" aria-label="Enviar mensagem">ENVIAR</button>
+  </form>
+</div>
+
+<div id="role-overlay" class="overlay" role="dialog" aria-modal="true" aria-labelledby="role-title">
+  <div class="role-modal" role="document">
+    <h2 id="role-title">Escolha sua entrada</h2>
+    <p>Selecione o perfil de operação para entrar no canal. A escolha fica salva neste dispositivo.</p>
+
+    <div class="roles" role="list">
+      <div class="role-card" id="role-visitor" role="listitem" tabindex="0" aria-label="Entrar como Visitante">
+        <div class="role-avatar" id="avatar-visitor"></div>
+        <strong>Visitante</strong>
+        <div class="role-desc">Nome: <em>Visitante</em><br>Avatar gerado automaticamente</div>
+      </div>
+
+      <div class="role-card" id="role-hacker" role="listitem" tabindex="0" aria-label="Entrar como Anônimo Hacker">
+        <div class="role-avatar" id="avatar-hacker"></div>
+        <strong>Anônimo</strong>
+        <div class="role-desc">Nome: <em>Anônimo</em><br>Avatar estilo hacker embutido</div>
+      </div>
+    </div>
+
+    <button class="choose-btn" id="btn-choose" aria-label="Confirmar escolha">Confirmar acesso</button>
+  </div>
+</div>
+
+<script type="application/x-cnx-stage2">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    serverTimestamp,
+    query,
+    orderBy,
+    onSnapshot,
+    doc,
+    setDoc,
+    deleteDoc
+  } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
+  import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA4Q8KHC5A0dmWAAotx1iPU4fMBlnsaloo",
+    authDomain: "penumbra-chat.firebaseapp.com",
+    projectId: "penumbra-chat",
+    storageBucket: "penumbra-chat.firebasestorage.app",
+    messagingSenderId: "715420431774",
+    appId: "1:715420431774:web:837a2fa9013989796cd28f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  const storage = getStorage(app);
+
+  const messagesCol = collection(db, "messages");
+  const presenceCol = collection(db, "presence");
+
+  const messagesEl = document.getElementById("messages");
+  const emptyState = document.getElementById("empty-state");
+  const peopleCountEl = document.getElementById("people-count");
+  const convCountEl = document.getElementById("conv-count");
+  const form = document.getElementById("composer");
+  const input = document.getElementById("message-input");
+  const sendButton = document.getElementById("send-button");
+  const fileInput = document.getElementById("file");
+  const attachLabel = document.querySelector("label[for='file']");
+  const roleOverlay = document.getElementById("role-overlay");
+  const roleVisitor = document.getElementById("role-visitor");
+  const roleHacker = document.getElementById("role-hacker");
+  const btnChoose = document.getElementById("btn-choose");
+  const roleDisplay = document.getElementById("role-display");
+  const avatarVisitorEl = document.getElementById("avatar-visitor");
+  const avatarHackerEl = document.getElementById("avatar-hacker");
+
+  let currentUser = null;
+  let displayName = null;
+  let currentAvatarUrl = null;
+  let chosenRole = null;
+  let presenceIntervalId = null;
+  let messagesUnsub = null;
+  let presenceUnsub = null;
+
+  const hackerSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
+    <rect width='100%' height='100%' fill='#080808'/>
+    <circle cx='100' cy='100' r='88' fill='#150006'/>
+    <path d='M100 18c-26 0-48 27-48 60 0 30 21 55 48 55s48-25 48-55c0-33-22-60-48-60z' fill='#ff1744'/>
+    <path d='M43 154c12-22 32-32 57-32s45 10 57 32v16H43v-16z' fill='#9a001b'/>
+    <rect x='62' y='76' width='76' height='15' rx='7' fill='#060606'/>
+    <circle cx='78' cy='84' r='4' fill='#00ff88'/>
+    <circle cx='122' cy='84' r='4' fill='#00ff88'/>
+  </svg>`;
+  const hackerDataUrl = 'data:image/svg+xml;utf8,' + encodeURIComponent(hackerSvg);
+
+  function avatarDataUrl(seed) {
+    try {
+      const s = String(seed || Math.random().toString(16).slice(2));
+      const code = Array.from(s).reduce((acc,c)=>acc + c.charCodeAt(0), 0);
+      const h = code % 360;
+      const bg = `hsl(${h} 100% 8%)`;
+      const fg = `hsl(${(h+28)%360} 86% 62%)`;
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'>
+        <rect width='100%' height='100%' fill='${bg}'/>
+        <circle cx='100' cy='100' r='86' fill='rgba(255,255,255,.05)'/>
+        <g fill='${fg}'>
+          <circle cx='100' cy='74' r='34'/>
+          <rect x='46' y='122' width='108' height='44' rx='18'/>
+        </g>
+      </svg>`;
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+    } catch(e) {
+      return '';
+    }
+  }
+
+  function setBackgroundImage(el, url){
+    const clean = String(url || '').replace(/"/g, '\\"');
+    el.style.backgroundImage = `url("${clean}")`;
+  }
+
+  avatarVisitorEl.style.backgroundImage = `url('Imagem/Visitor.jpg'), url("${avatarDataUrl('visitor')}")`;
+  avatarHackerEl.style.backgroundImage = `url('Imagem/Hacker.jpg'), url("${hackerDataUrl}")`;
+
+  [roleVisitor, roleHacker].forEach(el => {
+    el.addEventListener("click", () => {
+      selectRole(el.id === "role-visitor" ? "visitor" : "hacker");
+    });
+
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        selectRole(el.id === "role-visitor" ? "visitor" : "hacker");
+      }
+    });
+  });
+
+  function selectRole(role){
+    chosenRole = role === "hacker" ? "hacker" : "visitor";
+    roleVisitor.classList.toggle("is-selected", chosenRole === "visitor");
+    roleHacker.classList.toggle("is-selected", chosenRole === "hacker");
+    btnChoose.focus();
+  }
+
+  btnChoose.addEventListener("click", () => {
+    if (!chosenRole) chosenRole = "visitor";
+    localStorage.setItem("chatChosenRole", chosenRole);
+    roleOverlay.style.display = "none";
+    applyRoleToSession();
+  });
+
+  signInAnonymously(auth).catch(err => {
+    console.error("Erro ao autenticar:", err);
+    alert("Erro ao conectar ao Firebase. Verifique as configurações.");
+  });
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      currentUser = user;
+      chosenRole = localStorage.getItem("chatChosenRole") || chosenRole || null;
+
+      if (chosenRole) {
+        applyRoleToSession();
+        roleOverlay.style.display = "none";
+      }
+
+      try {
+        await setDoc(doc(presenceCol, user.uid), {
+          name: displayName || "Anon",
+          uid: user.uid,
+          lastSeen: serverTimestamp()
+        }, { merge: true });
+      } catch (e){
+        console.warn("Não foi possível registrar presença:", e);
+      }
+
+      startListening();
+      startPresenceHeartbeat();
+    } else {
+      currentUser = null;
+      stopPresenceHeartbeat();
+    }
+  });
+
+  function applyRoleToSession(){
+    if (!chosenRole) chosenRole = "visitor";
+
+    if (chosenRole === "hacker") {
+      displayName = "Anônimo";
+      currentAvatarUrl = hackerDataUrl;
+      roleDisplay.textContent = "Tipo: Anônimo";
+    } else {
+      displayName = "Visitante";
+      currentAvatarUrl = avatarDataUrl(currentUser?.uid || "visitor");
+      roleDisplay.textContent = "Tipo: Visitante";
+    }
+
+    localStorage.setItem("chatChosenRole", chosenRole);
+    localStorage.setItem("chatDisplayName", displayName);
+
+    if (currentUser) {
+      setDoc(doc(presenceCol, currentUser.uid), {
+        name: displayName,
+        uid: currentUser.uid,
+        lastSeen: serverTimestamp()
+      }, { merge: true }).catch(()=>{});
+    }
+  }
+
+  function startListening() {
+    if (messagesUnsub) messagesUnsub();
+    if (presenceUnsub) presenceUnsub();
+
+    const q = query(messagesCol, orderBy("timestamp", "asc"));
+
+    messagesUnsub = onSnapshot(
+      q,
+      (snapshot) => {
+        const atBottom = isUserNearBottom();
+        messagesEl.innerHTML = "";
+        convCountEl.textContent = `MENSAGENS: ${snapshot.size}`;
+
+        if (snapshot.empty) {
+          messagesEl.appendChild(emptyState);
+        } else {
+          snapshot.forEach(docSnap => {
+            const m = docSnap.data();
+            renderMessage({ id: docSnap.id, ...m });
+          });
+        }
+
+        if (atBottom) {
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+      },
+      (error) => {
+        console.error("Erro ao carregar mensagens:", error);
+        convCountEl.textContent = "MENSAGENS: ERRO";
+      }
+    );
+
+    presenceUnsub = onSnapshot(
+      presenceCol,
+      (snap) => {
+        peopleCountEl.textContent = `PESSOAS: ${snap.size}`;
+      },
+      (error) => {
+        console.error("Erro ao carregar presença:", error);
+        peopleCountEl.textContent = "PESSOAS: ERRO";
+      }
+    );
+  }
+
+  function isUserNearBottom() {
+    const threshold = 150;
+    return (messagesEl.scrollTop + messagesEl.clientHeight) >= (messagesEl.scrollHeight - threshold);
+  }
+
+  function formatTime(timestamp){
+    try {
+      if (!timestamp || !timestamp.toDate) return "";
+      return timestamp.toDate().toLocaleTimeString("pt-BR", {
+        hour:"2-digit",
+        minute:"2-digit"
+      });
+    } catch(e) {
+      return "";
+    }
+  }
+
+  function renderMessage(m){
+    const wrapper = document.createElement("article");
+    wrapper.className = "message";
+    if (currentUser && m.uid === currentUser.uid) wrapper.classList.add("mine");
+    wrapper.setAttribute("tabindex","0");
+    wrapper.setAttribute("role","article");
+    wrapper.setAttribute("aria-label", `${m.name || 'Anônimo'}: ${m.text ? m.text : 'imagem'}`);
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+    const avatarUrl = m.photoURL || (m.uid ? avatarDataUrl(m.uid) : avatarDataUrl(m.name || Math.random().toString(16)));
+    setBackgroundImage(avatar, avatarUrl);
+
+    const body = document.createElement("div");
+    body.className = "message-body";
+
+    const meta = document.createElement("div");
+    meta.className = "meta-row";
+
+    const nameEl = document.createElement("div");
+    nameEl.className = "bubble";
+    nameEl.textContent = m.name || "Anônimo";
+
+    const timeEl = document.createElement("time");
+    timeEl.className = "time";
+    timeEl.textContent = formatTime(m.timestamp);
+
+    const textEl = document.createElement("div");
+    textEl.className = "text";
+    textEl.textContent = m.text || "";
+
+    meta.appendChild(nameEl);
+    if (timeEl.textContent) meta.appendChild(timeEl);
+
+    body.appendChild(meta);
+    if (textEl.textContent) body.appendChild(textEl);
+
+    if (m.attachmentUrl) {
+      const img = document.createElement("img");
+      img.className = "attachment";
+      img.src = m.attachmentUrl;
+      img.alt = `${m.name || 'imagem anexada'}`;
+      body.appendChild(img);
+    }
+
+    wrapper.appendChild(avatar);
+    wrapper.appendChild(body);
+    messagesEl.appendChild(wrapper);
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    await sendMessage();
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  attachLabel.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      fileInput.click();
+    }
+  });
+
+  fileInput.addEventListener("change", async (ev) => {
+    const file = ev.target.files[0];
+    if (!file) return;
+
+    if (!currentUser) {
+      alert("Aguarde, autenticando...");
+      fileInput.value = "";
+      return;
+    }
+
+    const allowedTypes = new Set([
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif"
+    ]);
+
+    if (!allowedTypes.has(file.type)) {
+      alert("Envie somente imagens JPG, PNG, WebP ou GIF.");
+      fileInput.value = "";
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("A imagem deve ter no máximo 5 MB.");
+      fileInput.value = "";
+      return;
+    }
+
+    if (!displayName || !currentAvatarUrl) applyRoleToSession();
+
+    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_");
+    const path = `attachments/${currentUser.uid}_${Date.now()}_${safeName}`;
+    const sRef = storageRef(storage, path);
+
+    try {
+      attachLabel.textContent = "⏳";
+      await uploadBytes(sRef, file, { contentType: file.type });
+      const url = await getDownloadURL(sRef);
+
+      await addDoc(messagesCol, {
+        uid: currentUser.uid,
+        name: displayName,
+        photoURL: currentAvatarUrl,
+        text: "",
+        attachmentUrl: url,
+        timestamp: serverTimestamp()
+      });
+
+      fileInput.value = "";
+    } catch (err) {
+      console.error("Erro upload:", err);
+      alert("Erro ao enviar arquivo.");
+    } finally {
+      attachLabel.textContent = "📎";
+    }
+  });
+
+  async function sendMessage(){
+    const text = input.value.trim();
+    if (!text) return;
+
+    if (text.length > 2000) {
+      alert("A mensagem deve ter no máximo 2000 caracteres.");
+      return;
+    }
+
+    if (!currentUser) {
+      alert("Aguarde, autenticando...");
+      return;
+    }
+
+    if (!displayName || !currentAvatarUrl) applyRoleToSession();
+
+    try {
+      sendButton.disabled = true;
+      sendButton.textContent = "...";
+
+      await addDoc(messagesCol, {
+        uid: currentUser.uid,
+        name: displayName,
+        photoURL: currentAvatarUrl || avatarDataUrl(currentUser.uid),
+        text,
+        timestamp: serverTimestamp()
+      });
+
+      input.value = "";
+      adjustHeight();
+      input.focus();
+    } catch (err) {
+      console.error("Erro ao enviar mensagem:", err);
+      alert("Erro ao enviar mensagem.");
+    } finally {
+      sendButton.disabled = false;
+      sendButton.textContent = "ENVIAR";
+    }
+  }
+
+  function startPresenceHeartbeat(){
+    stopPresenceHeartbeat();
+    if (!currentUser) return;
+
+    presenceIntervalId = setInterval(async () => {
+      try {
+        await setDoc(doc(presenceCol, currentUser.uid), {
+          name: displayName || "Anon",
+          uid: currentUser.uid,
+          lastSeen: serverTimestamp()
+        }, { merge: true });
+      } catch (e) {}
+    }, 60000);
+  }
+
+  function stopPresenceHeartbeat(){
+    if (presenceIntervalId) {
+      clearInterval(presenceIntervalId);
+      presenceIntervalId = null;
+    }
+  }
+
+  window.addEventListener("beforeunload", async () => {
+    if (!currentUser) return;
+    try {
+      await deleteDoc(doc(presenceCol, currentUser.uid));
+    } catch (e) {}
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && currentUser) {
+      setDoc(doc(presenceCol, currentUser.uid), {
+        name: displayName || "Anon",
+        uid: currentUser.uid,
+        lastSeen: serverTimestamp()
+      }, { merge: true }).catch(()=>{});
+    }
+  });
+
+  function adjustHeight(){
+    input.style.height = "1px";
+    input.style.height = Math.min(input.scrollHeight, 118) + "px";
+  }
+
+  input.addEventListener("input", adjustHeight);
+  adjustHeight();
+
+  (function initFromStorage(){
+    const savedChosen = localStorage.getItem("chatChosenRole");
+
+    if (savedChosen === "visitor" || savedChosen === "hacker") {
+      chosenRole = savedChosen;
+      roleOverlay.style.display = "none";
+      selectRole(chosenRole);
+      roleDisplay.textContent = chosenRole === "hacker" ? "Tipo: Anônimo" : "Tipo: Visitante";
+    } else {
+      roleOverlay.style.display = "flex";
+      selectRole("visitor");
+      roleVisitor.focus();
+    }
+  })();
+</script>
+</body>
+</html>

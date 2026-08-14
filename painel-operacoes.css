@@ -1,0 +1,58 @@
+.ops-command-center {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 190, .24);
+  background:
+    linear-gradient(rgba(0, 255, 190, .025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 190, .025) 1px, transparent 1px),
+    rgba(3, 12, 17, .94);
+  background-size: 28px 28px;
+  box-shadow: 0 0 36px rgba(0, 255, 190, .07), inset 0 0 50px rgba(0, 0, 0, .35);
+}
+.ops-command-center::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 20%, rgba(0,255,190,.045), transparent 60%);
+  transform: translateX(-100%); animation: opsSweep 9s linear infinite;
+}
+@keyframes opsSweep { to { transform: translateX(100%); } }
+.ops-heading, .ops-panel-header, .ops-missions-header { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.ops-heading { margin-bottom:24px; }
+.ops-kicker, .ops-stat-card span, .ops-panel-header, .ops-terminal-output, .ops-terminal-line { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+.ops-kicker { color:#43f5c1; font-size:.75rem; letter-spacing:.18em; }
+.ops-heading h2 { margin:.3rem 0; }
+.ops-heading p { margin:0; opacity:.78; }
+.ops-live-badge { flex:none; border:1px solid rgba(67,245,193,.35); padding:8px 11px; color:#8affdd; font:700 .7rem ui-monospace,monospace; letter-spacing:.1em; }
+.ops-live-badge span { display:inline-block; width:7px; height:7px; margin-right:7px; border-radius:50%; background:#43f5c1; box-shadow:0 0 12px #43f5c1; animation:opsPulse 1.6s infinite; }
+@keyframes opsPulse { 50% { opacity:.35; transform:scale(.75); } }
+.ops-stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin-bottom:14px; }
+.ops-stat-card { padding:17px; border:1px solid rgba(126,255,218,.14); background:rgba(5,23,29,.82); }
+.ops-stat-card span { display:block; color:#8eb1ad; font-size:.68rem; letter-spacing:.09em; }
+.ops-stat-card strong { display:block; margin:8px 0 4px; color:#e8fffa; font-size:1.55rem; }
+.ops-stat-card small { color:#4ba390; }
+.ops-main-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.ops-panel { border:1px solid rgba(126,255,218,.15); background:rgba(4,18,24,.9); }
+.ops-panel-header { min-height:46px; padding:0 15px; border-bottom:1px solid rgba(126,255,218,.13); color:#a8fff0; font-size:.72rem; letter-spacing:.08em; }
+.ops-panel-header > div > span { color:#43f5c1; }
+.ops-icon-button { width:30px; height:30px; border:1px solid rgba(67,245,193,.3); background:transparent; color:#7dffe0; cursor:pointer; }
+.ops-live-feed { min-height:286px; max-height:286px; overflow:hidden; padding:10px 14px; }
+.ops-feed-row { display:grid; grid-template-columns:70px 78px 1fr; gap:10px; padding:10px 2px; border-bottom:1px solid rgba(126,255,218,.08); font: .75rem ui-monospace,monospace; animation:opsRowIn .35s ease; }
+@keyframes opsRowIn { from { opacity:0; transform:translateY(-6px); } }
+.ops-feed-time { color:#608c86; }.ops-feed-code { color:#43f5c1; }.ops-feed-text { color:#c8ddd9; }
+.ops-terminal-toolbar { display:flex; align-items:center; gap:6px; height:34px; padding:0 12px; background:rgba(255,255,255,.025); }
+.ops-terminal-toolbar i { width:8px; height:8px; border-radius:50%; background:#2f514d; }.ops-terminal-toolbar span { margin-left:5px; color:#567a74; font:.66rem ui-monospace,monospace; }
+.ops-terminal-output { min-height:230px; height:230px; overflow:hidden; padding:14px 16px 0; color:#8fffdc; font-size:.76rem; line-height:1.7; }
+.ops-terminal-output p { margin:0; }.ops-terminal-output .dim { color:#567b74; }.ops-terminal-output .ok { color:#b5ffe9; }.ops-terminal-output .warn { color:#ffd782; }
+.ops-terminal-line { display:flex; gap:8px; align-items:center; height:40px; padding:0 16px; color:#6fcfb7; font-size:.75rem; }
+.ops-cursor { width:8px; height:14px; background:#43f5c1; animation:opsBlink .8s steps(1) infinite; } @keyframes opsBlink { 50% { opacity:0; } }
+.ops-missions-panel { margin-top:14px; }.ops-missions-header small { margin-left:8px; color:#5d8a82; }.ops-progress-copy { color:#7b9f99; }.ops-progress-copy strong { color:#43f5c1; }
+.ops-progress-track { height:3px; background:rgba(255,255,255,.05); }.ops-progress-track span { display:block; width:0; height:100%; background:#43f5c1; box-shadow:0 0 12px rgba(67,245,193,.7); transition:width .4s ease; }
+.ops-mission-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:14px; }
+.ops-mission { position:relative; padding:16px; border:1px solid rgba(126,255,218,.12); background:rgba(5,27,32,.75); transition:.2s; }
+.ops-mission:hover { border-color:rgba(67,245,193,.4); transform:translateY(-2px); }.ops-mission.is-complete { opacity:.68; border-color:rgba(67,245,193,.32); }
+.ops-mission-top { display:flex; justify-content:space-between; gap:10px; }.ops-mission-tag { color:#43f5c1; font:.65rem ui-monospace,monospace; }.ops-mission-xp { color:#ffd782; font:.65rem ui-monospace,monospace; }
+.ops-mission h3 { margin:10px 0 7px; font-size:.92rem; }.ops-mission p { min-height:40px; margin:0 0 13px; color:#9cb3af; font-size:.78rem; }
+.ops-mission button { width:100%; padding:9px; border:1px solid rgba(67,245,193,.35); background:rgba(67,245,193,.07); color:#a5ffea; font:700 .7rem ui-monospace,monospace; cursor:pointer; }
+.ops-mission button:disabled { cursor:default; color:#6e948b; }.ops-mission-message { min-height:22px; margin:0 14px 14px; color:#7edfc8; font:.76rem ui-monospace,monospace; }
+@media (max-width:850px) { .ops-stats{grid-template-columns:1fr 1fr}.ops-main-grid{grid-template-columns:1fr}.ops-mission-list{grid-template-columns:1fr}.ops-heading{align-items:flex-start}.ops-live-badge{display:none} }
+@media (max-width:480px) { .ops-stats{grid-template-columns:1fr}.ops-feed-row{grid-template-columns:60px 64px 1fr;font-size:.68rem}.ops-command-center{padding-left:12px;padding-right:12px} }
+@media (prefers-reduced-motion: reduce) { .ops-command-center::before,.ops-live-badge span,.ops-cursor{animation:none}.ops-mission,.ops-progress-track span{transition:none} }

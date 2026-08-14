@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cyber-Nexis — Pesquisa, Defesa e Segurança Digital Ética</title>
+  <meta name="description" content="Cyber-Nexis é uma organização independente dedicada à pesquisa, defesa e segurança digital ética, com foco em identificação responsável de vulnerabilidades em ambientes autorizados.">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="Styles.css">
+  <link rel="stylesheet" href="painel-operacoes.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+
+  <!-- Scripts externos -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+
+  <!-- Scripts internos -->
+  <script src="onboarding.js" defer></script>
+  <script src="sombra-digital.js" defer></script>
+  <script src="teste_observacao.js" defer></script>
+ <script src="protocolo_sentinel.js" defer></script>
+  <script src="particles-config.js" defer></script>
+  <script src="painel-operacoes.js" defer></script>
+
+<style>
+  .public-areas-grid,
+  .public-code-grid {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px;
+    margin-top:22px;
+  }
+
+  .public-area-card,
+  .public-code-grid article {
+    min-width:0;
+    padding:18px;
+    border:1px solid rgba(24,184,255,.18);
+    border-radius:13px;
+    background:rgba(0,0,0,.68);
+  }
+
+  .public-area-card > strong,
+  .public-code-grid article > span {
+    color:#53d8ff;
+    font-size:.76rem;
+    font-weight:900;
+    letter-spacing:1.5px;
+  }
+
+  .public-area-card h3,
+  .public-code-grid h3 {
+    margin:8px 0 8px;
+  }
+
+  .public-flow {
+    display:grid;
+    grid-template-columns:repeat(6,minmax(0,1fr));
+    gap:8px;
+    margin-top:22px;
+  }
+
+  .public-flow div {
+    min-width:0;
+    padding:14px 8px;
+    border:1px solid rgba(24,184,255,.2);
+    border-radius:10px;
+    background:rgba(24,184,255,.035);
+    text-align:center;
+  }
+
+  .public-flow strong,
+  .public-flow span {
+    display:block;
+  }
+
+  .public-flow strong {
+    color:#53d8ff;
+    margin-bottom:4px;
+  }
+
+  .public-doctrine {
+    margin:22px 0 0;
+    padding:18px 20px;
+    border-left:3px solid #53d8ff;
+    background:rgba(24,184,255,.04);
+    color:#eef9ff;
+    font-weight:900;
+    letter-spacing:.6px;
+  }
+
+  @media (max-width:800px) {
+    .public-flow {
+      grid-template-columns:repeat(3,minmax(0,1fr));
+    }
+  }
+
+  @media (max-width:700px) {
+    .public-areas-grid,
+    .public-code-grid {
+      grid-template-columns:1fr;
+    }
+  }
+
+  @media (max-width:430px) {
+    .public-flow {
+      grid-template-columns:repeat(2,minmax(0,1fr));
+    }
+  }
+</style>
+
+</head>
+
+<body class="cnx-blue-theme">
+<!-- Background partículas -->
+  <div id="particles-js"></div>
+
+  <header>
+    <div class="container header-inner">
+      <div class="logo-cyber">
+        <img src="Imagem/Logotipo.png" alt="Logotipo.png">
+      </div>
+
+      <nav class="nav-links-container" aria-label="Navegação principal">
+        <div class="nav-links">
+          <a href="manual.html">Manual</a>
+          <a href="#sobre">Sobre</a>
+          <a href="#areas">Áreas</a>
+          <a href="#como-operamos">Como Operamos</a>
+          <a href="#codigo-publico">Código</a>
+          <a href="#protocolo-sentinel">Protocolo Sentinel</a>
+          <a href="recrutamento.html">Recrutamento</a>
+          <a href="contato.html">Contato</a>
+        </div>
+
+        <select class="lang-select" onchange="changeLanguage(this.value)" aria-label="Selecionar idioma">
+          <option value="pt-BR">Português</option>
+          <option value="en-US">English</option>
+          <option value="es-ES">Español</option>
+        </select>
+
+        <a id="logout" href="login.html" role="button">Entrar</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="sobre" class="section">
+      <span class="sentinel-kicker">CYBER-NEXIS // APRESENTAÇÃO PÚBLICA</span>
+      <h2>SOBRE A ORGANIZAÇÃO</h2>
+      <p>
+        A Cyber-Nexis é uma organização independente de pesquisa, defesa e segurança digital ética.
+        Seu objetivo é identificar vulnerabilidades, analisar riscos e produzir correções técnicas em
+        ambientes autorizados. Capacidade técnica nunca equivale a autorização: qualquer teste real exige
+        consentimento, escopo definido e registro operacional.
+      </p>
+      <p>
+        A estrutura interna é dividida em níveis de responsabilidade e divisões especializadas. O acesso
+        a informações, ferramentas e operações cresce de forma progressiva conforme treinamento,
+        necessidade funcional e confiança validada.
+      </p>
+      <img
+        src="Imagem/CNX06.png"
+        width="1024"
+        height="1024"
+        alt="Equipe e ambiente digital representando a Cyber-Nexis"
+        class="gallery-image"
+      >
+      <div class="form-actions">
+        <a class="btn" href="#areas">Conhecer as áreas</a>
+        <a class="btn secret-btn" href="recrutamento.html">Recrutamento</a>
+      </div>
+    </section>
+
+    <section id="areas" class="section">
+      <span class="sentinel-kicker">CYBER-NEXIS // ESPECIALIDADES</span>
+      <h2>ÁREAS DE ATUAÇÃO</h2>
+      <p>
+        A organização é composta por oito divisões especializadas. Cada divisão possui missão própria,
+        limites de atuação e responsabilidades definidas.
+      </p>
+
+      <div class="public-areas-grid">
+        <article class="public-area-card"><strong>01</strong><h3>Inteligência Cibernética</h3><p>Pesquisa de ameaças, análise de indicadores, vulnerabilidades publicadas e inteligência técnica.</p></article>
+        <article class="public-area-card"><strong>02</strong><h3>Segurança da Informação</h3><p>Defesa, hardening, gestão de vulnerabilidades, resposta a incidentes e proteção de dados.</p></article>
+        <article class="public-area-card"><strong>03</strong><h3>Red Team Ético</h3><p>Pentest e simulações ofensivas exclusivamente em sistemas expressamente autorizados.</p></article>
+        <article class="public-area-card"><strong>04</strong><h3>Fatores Humanos</h3><p>Conscientização, engenharia social defensiva e avaliação de processos humanos autorizados.</p></article>
+        <article class="public-area-card"><strong>05</strong><h3>Contrainteligência</h3><p>Proteção contra vazamentos, riscos internos, revisão de acessos e segurança operacional.</p></article>
+        <article class="public-area-card"><strong>06</strong><h3>Administração e Finanças</h3><p>Contratos, orçamento, compras, auditoria financeira e rastreabilidade de recursos.</p></article>
+        <article class="public-area-card"><strong>07</strong><h3>Operações de Campo</h3><p>Auditorias físicas autorizadas, inventário, implantação e suporte técnico controlado.</p></article>
+        <article class="public-area-card"><strong>08</strong><h3>IA Estratégica e Automação</h3><p>Automação defensiva, análise assistida, classificação e apoio técnico com supervisão humana.</p></article>
+      </div>
+    </section>
+
+    <section id="como-operamos" class="section">
+      <span class="sentinel-kicker">CYBER-NEXIS // FLUXO OPERACIONAL</span>
+      <h2>COMO OPERAMOS</h2>
+      <p>
+        Nenhuma atividade técnica começa por curiosidade ou oportunidade. Uma operação válida passa por
+        autorização, definição de escopo, análise, validação, relatório e correção.
+      </p>
+
+      <div class="public-flow" aria-label="Fluxo operacional">
+        <div><strong>01</strong><span>Autorização</span></div>
+        <div><strong>02</strong><span>Escopo</span></div>
+        <div><strong>03</strong><span>Análise</span></div>
+        <div><strong>04</strong><span>Validação</span></div>
+        <div><strong>05</strong><span>Relatório</span></div>
+        <div><strong>06</strong><span>Correção</span></div>
+      </div>
+    </section>
+
+    <section id="codigo-publico" class="section">
+      <span class="sentinel-kicker">CYBER-NEXIS // PRINCÍPIOS PÚBLICOS</span>
+      <h2>CÓDIGO FUNDAMENTAL</h2>
+
+      <div class="public-code-grid">
+        <article>
+          <span>01</span>
+          <h3>Autorização antes da ação</h3>
+          <p>Nenhum sistema é testado sem autorização verificável e escopo documentado.</p>
+        </article>
+
+        <article>
+          <span>02</span>
+          <h3>Menor impacto possível</h3>
+          <p>Uma vulnerabilidade é demonstrada com o mínimo de alteração, exposição ou coleta necessária.</p>
+        </article>
+
+        <article>
+          <span>03</span>
+          <h3>Proteção acima da exposição</h3>
+          <p>Dados, credenciais e evidências são protegidos. Descobertas seguem comunicação responsável.</p>
+        </article>
+      </div>
+
+      <blockquote class="public-doctrine">
+        Capacidade técnica nunca equivale a autorização.
+      </blockquote>
+    </section>
+
+    <section id="central-operacoes" class="section ops-command-center" aria-labelledby="ops-title">
+      <div class="ops-heading">
+        <div>
+          <span class="ops-kicker">CYBER-NEXIS // INTERFACE PÚBLICA</span>
+          <h2 id="ops-title">PAINEL PÚBLICO</h2>
+          <p>Interface demonstrativa pública. Os dados exibidos representam apenas esta sessão local e não revelam operações internas.</p>
+        </div>
+        <div class="ops-live-badge"><span></span> SISTEMA ATIVO</div>
+      </div>
+
+      <div class="ops-stats" aria-label="Estatísticas da rede">
+        <article class="ops-stat-card">
+          <span>CONEXÃO</span>
+          <strong id="ops-active-nodes">0</strong>
+          <small>estado online deste dispositivo</small>
+        </article>
+        <article class="ops-stat-card">
+          <span>INTEGRIDADE LOCAL</span>
+          <strong id="ops-integrity-score">0%</strong>
+          <small>verificações do navegador</small>
+        </article>
+        <article class="ops-stat-card">
+          <span>REGISTROS LOCAIS</span>
+          <strong id="ops-packets">0</strong>
+          <small>dados Cyber-Nexis neste navegador</small>
+        </article>
+        <article class="ops-stat-card">
+          <span>RISCO ATUAL</span>
+          <strong id="ops-risk-level">BAIXO</strong>
+          <small id="ops-last-sync">sincronizando...</small>
+        </article>
+      </div>
+
+      <div class="ops-main-grid">
+        <article class="ops-panel ops-feed-panel">
+          <header class="ops-panel-header">
+            <div><span>◉</span> EVENTOS REAIS DO SITE</div>
+            <span id="ops-feed-count">00 EVENTOS</span>
+          </header>
+          <div id="ops-live-feed" class="ops-live-feed" aria-live="polite"></div>
+        </article>
+
+        <article class="ops-panel ops-terminal-panel">
+          <header class="ops-panel-header">
+            <div><span>&gt;_</span> TERMINAL CNX</div>
+            <button id="ops-terminal-restart" class="ops-icon-button" type="button" aria-label="Reiniciar terminal">↻</button>
+          </header>
+          <div class="ops-terminal-toolbar">
+            <i></i><i></i><i></i><span>root@cyber-nexis:~</span>
+          </div>
+          <div id="ops-terminal-output" class="ops-terminal-output" aria-live="polite"></div>
+          <div class="ops-terminal-line"><span>operator@cnx:~$</span><i class="ops-cursor"></i></div>
+        </article>
+      </div>
+
+      <article class="ops-panel ops-missions-panel">
+        <header class="ops-panel-header ops-missions-header">
+          <div>
+            <span>▣</span> ETAPAS DA TRIAGEM
+            <small id="ops-mission-date"></small>
+          </div>
+          <div class="ops-progress-copy"><strong id="ops-mission-completed">0/3</strong> concluídas</div>
+        </header>
+        <div class="ops-progress-track" aria-hidden="true"><span id="ops-progress-bar"></span></div>
+        <div id="ops-mission-list" class="ops-mission-list"></div>
+        <p id="ops-mission-message" class="ops-mission-message" aria-live="polite"></p>
+      </article>
+    </section>
+
+    <section id="protocolo-sentinel" class="section sentinel-game">
+      <canvas id="sentinel-matrix" aria-hidden="true"></canvas>
+
+      <div class="sentinel-content">
+        <div class="sentinel-header">
+          <div>
+            <span class="sentinel-kicker">CYBER-NEXIS // TRIAGEM</span>
+            <h2>PROTOCOLO SENTINEL</h2>
+          </div>
+
+          <div class="sentinel-clock-box">
+            <span>HORA LOCAL</span>
+            <strong id="sentinel-clock">00:00:00</strong>
+          </div>
+        </div>
+
+        <div class="sentinel-panel">
+          <div class="sentinel-lock">⌬</div>
+
+          <p class="sentinel-subtitle">
+            Desafio individual por sessão. Responda com precisão; tentativas e bloqueios são preservados.
+          </p>
+
+          <h3 id="sentinel-question" class="sentinel-question">
+            Inicializando protocolo...
+          </h3>
+
+          <form id="sentinel-form" class="sentinel-form" autocomplete="off">
+            <label for="sentinel-answer" class="sr-only">Resposta do Protocolo Sentinel</label>
+
+            <div class="sentinel-input-wrap">
+              <span>&gt;</span>
+              <input
+                id="sentinel-answer"
+                type="text"
+                placeholder="digite sua resposta..."
+                spellcheck="false"
+                autocomplete="off"
+              />
+            </div>
+
+            <button id="sentinel-button" type="submit">
+              VERIFICAR ACESSO
+            </button>
+          </form>
+
+          <p id="sentinel-status" class="sentinel-status">
+            <span>Status:</span> aguardando operador...
+          </p>
+        </div>
+
+        <div class="sentinel-footer">
+          <div>⌖ Tentativas: <strong id="sentinel-attempts">0</strong></div>
+          <div>▣ Camada: <strong id="sentinel-layer">Pública</strong></div>
+          <div>▥ Sessão: <strong id="sentinel-window">analisando...</strong></div>
+        </div>
+      </div>
+
+      <div id="sentinel-overlay" class="sentinel-overlay" aria-live="polite">
+        <div class="sentinel-result">
+          <h3 id="sentinel-result-title">ANALISANDO...</h3>
+          <p id="sentinel-result-message">Verificando assinatura de resposta.</p>
+          <div class="sentinel-loader"></div>
+        </div>
+      </div>
+
+      <!--
+        fragmento_sentinel: a verdadeira triagem não mede força, mede observação.
+        pista: a pergunta muda pela hora.
+      -->
+    </section>
+
+
+    <section class="section">
+      <h2>ESTRUTURA INTERNA</h2>
+      <p>A hierarquia funcional é organizada em níveis N0 a N5: Observador, Iniciado, Operador, Comandante de Divisão, Conselheiro e Líder Comandante. As oito divisões especializadas operam sob o princípio do menor privilégio, com autoridade proporcional ao nível e à função.</p>
+      <div class="image-gallery">
+        <img src="Imagem/CNX07.jpg" alt="Rede descentralizada da Cyber-Nexis" class="gallery-image">
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>MISSÃO</h2>
+      <p>A Cyber-Nexis atua em pesquisa, defesa, auditoria e identificação responsável de vulnerabilidades em ambientes digitais autorizados. O objetivo é transformar falhas encontradas em evidências úteis, relatórios claros e correções técnicas.</p>
+      <img src="Imagem/Grupo 01.png" alt="Missão operacional da Cyber-Nexis" width="1024" height="1024" class="gallery-image">
+    </section>
+
+    <section id="recrutamento" class="section">
+      <h2>RECRUTAMENTO</h2>
+      <p>O recrutamento avalia fundamentos técnicos, ética, disciplina, capacidade de aprendizado e responsabilidade. Ingressantes começam em níveis de acesso reduzido e avançam por treinamento, avaliações práticas e histórico confiável. Nenhum candidato recebe autoridade operacional apenas por habilidade técnica.</p>
+      <div class="form-actions">
+        <button class="btn" type="button" onclick="location.href='recrutamento.html'">Conhecer Recrutamento</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>VISÃO</h2>
+      <p>A visão da Cyber-Nexis é tornar sistemas digitais mais resistentes por meio de pesquisa ética, auditoria, educação, prevenção e resposta responsável. Segurança sustentável exige método, registro e limites claros.</p>
+      <img src="Imagem/Garoto.jpeg" width="1024" height="1024" alt="Visão estratégica Cyber-Nexis" class="gallery-image">
+    </section>
+
+    <section class="section">
+      <h2>HIERARQUIA</h2>
+      <p>A hierarquia define responsabilidade, não superioridade técnica. N0 observa e aprende; N1 treina sob supervisão; N2 executa operações autorizadas; N3 coordena divisões; N4 supervisiona governança e auditoria; N5 define estratégia e responde pela autoridade final.</p>
+      <img src="Imagem/CNX09.png" alt="Diagrama de estrutura descentralizada" class="gallery-image">
+    </section>
+
+    <section class="section">
+      <h2>CAUSA</h2>
+      <p>A organização existe para reduzir vulnerabilidades estruturais em sistemas digitais e sociais. A abordagem é técnica, não ideológica. A ação é baseada em análise, não opinião.</p>
+      <img src="Imagem/Grupo 02.png" width="1024" height="1024" alt="Causa da Cyber-Nexis" class="gallery-image">
+    </section>
+
+
+    <section class="section">
+      <h2>PROTOCOLOS</h2>
+      <p>Informação é distribuída pelo princípio do menor privilégio. Operações exigem autorização, escopo, registro e revisão. Evidências são protegidas, vulnerabilidades são comunicadas de forma responsável e desvios de escopo são tratados como incidentes internos.</p>
+      <img src="Imagem/86773513-ca70-4338-b0c2-d56f1c6292c2.jpeg" width="1024" height="1024" alt="Protocolos e fluxos de decisão Cyber-Nexis" class="gallery-image">
+    </section>
+
+<section id="teste-observacao" class="section observation-lab">
+      <canvas id="obs-matrix" aria-hidden="true"></canvas>
+
+      <div class="obs-content">
+        <div class="obs-topline">
+          <div>
+            <span class="obs-kicker">CYBER-NEXIS // CAMADA N0</span>
+            <h2>TESTE DE OBSERVAÇÃO</h2>
+            <p>Não procure força. Procure detalhe. O sistema registra cada escolha e restaura o progresso após atualizar a página.</p>
+          </div>
+
+          <div class="obs-clock-card">
+            <span>SCAN LOCAL</span>
+            <strong id="obs-clock">00:00:00</strong>
+          </div>
+        </div>
+
+        <div class="obs-grid">
+          <div class="obs-visual-panel">
+            <div class="obs-frame-header">
+              <span>VISOR // RUÍDO CONTROLADO</span>
+              <span id="obs-round-tag">N0-01</span>
+            </div>
+
+            <div class="obs-image-shell">
+              <img id="imagem-mini-jogo" alt="Imagem do mini jogo de observação">
+              <div class="obs-reticle"></div>
+              <div class="obs-scanline"></div>
+            </div>
+          </div>
+
+          <div class="obs-console-panel">
+            <div class="obs-mini-status">
+              <span>STATUS</span>
+              <strong id="obs-integrity">AGUARDANDO</strong>
+            </div>
+
+            <p id="pergunta-mini-jogo" class="obs-question"></p>
+
+            <div id="opcoes-mini-jogo" class="obs-options"></div>
+
+            <p id="feedback-mini-jogo" class="obs-feedback" aria-live="polite"></p>
+            <p id="progresso-mini-jogo" class="obs-progress"></p>
+
+            <div class="obs-terminal-feed" aria-hidden="true">
+              <p>&gt; calibrando ruído visual...</p>
+              <p>&gt; injetando falso padrão...</p>
+              <p>&gt; aguardando operador atento...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button id="acesso-oculto" class="obs-secret-button" style="display:none;" type="button">
+      Acessar Arquivo Restrito
+    </button>
+
+
+    <section id="codigo-etica" class="section">
+      <h2>CÓDIGO DE CONDUTA</h2>
+      <p>O código interno transforma os princípios públicos em responsabilidades operacionais.</p>
+
+      <h3>1. Autorização</h3>
+      <p>Nenhuma ação técnica contra sistemas reais ocorre sem autorização e escopo verificáveis.</p>
+
+      <h3>2. Proporcionalidade</h3>
+      <p>A demonstração de uma falha deve usar o menor impacto necessário.</p>
+
+      <h3>3. Confidencialidade</h3>
+      <p>Dados, credenciais, relatórios e evidências são acessados apenas por necessidade funcional.</p>
+
+      <h3>4. Prestação de contas</h3>
+      <p>Operações relevantes deixam trilha de auditoria e possuem responsável definido.</p>
+
+      <img src="Imagem/Hackers profissionais.jpeg" alt="Equipe atuando sob protocolos éticos" class="gallery-image">
+    </section>
+
+    <section id="testes-operacionais" class="section">
+      <h2>TESTES OPERACIONAIS</h2>
+      <p>O antigo quiz foi substituído pelo Protocolo Sentinel: uma triagem dinâmica que muda conforme a hora local e conduz o visitante por camadas diferentes.</p>
+      <p>Apenas uma janela temporal possui a chave correta para o núcleo restrito. As demais respostas conduzem a camadas públicas de orientação.</p>
+      <div class="form-actions">
+        <button class="btn" type="button" onclick="document.getElementById('protocolo-sentinel')?.scrollIntoView({ behavior: 'smooth' })">
+          Acessar Protocolo Sentinel
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Cyber-Nexis</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,872 @@
+/* ============================================================
+   🌐 CyberNexis — CSS Revisado, Corrigido, Acessível e Responsivo
+   Desenvolvido especialmente para Jefferson Paulo
+============================================================ */
+
+/* ===============================
+   🎨 VARIÁVEIS GLOBAIS
+=================================*/
+:root{
+  --bg:#000;
+  --panel:#111;
+  --accent:#e11;
+  --accent-2:#0f8;
+  --text:#f33;
+  --muted:#888;
+  --input-bg:#222;
+  --radius:10px;
+
+  --text-high:#fff;
+  --text-medium:#ccc;
+  --text-low:#888;
+}
+
+/* ===============================
+   🎨 TEMAS
+=================================*/
+[data-theme="cyberpunk"]{
+  --accent:#e11;
+  --accent-2:#0f8;
+  --text:#f33;
+}
+
+[data-theme="neon-blue"]{
+  --bg:#040b13;
+  --panel:#071025;
+  --accent:#06f;
+  --accent-2:#3ff;
+  --text:#8fd0ff;
+  --input-bg:#072033;
+}
+
+[data-theme="gray"]{
+  --bg:#0b0b0b;
+  --panel:#111;
+  --accent:#a00;
+  --accent-2:#0a0;
+  --text:#ddd;
+  --muted:#aaa;
+}
+
+/* ===============================
+   📱 FONTE
+=================================*/
+html{
+  font-size:16px;
+}
+@media(max-width:500px){
+  html{ font-size:15px; }
+}
+
+/* ===============================
+   ⚙️ GERAL
+=================================*/
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Segoe UI", monospace;
+}
+
+.app{
+  display:grid;
+  gap:12px;
+  min-height:100vh;
+  padding:8px;
+  grid-template-rows:80px 1fr;
+}
+
+/* ===============================
+   🔺 TOPO
+=================================*/
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  border-radius:8px;
+  align-items:center;
+  background:var(--panel);
+  border:4px solid var(--accent);
+}
+
+.brand h1{
+  margin:0;
+  font-size:1.6rem;
+  color:var(--accent);
+}
+.hint{
+  font-size:.9rem;
+  color:var(--muted);
+}
+
+.stats{
+  display:flex;
+  gap:10px;
+}
+
+.stat{
+  background:var(--accent);
+  padding:6px 10px;
+  border-radius:6px;
+  font-weight:bold;
+  color:#000;
+}
+
+.room-box input{
+  padding:6px;
+  background:var(--input-bg);
+  border-radius:6px;
+  border:2px solid #333;
+  color:var(--text);
+}
+
+.theme-select{
+  padding:6px;
+  background:transparent;
+  color:var(--accent);
+  border:2px solid var(--accent);
+  border-radius:6px;
+}
+
+/* ===============================
+   🖥️ LAYOUT
+=================================*/
+.app main{
+  display:grid;
+  gap:12px;
+  grid-template-columns:1fr 300px;
+}
+
+/* ===============================
+   💬 CHAT
+=================================*/
+.chat-frame{
+  background:var(--panel);
+  border-radius:var(--radius);
+  border:4px solid var(--accent);
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+}
+
+.chat-head{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.chat-title{
+  font-size:1.3rem;
+  color:var(--accent);
+}
+
+.messages{
+  flex:1;
+  overflow-y:auto;
+  border-radius:8px;
+  background:#000;
+  padding:12px;
+  border:1px solid #222;
+}
+
+/* ===============================
+   💬 MENSAGENS
+=================================*/
+.msg{
+  display:flex;
+  gap:10px;
+  margin-bottom:12px;
+  transform:translateY(10px);
+  opacity:0;
+  animation:msgIn .25s forwards;
+}
+
+@keyframes msgIn{
+  to{ opacity:1; transform:none; }
+}
+
+.avatar{
+  width:50px;
+  height:50px;
+  border-radius:8px;
+  overflow:hidden;
+  border:3px solid var(--accent);
+}
+
+.bubble{
+  max-width:75%;
+  padding:8px 12px;
+  background:#111;
+  border-radius:8px;
+}
+
+.meta{
+  font-weight:bold;
+  color:var(--text-high);
+  margin-bottom:4px;
+}
+
+.text{
+  color:var(--text-medium);
+}
+
+/* BOT */
+.bot .avatar{ border-color:var(--accent-2); }
+.bot .bubble{ border:1px solid var(--accent-2); color:var(--accent-2); }
+
+/* SECRETA */
+.secret .bubble{ border-style:dashed; }
+
+/* ===============================
+   ✏️ INPUT (renomeado para evitar conflito)
+=================================*/
+.msg-input{
+  flex:1;
+  padding:10px;
+  font-size:1rem;
+  border-radius:6px;
+  background:var(--input-bg);
+  border:2px solid var(--accent);
+  color:var(--text-high);
+}
+
+/* Composer */
+.composer{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+  padding-top:10px;
+  border-top:3px solid var(--accent);
+  align-items:center;
+}
+
+.codinome{
+  width:150px;
+  padding:8px;
+  background:var(--input-bg);
+  border-radius:6px;
+  color:var(--text);
+  border:none;
+}
+
+.attach{
+  width:48px;
+  height:48px;
+  border-radius:8px;
+  border:2px solid var(--accent);
+  font-size:22px;
+  display:flex;
+  cursor:pointer;
+  user-select:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.btn{
+  padding:8px 10px;
+  background:var(--accent);
+  color:#000;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.secret-btn{
+  background:transparent;
+  color:var(--accent);
+  border:2px solid var(--accent);
+}
+
+.send-box{
+  display:flex;
+  gap:6px;
+  flex-direction:column;
+}
+
+/* ===============================
+   👥 PARTICIPANTES
+=================================*/
+.panel-right{
+  background:var(--panel);
+  border-radius:var(--radius);
+  border:4px solid var(--accent);
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+}
+
+.participants{
+  flex:1;
+  overflow-y:auto;
+}
+
+.participant{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+.participant img{
+  width:40px;
+  height:40px;
+  border-radius:6px;
+}
+
+/* ===============================
+   📱 RESPONSIVO
+=================================*/
+@media(max-width:900px){
+
+  .app main{ grid-template-columns:1fr; }
+
+  .panel-right{
+    order:3;
+    margin-top:12px;
+  }
+
+  .messages{
+    height:65vh;
+    margin-bottom:90px;
+  }
+
+  .composer{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:999;
+    padding:12px;
+    background:var(--panel);
+    border-radius:0;
+  }
+
+  .avatar{
+    width:40px;
+    height:40px;
+  }
+
+  .bubble{
+    max-width:80vw;
+  }
+}
+
+/* ===============================
+   ♿ ACESSIBILIDADE
+=================================*/
+:focus{
+  outline:2px solid var(--accent-2);
+  outline-offset:3px;
+}
+
+@media(prefers-contrast:more){
+  :root{
+    --accent:#ff0000;
+    --accent-2:#00ff00;
+    --text:#fff;
+    --muted:#aaa;
+  }
+  .bubble{
+    border:2px solid var(--accent) !important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  *{
+    animation:none!important;
+    transition:none!important;
+  }
+}
+
+/* ============================================================
+   🜂 CYBER-NEXIS — AJUSTES PREMIUM PARA INDEX.HTML
+   Cole este bloco no FINAL do Styles.css
+============================================================ */
+
+/* ===============================
+   BASE DA PÁGINA PRINCIPAL
+=================================*/
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(225, 17, 17, 0.16), transparent 32%),
+    linear-gradient(180deg, #020202 0%, #050000 50%, #000 100%);
+  color: var(--text-medium);
+  font-family: "Segoe UI", "Courier New", monospace;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 38px 38px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent 80%);
+}
+
+#particles-js {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.container {
+  width: min(1180px, calc(100% - 36px));
+  margin-inline: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===============================
+   HEADER / TOPO
+=================================*/
+
+header {
+  position: relative;
+  z-index: 5;
+  padding: 28px 0 18px;
+  border-bottom: 1px solid rgba(225, 17, 17, 0.14);
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.88), rgba(0,0,0,0.35), transparent);
+}
+
+.header-inner {
+  display: grid;
+  grid-template-columns: minmax(280px, 520px) 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.logo-cyber {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-cyber img {
+  width: 100%;
+  max-width: 520px;
+  max-height: 420px;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 20px rgba(225, 17, 17, 0.35))
+    drop-shadow(0 0 60px rgba(225, 17, 17, 0.12));
+}
+
+/* ===============================
+   MENU
+=================================*/
+
+.nav-links-container {
+  display: grid;
+  gap: 14px;
+  align-content: center;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.nav-links a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid rgba(225, 17, 17, 0.42);
+  border-radius: 999px;
+  color: #ff344f;
+  background: rgba(225, 17, 17, 0.055);
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  box-shadow: inset 0 0 18px rgba(225, 17, 17, 0.05);
+  transition: 0.25s ease;
+}
+
+.nav-links a:hover {
+  transform: translateY(-2px);
+  color: #fff;
+  background: rgba(225, 17, 17, 0.22);
+  box-shadow:
+    0 0 22px rgba(225, 17, 17, 0.35),
+    inset 0 0 18px rgba(255, 255, 255, 0.05);
+}
+
+.lang-select {
+  width: 100%;
+  max-width: 360px;
+  justify-self: end;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(225, 17, 17, 0.35);
+  background: rgba(10, 10, 10, 0.9);
+  color: #ff344f;
+  font-weight: 800;
+  letter-spacing: 2px;
+  outline: none;
+}
+
+#logout {
+  justify-self: end;
+  width: fit-content;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.045);
+  color: #eee;
+  cursor: pointer;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transition: 0.25s ease;
+}
+
+#logout:hover {
+  color: #ff344f;
+  border-color: rgba(225, 17, 17, 0.65);
+  box-shadow: 0 0 18px rgba(225, 17, 17, 0.25);
+}
+
+/* ===============================
+   SEÇÕES / CARDS
+=================================*/
+
+main.container {
+  padding-block: 28px 54px;
+}
+
+.section {
+  position: relative;
+  margin: 30px 0;
+  padding: clamp(24px, 4vw, 44px);
+  border-radius: 22px;
+  border: 1px solid rgba(225, 17, 17, 0.18);
+  background:
+    radial-gradient(circle at top left, rgba(225, 17, 17, 0.12), transparent 34%),
+    linear-gradient(135deg, rgba(18, 0, 0, 0.88), rgba(5, 5, 5, 0.96));
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.025),
+    0 22px 60px rgba(0,0,0,0.65),
+    inset 0 0 36px rgba(225, 17, 17, 0.025);
+  overflow: hidden;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(90deg, transparent, rgba(225, 17, 17, 0.12), transparent);
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: 0.45s ease;
+}
+
+.section:hover::before {
+  transform: translateX(100%);
+  opacity: 1;
+}
+
+.section h2 {
+  margin: 0 0 14px;
+  color: #ff263f;
+  font-size: clamp(1.35rem, 2.4vw, 2.2rem);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 12px rgba(225, 17, 17, 0.55),
+    0 0 30px rgba(225, 17, 17, 0.18);
+}
+
+.section h3 {
+  margin-top: 24px;
+  color: #ff344f;
+  letter-spacing: 1px;
+}
+
+.section p {
+  max-width: 980px;
+  color: rgba(255,255,255,0.74);
+  font-size: clamp(0.98rem, 1.25vw, 1.08rem);
+}
+
+/* ===============================
+   IMAGENS
+=================================*/
+
+.gallery-image,
+.image-gallery img {
+  display: block;
+  width: 100%;
+  max-height: 620px;
+  object-fit: cover;
+  object-position: center;
+  margin-top: 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(225, 17, 17, 0.18);
+  background: #050505;
+  box-shadow:
+    0 0 26px rgba(225, 17, 17, 0.13),
+    0 20px 45px rgba(0,0,0,0.55);
+}
+
+/* ===============================
+   BOTÕES GERAIS
+=================================*/
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn,
+button.btn {
+  min-height: 44px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background:
+    linear-gradient(135deg, #ff1744, #b00022);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-decoration: none;
+  box-shadow:
+    0 0 20px rgba(225, 17, 17, 0.32),
+    inset 0 0 12px rgba(255,255,255,0.08);
+  transition: 0.25s ease;
+}
+
+.btn:hover,
+button.btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 28px rgba(225, 17, 17, 0.52),
+    inset 0 0 12px rgba(255,255,255,0.12);
+}
+
+/* ===============================
+   PROTOCOLO SENTINEL
+=================================*/
+
+.sentinel-game,
+.observation-lab {
+  border-color: rgba(255, 0, 60, 0.28);
+  background:
+    radial-gradient(circle at top, rgba(255, 0, 60, 0.16), transparent 38%),
+    linear-gradient(180deg, rgba(15, 0, 4, 0.95), rgba(0,0,0,0.96));
+}
+
+.sentinel-panel,
+.obs-console-panel,
+.obs-visual-panel {
+  border-radius: 18px;
+  border: 1px solid rgba(255, 0, 60, 0.22);
+  background: rgba(0,0,0,0.58);
+  box-shadow:
+    inset 0 0 26px rgba(255, 0, 60, 0.06),
+    0 0 24px rgba(255, 0, 60, 0.08);
+}
+
+.sentinel-question {
+  color: #ff3858;
+  text-shadow: 0 0 18px rgba(255, 0, 60, 0.55);
+}
+
+.sentinel-input-wrap input,
+#sentinel-answer {
+  width: 100%;
+  min-height: 44px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 0, 60, 0.28);
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+}
+
+#sentinel-button {
+  min-height: 46px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(135deg, #ff1744, #8a0019);
+  color: white;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+/* ===============================
+   TESTE DE OBSERVAÇÃO
+=================================*/
+
+.obs-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 22px;
+  align-items: stretch;
+}
+
+.obs-image-shell img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+
+.obs-options {
+  display: grid;
+  gap: 10px;
+}
+
+.obs-options button {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 0, 60, 0.22);
+  background: rgba(255, 0, 60, 0.055);
+  color: #fff;
+  text-align: left;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.obs-options button:hover {
+  background: rgba(255, 0, 60, 0.18);
+  box-shadow: 0 0 16px rgba(255, 0, 60, 0.22);
+}
+
+/* ===============================
+   RODAPÉ
+=================================*/
+
+footer {
+  position: relative;
+  z-index: 1;
+  padding: 28px 18px;
+  text-align: center;
+  color: rgba(255,255,255,0.48);
+  border-top: 1px solid rgba(225, 17, 17, 0.14);
+  background: rgba(0,0,0,0.55);
+}
+
+/* ===============================
+   RESPONSIVO
+=================================*/
+
+@media (max-width: 900px) {
+  .header-inner {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .logo-cyber img {
+    max-width: 430px;
+    max-height: 320px;
+  }
+
+  .nav-links {
+    justify-content: center;
+  }
+
+  .lang-select,
+  #logout {
+    justify-self: center;
+  }
+
+  .obs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    margin: 22px 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .container {
+    width: min(100% - 24px, 1180px);
+  }
+
+  header {
+    padding-top: 18px;
+  }
+
+  .logo-cyber img {
+    max-height: 270px;
+  }
+
+  .nav-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .nav-links a {
+    font-size: 0.74rem;
+    padding: 9px 10px;
+    min-height: 42px;
+  }
+
+  .section {
+    border-radius: 16px;
+    padding: 20px;
+  }
+
+  .section p {
+    font-size: 0.98rem;
+  }
+
+  .gallery-image,
+  .image-gallery img {
+    max-height: 420px;
+    border-radius: 12px;
+  }
+
+  .sentinel-footer {
+    display: grid;
+    gap: 8px;
+  }
+}
+
+/* ===============================
+   ACESSIBILIDADE EXTRA
+=================================*/
+
+a,
+button,
+select,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid #00ff88;
+  outline-offset: 4px;
+}

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cyber-Nexis — Recrutamento</title>
+  <meta
+    name="description"
+    content="Formulário de candidatura para recrutamento da Cyber-Nexis."
+  >
+  <meta name="theme-color" content="#000000">
+
+  <link rel="stylesheet" href="Styles.css">
+
+  <style>
+    .recruit-page {
+      min-height: 100vh;
+    }
+
+    .recruit-shell {
+      width: min(1040px, calc(100% - 32px));
+      margin-inline: auto;
+      padding: 24px 0 58px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .recruit-header {
+      display: grid;
+      justify-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .recruit-logo {
+      width: min(260px, 72vw);
+      filter:
+        drop-shadow(0 0 14px rgba(24, 184, 255, 0.18))
+        drop-shadow(0 0 34px rgba(24, 184, 255, 0.07));
+    }
+
+    .recruit-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      width: 100%;
+    }
+
+    .recruit-nav a {
+      min-height: 42px;
+      padding: 8px 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(24, 184, 255, 0.32);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.62);
+      color: #8edfff;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+    }
+
+    .recruit-nav a:hover,
+    .recruit-nav a:focus-visible {
+      color: #eef9ff;
+      border-color: rgba(83, 216, 255, 0.72);
+      background: rgba(24, 184, 255, 0.09);
+      transform: translateY(-1px);
+    }
+
+    .recruit-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .recruit-info,
+    .recruit-form-card {
+      min-width: 0;
+      padding: clamp(20px, 4vw, 32px);
+      border: 1px solid rgba(24, 184, 255, 0.26);
+      border-radius: 16px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(0, 0, 0, 0.95),
+          rgba(0, 0, 0, 0.89)
+        );
+      box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.56),
+        inset 0 0 24px rgba(24, 184, 255, 0.012);
+    }
+
+    .recruit-kicker {
+      display: inline-block;
+      margin-bottom: 8px;
+      color: rgba(83, 216, 255, 0.72);
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
+    }
+
+    .recruit-title {
+      margin: 0 0 8px;
+      color: #32bfff;
+      font-size: clamp(1.5rem, 4vw, 2.35rem);
+      line-height: 1.18;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      text-shadow: 0 0 16px rgba(24, 184, 255, 0.16);
+    }
+
+    .recruit-brand {
+      margin: 0 0 18px;
+      color: #7bdcff;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .recruit-image {
+      width: 100%;
+      height: clamp(230px, 30vw, 380px);
+      object-fit: cover;
+      object-position: center;
+      margin: 18px 0;
+      border: 1px solid rgba(24, 184, 255, 0.18);
+      border-radius: 12px;
+      background: #000;
+      box-shadow:
+        0 16px 38px rgba(0, 0, 0, 0.48),
+        0 0 16px rgba(24, 184, 255, 0.05);
+    }
+
+    .recruit-info p {
+      margin: 0;
+      color: #b7c9d4;
+      line-height: 1.72;
+    }
+
+    .recruit-warning {
+      margin-top: 18px !important;
+      padding: 14px 16px;
+      border-left: 3px solid rgba(83, 216, 255, 0.62);
+      background: rgba(24, 184, 255, 0.035);
+      color: #8ea8b6 !important;
+      font-size: 0.88rem;
+    }
+
+    .recruit-form-title {
+      margin: 0 0 20px;
+      color: #5bd4ff;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .recruit-form {
+      display: grid;
+      gap: 15px;
+    }
+
+    .recruit-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .recruit-field label {
+      color: #7fcfee;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+    }
+
+    .recruit-field input,
+    .recruit-field select,
+    .recruit-field textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 13px;
+      border: 1px solid rgba(24, 184, 255, 0.25);
+      border-radius: 10px;
+      background: rgba(0, 0, 0, 0.82);
+      color: #eef9ff;
+      outline: none;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .recruit-field textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .recruit-field input:focus,
+    .recruit-field select:focus,
+    .recruit-field textarea:focus {
+      border-color: rgba(83, 216, 255, 0.72);
+      box-shadow: 0 0 0 3px rgba(24, 184, 255, 0.08);
+    }
+
+    .recruit-submit {
+      min-height: 48px;
+      margin-top: 2px;
+      border: 1px solid rgba(83, 216, 255, 0.52);
+      border-radius: 10px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(18, 141, 197, 0.95),
+          rgba(7, 82, 119, 0.96)
+        );
+      color: #effbff;
+      cursor: pointer;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      box-shadow: 0 0 18px rgba(24, 184, 255, 0.14);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+    }
+
+    .recruit-submit:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 0 26px rgba(24, 184, 255, 0.22);
+    }
+
+    .recruit-submit:disabled {
+      cursor: wait;
+      opacity: 0.60;
+    }
+
+    .recruit-feedback {
+      min-height: 24px;
+      margin: 2px 0 0;
+      color: #8ba5b4;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .recruit-feedback.ok {
+      color: #5fe6bc;
+    }
+
+    .recruit-feedback.error {
+      color: #ff6f86;
+    }
+
+    .honeypot {
+      position: absolute !important;
+      left: -10000px !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    .recruit-footer {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(24, 184, 255, 0.14);
+      color: #6f8794;
+      font-size: 0.82rem;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .recruit-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .recruit-info,
+      .recruit-form-card {
+        padding: 22px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .recruit-shell {
+        width: min(100% - 20px, 1040px);
+        padding-top: 16px;
+      }
+
+      .recruit-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .recruit-nav a {
+        width: 100%;
+        padding-inline: 8px;
+        font-size: 0.71rem;
+      }
+
+      .recruit-image {
+        height: min(58vw, 320px);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .recruit-info,
+      .recruit-form-card {
+        padding: 17px;
+        border-radius: 13px;
+      }
+
+      .recruit-title {
+        font-size: 1.4rem;
+      }
+
+      .recruit-image {
+        height: 220px;
+      }
+    }
+
+    @media (max-width: 350px) {
+      .recruit-nav {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+  <script>
+    emailjs.init("_wMmR0Rqn5VoasHqR");
+
+    async function enviarEmail(event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const button = form.querySelector(".recruit-submit");
+      const feedback = document.getElementById("recruit-feedback");
+      const honeypot = form.elements.website;
+
+      if (honeypot && honeypot.value.trim()) {
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = "Enviando...";
+      feedback.textContent = "Transmitindo candidatura...";
+      feedback.className = "recruit-feedback";
+
+      try {
+        await emailjs.sendForm(
+          "service_xwo7dfq",
+          "template_ww1gnr8",
+          form
+        );
+
+        feedback.textContent =
+          "Candidatura enviada com sucesso. Aguarde a análise.";
+        feedback.className = "recruit-feedback ok";
+
+        form.reset();
+      } catch (error) {
+        console.error("Erro ao enviar candidatura:", error);
+
+        feedback.textContent =
+          "Não foi possível enviar a candidatura. Tente novamente.";
+        feedback.className = "recruit-feedback error";
+      } finally {
+        button.disabled = false;
+        button.textContent = "Enviar Candidatura";
+      }
+    }
+  </script>
+</head>
+
+<body class="recruit-page">
+
+  <div id="particles-js" aria-hidden="true"></div>
+
+  <main class="recruit-shell">
+
+    <header class="recruit-header">
+
+      <img
+        src="Imagem/Logotipo.png"
+        alt="Logotipo Cyber-Nexis"
+        class="recruit-logo"
+      >
+
+      <nav class="recruit-nav" aria-label="Navegação principal">
+        <a href="Index.html">Página Inicial</a>
+        <a href="recrutamento.html" aria-current="page">Recrutamento</a>
+        <a href="quiz.html">Teste Quiz</a>
+        <a href="contato.html">Contatos</a>
+        <a href="Regras.html">Regras</a>
+      </nav>
+
+    </header>
+
+    <div class="recruit-grid">
+
+      <section class="recruit-info">
+
+        <span class="recruit-kicker">
+          Cyber-Nexis // Processo Seletivo
+        </span>
+
+        <h1 class="recruit-title">
+          Recrutamento Confidencial
+        </h1>
+
+        <p class="recruit-brand">
+          Cyber-Nexis
+        </p>
+
+        <img
+          src="Imagem/Imagem089.jpg"
+          alt="Recrutamento Cyber-Nexis"
+          class="recruit-image"
+          loading="lazy"
+        >
+
+        <p>
+          O ingresso na Cyber-Nexis é restrito a indivíduos com habilidades
+          técnicas, estratégicas ou analíticas excepcionais.
+        </p>
+
+        <p class="recruit-warning">
+          Os dados enviados serão utilizados para análise da candidatura.
+          Evite enviar senhas, documentos pessoais ou outras informações
+          altamente sensíveis.
+        </p>
+
+      </section>
+
+      <section class="recruit-form-card">
+
+        <h2 class="recruit-form-title">
+          Formulário de Candidatura
+        </h2>
+
+        <form
+          id="form-recrutamento"
+          class="recruit-form"
+          onsubmit="enviarEmail(event)"
+        >
+
+          <div class="recruit-field">
+            <label for="codinome">Codinome</label>
+            <input
+              type="text"
+              name="codinome"
+              id="codinome"
+              maxlength="60"
+              autocomplete="nickname"
+              required
+            >
+          </div>
+
+          <div class="recruit-field">
+            <label for="especialidade">Especialidade</label>
+
+            <select
+              name="especialidade"
+              id="especialidade"
+              required
+            >
+              <option value="">Selecione</option>
+              <option value="inteligencia">Inteligência Cibernética</option>
+              <option value="seguranca">Segurança da Informação</option>
+              <option value="hacker">Hacker Avançado</option>
+              <option value="engenharia">Engenharia Social</option>
+              <option value="analise">Análise de Dados</option>
+            </select>
+          </div>
+
+          <div class="recruit-field">
+            <label for="experiencia">Experiência anterior</label>
+
+            <textarea
+              name="experiencia"
+              id="experiencia"
+              rows="5"
+              maxlength="1600"
+              required
+            ></textarea>
+          </div>
+
+          <div class="recruit-field">
+            <label for="motivacao">Motivação</label>
+
+            <textarea
+              name="motivacao"
+              id="motivacao"
+              rows="5"
+              maxlength="1600"
+              required
+            ></textarea>
+          </div>
+
+          <div class="recruit-field">
+            <label for="contato">Contato</label>
+
+            <input
+              type="text"
+              name="contato"
+              id="contato"
+              maxlength="120"
+              autocomplete="email"
+              required
+            >
+          </div>
+
+          <div class="honeypot" aria-hidden="true">
+            <label for="website">Website</label>
+            <input
+              type="text"
+              name="website"
+              id="website"
+              tabindex="-1"
+              autocomplete="off"
+            >
+          </div>
+
+          <button
+            class="recruit-submit"
+            type="submit"
+          >
+            Enviar Candidatura
+          </button>
+
+          <p
+            id="recruit-feedback"
+            class="recruit-feedback"
+            aria-live="polite"
+          ></p>
+
+        </form>
+
+        <p class="recruit-footer">
+          Apenas candidatos aprovados receberão retorno.<br>
+          Cyber-Nexis © 2026 — Segurança, Discrição e Inteligência
+        </p>
+
+      </section>
+
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script src="particles-config.js"></script>
+
+</body>
+</html>
