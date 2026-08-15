@@ -10,7 +10,7 @@
   >
 
   <title>
-    Acesso Restrito • Cyber-Nexis V9.2.1
+    Diagnóstico de Login • Cyber-Nexis V9.2.1
   </title>
 
   <meta
@@ -959,6 +959,17 @@
 
     }
 
+  
+    /* DIAGNÓSTICO TEMPORÁRIO */
+    .diagnostic-button{color:#ffd17b;background:rgba(255,209,123,.055);border-color:rgba(255,209,123,.28)}
+    .diagnostic-panel{display:none;margin-top:18px;padding:14px;border:1px solid rgba(83,216,255,.20);border-radius:12px;background:rgba(0,0,0,.68);text-align:left}
+    .diagnostic-panel.is-visible{display:block}
+    .diagnostic-panel h2{margin:0 0 10px;color:var(--accent-2);font-size:.9rem;letter-spacing:1.4px;text-transform:uppercase}
+    .diagnostic-row{display:grid;grid-template-columns:minmax(110px,145px) 1fr;gap:8px;padding:6px 0;border-bottom:1px solid rgba(83,216,255,.07);font-size:.76rem}
+    .diagnostic-row:last-child{border-bottom:0}.diagnostic-row span:first-child{color:var(--text-low)}
+    .diagnostic-value{color:var(--text-medium);overflow-wrap:anywhere}.diagnostic-value.ok{color:var(--ok)}.diagnostic-value.bad{color:var(--danger)}.diagnostic-value.warn{color:#ffd17b}
+    @media(max-width:500px){.diagnostic-row{grid-template-columns:1fr;gap:2px}}
+
   </style>
 
 </head>
@@ -1105,6 +1116,14 @@
             Reenviar verificação
           </button>
 
+          <button
+            id="btnDiagnostic"
+            class="diagnostic-button"
+            type="button"
+          >
+            🔬 Diagnosticar autenticação
+          </button>
+
 
           <a
             class="secondary-link"
@@ -1126,6 +1145,19 @@
 
 
       </form>
+
+      <section id="diagnosticPanel" class="diagnostic-panel" aria-live="polite">
+        <h2>Diagnóstico Firebase</h2>
+        <div class="diagnostic-row"><span>AUTH</span><strong id="diagAuth" class="diagnostic-value">aguardando teste</strong></div>
+        <div class="diagnostic-row"><span>UID</span><strong id="diagUid" class="diagnostic-value">—</strong></div>
+        <div class="diagnostic-row"><span>Email verificado</span><strong id="diagVerified" class="diagnostic-value">—</strong></div>
+        <div class="diagnostic-row"><span>Perfil Firestore</span><strong id="diagProfile" class="diagnostic-value">—</strong></div>
+        <div class="diagnostic-row"><span>Bloqueado</span><strong id="diagBlocked" class="diagnostic-value">—</strong></div>
+        <div class="diagnostic-row"><span>Aprovado</span><strong id="diagApproved" class="diagnostic-value">—</strong></div>
+        <div class="diagnostic-row"><span>Role</span><strong id="diagRole" class="diagnostic-value">—</strong></div>
+        <div class="diagnostic-row"><span>Divisão</span><strong id="diagDivision" class="diagnostic-value">—</strong></div>
+        <div class="diagnostic-row"><span>Erro técnico</span><strong id="diagError" class="diagnostic-value">nenhum</strong></div>
+      </section>
 
 
       <!-- ====================================================
@@ -1167,6 +1199,10 @@
       login,
       resendVerification
     } from "./site.js";
+
+    import { auth, authReady, db } from "./firebase-config.js";
+    import { signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 
 
     /* ========================================================
@@ -1221,6 +1257,21 @@
       document.querySelector(
         ".toggle-password"
       );
+
+
+    const btnDiagnostic = document.getElementById("btnDiagnostic");
+    const diagnosticPanel = document.getElementById("diagnosticPanel");
+    const diag = {
+      auth: document.getElementById("diagAuth"),
+      uid: document.getElementById("diagUid"),
+      verified: document.getElementById("diagVerified"),
+      profile: document.getElementById("diagProfile"),
+      blocked: document.getElementById("diagBlocked"),
+      approved: document.getElementById("diagApproved"),
+      role: document.getElementById("diagRole"),
+      division: document.getElementById("diagDivision"),
+      error: document.getElementById("diagError")
+    };
 
 
     /* ========================================================
@@ -1676,7 +1727,7 @@
     );
 
 
-    /* ========================================================
+    /* ========================================================\n       DIAGNÓSTICO TEMPORÁRIO FIREBASE\n    ======================================================== */\n    function setDiag(element,value,state=""){element.textContent=String(value??"—");element.classList.remove("ok","bad","warn");if(state)element.classList.add(state);}\n    function resetDiagnostic(){setDiag(diag.auth,"executando...","warn");setDiag(diag.uid,"—");setDiag(diag.verified,"—");setDiag(diag.profile,"—");setDiag(diag.blocked,"—");setDiag(diag.approved,"—");setDiag(diag.role,"—");setDiag(diag.division,"—");setDiag(diag.error,"nenhum");}\n    btnDiagnostic.addEventListener("click",async()=>{\n      const email=emailInput.value.trim(); const password=senhaInput.value; diagnosticPanel.classList.add("is-visible"); resetDiagnostic();\n      if(!email||!password){setDiag(diag.auth,"NÃO TESTADO","bad");setDiag(diag.error,"Informe e-mail e senha.","bad");return;}\n      btnDiagnostic.disabled=true;btnDiagnostic.textContent="🔬 Diagnosticando...";\n      try{\n        await authReady;\n        const credential=await signInWithEmailAndPassword(auth,email,password);\n        const user=credential.user; await user.reload();\n        setDiag(diag.auth,"OK","ok"); setDiag(diag.uid,user.uid,"ok"); setDiag(diag.verified,user.emailVerified?"SIM":"NÃO",user.emailVerified?"ok":"bad");\n        try{\n          const profileSnap=await getDoc(doc(db,"users",user.uid));\n          if(profileSnap.exists()){const profile=profileSnap.data();setDiag(diag.profile,"ENCONTRADO","ok");setDiag(diag.blocked,profile.bloqueado===true?"SIM":"NÃO",profile.bloqueado===true?"bad":"ok");setDiag(diag.approved,profile.aprovado===true?"SIM":"NÃO",profile.aprovado===true?"ok":"warn");setDiag(diag.role,profile.role||"não definido","ok");setDiag(diag.division,profile.divisao||"não definida","ok");}\n          else{setDiag(diag.profile,"NÃO ENCONTRADO","bad");setDiag(diag.error,"Authentication existe, mas users/{uid} não existe.","bad");}\n        }catch(firestoreError){console.error("[DIAGNÓSTICO] Firestore:",firestoreError);setDiag(diag.profile,"ERRO DE LEITURA","bad");setDiag(diag.error,`${firestoreError?.code||"firestore/error"}: ${firestoreError?.message||firestoreError}`,"bad");}\n      }catch(error){console.error("[DIAGNÓSTICO] Auth:",error);setDiag(diag.auth,"FALHOU","bad");setDiag(diag.error,`${error?.code||"auth/error"}: ${error?.message||error}`,"bad");}\n      finally{try{await signOut(auth);}catch{} btnDiagnostic.disabled=false;btnDiagnostic.textContent="🔬 Diagnosticar autenticação";}\n    });\n\n    /* ========================================================
        USUÁRIO JÁ AUTENTICADO
     ======================================================== */
 
