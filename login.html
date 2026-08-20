@@ -10,18 +10,13 @@
   >
 
   <title>
-    Acesso Restrito • Cyber-Nexis V9.2.1
+    Acesso Restrito • Cyber-Nexis V9.2.2
   </title>
 
   <meta
     name="description"
-    content="Gateway de autenticação da Cyber-Nexis."
+    content="Gateway de autenticação e diagnóstico da Cyber-Nexis."
   >
-
-
-  <!-- ========================================================
-       PARTICLES.JS
-  ========================================================= -->
 
   <script
     src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
@@ -33,208 +28,97 @@
     defer
   ></script>
 
-
   <style>
-
-    /* ========================================================
-       CYBER-NEXIS LOGIN V9.2.1
-    ======================================================== */
 
     :root {
       --bg: #000;
+      --panel: rgba(0, 8, 14, .94);
+      --panel-2: rgba(0, 2, 5, .98);
 
-      --panel:
-        rgba(
-          0,
-          8,
-          14,
-          .92
-        );
+      --accent: #18b8ff;
+      --accent-2: #53d8ff;
 
-      --panel-2:
-        rgba(
-          0,
-          2,
-          5,
-          .97
-        );
+      --text-high: #eef9ff;
+      --text-medium: #adc5d2;
+      --text-low: #718b99;
 
-      --accent:
-        #18b8ff;
+      --ok: #5fe6bc;
+      --danger: #ff6f86;
+      --warning: #ffd166;
 
-      --accent-2:
-        #53d8ff;
-
-      --accent-dark:
-        #075277;
-
-      --text-high:
-        #eef9ff;
-
-      --text-medium:
-        #adc5d2;
-
-      --text-low:
-        #718b99;
-
-      --ok:
-        #5fe6bc;
-
-      --danger:
-        #ff6f86;
-
-      --radius:
-        20px;
+      --radius: 20px;
     }
-
-
-    /* ========================================================
-       RESET
-    ======================================================== */
 
     * {
-      box-sizing:
-        border-box;
+      box-sizing: border-box;
     }
-
 
     html {
-      min-height:
-        100%;
+      min-height: 100%;
     }
 
-
     body {
-      margin:
-        0;
+      margin: 0;
+      min-height: 100vh;
 
-      min-height:
-        100vh;
+      display: grid;
+      place-items: center;
 
-      display:
-        grid;
+      padding: 24px;
 
-      place-items:
-        center;
-
-      padding:
-        24px;
-
-      color:
-        var(
-          --text-high
-        );
-
-      background:
-        #000;
+      color: var(--text-high);
+      background: #000;
 
       font-family:
         "Segoe UI",
         "Courier New",
         monospace;
 
-      overflow-x:
-        hidden;
+      overflow-x: hidden;
     }
 
-
-    /* ========================================================
-       GRADE DE FUNDO
-    ======================================================== */
-
     body::before {
-      content:
-        "";
+      content: "";
 
-      position:
-        fixed;
+      position: fixed;
+      inset: 0;
 
-      inset:
-        0;
-
-      pointer-events:
-        none;
+      pointer-events: none;
 
       background:
         linear-gradient(
-          rgba(
-            50,
-            196,
-            255,
-            .015
-          )
-          1px,
-          transparent
-          1px
+          rgba(50, 196, 255, .015) 1px,
+          transparent 1px
         ),
-
         linear-gradient(
           90deg,
-          rgba(
-            50,
-            196,
-            255,
-            .015
-          )
-          1px,
-          transparent
-          1px
+          rgba(50, 196, 255, .015) 1px,
+          transparent 1px
         );
 
-      background-size:
-        42px
-        42px;
+      background-size: 42px 42px;
 
-      z-index:
-        0;
+      z-index: 0;
     }
-
-
-    /* ========================================================
-       PARTÍCULAS
-    ======================================================== */
 
     #particles-js {
-      position:
-        fixed;
+      position: fixed;
+      inset: 0;
 
-      inset:
-        0;
+      z-index: 0;
 
-      z-index:
-        0;
-
-      pointer-events:
-        none;
+      pointer-events: none;
     }
-
-
-    /* ========================================================
-       CONTAINER
-    ======================================================== */
 
     .auth-shell {
-      position:
-        relative;
+      position: relative;
+      z-index: 2;
 
-      z-index:
-        2;
-
-      width:
-        min(
-          100%,
-          460px
-        );
+      width: min(100%, 500px);
     }
 
-
-    /* ========================================================
-       CARD
-    ======================================================== */
-
     .auth-card {
-      position:
-        relative;
+      position: relative;
 
       padding:
         clamp(
@@ -253,96 +137,41 @@
         );
 
       border-radius:
-        var(
-          --radius
-        );
+        var(--radius);
 
       background:
         linear-gradient(
           145deg,
-          var(
-            --panel
-          ),
-          var(
-            --panel-2
-          )
+          var(--panel),
+          var(--panel-2)
         );
 
       box-shadow:
-        0
-        30px
-        80px
-        rgba(
-          0,
-          0,
-          0,
-          .75
-        ),
+        0 30px 80px rgba(0,0,0,.75),
+        0 0 36px rgba(24,184,255,.10),
+        inset 0 0 32px rgba(24,184,255,.025);
 
-        0
-        0
-        36px
-        rgba(
-          24,
-          184,
-          255,
-          .10
-        ),
-
-        inset
-        0
-        0
-        32px
-        rgba(
-          24,
-          184,
-          255,
-          .025
-        );
-
-      overflow:
-        hidden;
+      overflow: hidden;
     }
 
-
-    /* ========================================================
-       EFEITO DE SCAN
-    ======================================================== */
-
     .auth-card::before {
-      content:
-        "";
+      content: "";
 
-      position:
-        absolute;
+      position: absolute;
+      inset: 0;
 
-      inset:
-        0;
-
-      pointer-events:
-        none;
+      pointer-events: none;
 
       background:
         linear-gradient(
           110deg,
-          transparent
-          20%,
-
-          rgba(
-            83,
-            216,
-            255,
-            .07
-          ),
-
-          transparent
-          60%
+          transparent 20%,
+          rgba(83,216,255,.07),
+          transparent 60%
         );
 
       transform:
-        translateX(
-          -110%
-        );
+        translateX(-110%);
 
       animation:
         scan
@@ -351,30 +180,19 @@
         infinite;
     }
 
-
     @keyframes scan {
 
       0% {
         transform:
-          translateX(
-            -110%
-          );
+          translateX(-110%);
       }
 
       55%,
       100% {
         transform:
-          translateX(
-            110%
-          );
+          translateX(110%);
       }
-
     }
-
-
-    /* ========================================================
-       KICKER
-    ======================================================== */
 
     .auth-kicker {
       display:
@@ -390,9 +208,7 @@
         14px;
 
       color:
-        var(
-          --accent-2
-        );
+        var(--accent-2);
 
       font-size:
         .72rem;
@@ -407,10 +223,8 @@
         uppercase;
     }
 
-
     .auth-kicker::before {
-      content:
-        "";
+      content: "";
 
       width:
         8px;
@@ -422,23 +236,13 @@
         50%;
 
       background:
-        var(
-          --accent
-        );
+        var(--accent);
 
       box-shadow:
-        0
-        0
+        0 0
         16px
-        var(
-          --accent
-        );
+        var(--accent);
     }
-
-
-    /* ========================================================
-       TÍTULO
-    ======================================================== */
 
     h1 {
       margin:
@@ -461,8 +265,7 @@
         uppercase;
 
       text-shadow:
-        0
-        0
+        0 0
         22px
         rgba(
           24,
@@ -472,7 +275,6 @@
         );
     }
 
-
     .subtitle {
       margin:
         14px
@@ -480,18 +282,11 @@
         26px;
 
       color:
-        var(
-          --text-medium
-        );
+        var(--text-medium);
 
       line-height:
         1.7;
     }
-
-
-    /* ========================================================
-       FORM
-    ======================================================== */
 
     form {
       display:
@@ -501,7 +296,6 @@
         14px;
     }
 
-
     label {
       display:
         block;
@@ -510,9 +304,7 @@
         7px;
 
       color:
-        var(
-          --text-low
-        );
+        var(--text-low);
 
       font-size:
         .76rem;
@@ -527,12 +319,10 @@
         uppercase;
     }
 
-
     .input-wrap {
       position:
         relative;
     }
-
 
     input {
       width:
@@ -579,18 +369,13 @@
         ease;
     }
 
-
     input:focus {
       border-color:
-        var(
-          --accent-2
-        );
+        var(--accent-2);
 
       box-shadow:
-        0
-        0
-        0
-        3px
+        0 0
+        0 3px
         rgba(
           24,
           184,
@@ -599,16 +384,10 @@
         );
     }
 
-
-    /* ========================================================
-       SENHA
-    ======================================================== */
-
     .password-field input {
       padding-right:
         54px;
     }
-
 
     .toggle-password {
       position:
@@ -621,9 +400,7 @@
         7px;
 
       transform:
-        translateY(
-          -50%
-        );
+        translateY(-50%);
 
       width:
         38px;
@@ -652,18 +429,11 @@
         );
 
       color:
-        var(
-          --accent-2
-        );
+        var(--accent-2);
 
       cursor:
         pointer;
     }
-
-
-    /* ========================================================
-       AÇÕES
-    ======================================================== */
 
     .actions {
       display:
@@ -675,7 +445,6 @@
       margin-top:
         4px;
     }
-
 
     button,
     .secondary-link {
@@ -726,11 +495,6 @@
         ease;
     }
 
-
-    /* ========================================================
-       BOTÃO PRINCIPAL
-    ======================================================== */
-
     .primary {
       color:
         #effbff;
@@ -743,8 +507,7 @@
         );
 
       box-shadow:
-        0
-        0
+        0 0
         18px
         rgba(
           24,
@@ -754,16 +517,12 @@
         );
     }
 
-
     .primary:hover:not(:disabled) {
       transform:
-        translateY(
-          -1px
-        );
+        translateY(-1px);
 
       box-shadow:
-        0
-        0
+        0 0
         26px
         rgba(
           24,
@@ -772,11 +531,6 @@
           .25
         );
     }
-
-
-    /* ========================================================
-       BOTÕES SECUNDÁRIOS
-    ======================================================== */
 
     .secondary-link,
     .secondary {
@@ -792,18 +546,15 @@
         );
     }
 
-
     .secondary {
       display:
         none;
     }
 
-
     .secondary.is-visible {
       display:
         inline-flex;
     }
-
 
     button:disabled {
       opacity:
@@ -812,11 +563,6 @@
       cursor:
         wait;
     }
-
-
-    /* ========================================================
-       FEEDBACK
-    ======================================================== */
 
     .feedback {
       min-height:
@@ -828,9 +574,7 @@
         0;
 
       color:
-        var(
-          --danger
-        );
+        var(--danger);
 
       font-size:
         .88rem;
@@ -842,18 +586,132 @@
         center;
     }
 
-
     .feedback.ok {
       color:
-        var(
-          --ok
+        var(--ok);
+    }
+
+    /* ========================================================
+       PAINEL DE DIAGNÓSTICO
+    ======================================================== */
+
+    .diagnostic-panel {
+      display:
+        none;
+
+      margin-top:
+        18px;
+
+      padding:
+        16px;
+
+      border:
+        1px solid
+        rgba(
+          24,
+          184,
+          255,
+          .22
+        );
+
+      border-radius:
+        14px;
+
+      background:
+        rgba(
+          0,
+          0,
+          0,
+          .58
         );
     }
 
+    .diagnostic-panel.is-visible {
+      display:
+        block;
+    }
 
-    /* ========================================================
-       NOTA
-    ======================================================== */
+    .diagnostic-panel h2 {
+      margin:
+        0 0 12px;
+
+      color:
+        var(--accent-2);
+
+      font-size:
+        .82rem;
+
+      letter-spacing:
+        1.5px;
+
+      text-transform:
+        uppercase;
+    }
+
+    .diag-row {
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr auto;
+
+      gap:
+        10px;
+
+      padding:
+        8px 0;
+
+      border-bottom:
+        1px solid
+        rgba(
+          24,
+          184,
+          255,
+          .08
+        );
+
+      font-size:
+        .78rem;
+    }
+
+    .diag-row:last-child {
+      border-bottom:
+        0;
+    }
+
+    .diag-row span {
+      color:
+        var(--text-low);
+    }
+
+    .diag-row strong {
+      max-width:
+        240px;
+
+      color:
+        var(--text-high);
+
+      text-align:
+        right;
+
+      overflow-wrap:
+        anywhere;
+    }
+
+    .diag-ok {
+      color:
+        var(--ok) !important;
+    }
+
+    .diag-error {
+      color:
+        var(--danger) !important;
+    }
+
+    .diag-warning {
+      color:
+        var(--warning) !important;
+    }
 
     .system-note {
       margin-top:
@@ -872,9 +730,7 @@
         );
 
       color:
-        var(
-          --text-low
-        );
+        var(--text-low);
 
       font-size:
         .75rem;
@@ -886,34 +742,19 @@
         center;
     }
 
-
     .system-note strong {
       color:
-        var(
-          --accent-2
-        );
+        var(--accent-2);
     }
-
-
-    /* ========================================================
-       FOCO
-    ======================================================== */
 
     :focus-visible {
       outline:
         2px solid
-        var(
-          --accent-2
-        );
+        var(--accent-2);
 
       outline-offset:
         3px;
     }
-
-
-    /* ========================================================
-       CELULAR
-    ======================================================== */
 
     @media (
       max-width:
@@ -925,22 +766,27 @@
           14px;
       }
 
-
       .auth-card {
         padding:
-          24px
-          18px;
+          24px 18px;
 
         border-radius:
           15px;
       }
 
+      .diag-row {
+        grid-template-columns:
+          1fr;
+      }
+
+      .diag-row strong {
+        max-width:
+          none;
+
+        text-align:
+          left;
+      }
     }
-
-
-    /* ========================================================
-       ACESSIBILIDADE
-    ======================================================== */
 
     @media (
       prefers-reduced-motion:
@@ -956,29 +802,18 @@
         transition:
           none !important;
       }
-
     }
 
   </style>
 
 </head>
 
-
 <body>
-
-  <!-- ========================================================
-       PARTÍCULAS
-  ========================================================= -->
 
   <div
     id="particles-js"
     aria-hidden="true"
   ></div>
-
-
-  <!-- ========================================================
-       LOGIN
-  ========================================================= -->
 
   <main class="auth-shell">
 
@@ -988,45 +823,28 @@
     >
 
       <span class="auth-kicker">
-        Cyber-Nexis // Auth Gateway V9.2.1
+        Cyber-Nexis // Auth Gateway V9.2.2
       </span>
-
 
       <h1 id="login-title">
         Acesso Restrito
       </h1>
 
-
       <p class="subtitle">
-
-        Autentique sua identidade.
-
-        O acesso só é liberado após
-        verificação do e-mail,
-        existência do perfil no Firestore
-        e checagem de bloqueio.
-
+        Autenticação Firebase com diagnóstico de identidade,
+        verificação de e-mail e perfil Firestore.
       </p>
-
-
-      <!-- ====================================================
-           FORMULÁRIO
-      ===================================================== -->
 
       <form
         id="loginForm"
         autocomplete="on"
       >
 
-
-        <!-- EMAIL -->
-
         <div>
 
           <label for="email">
             Email operacional
           </label>
-
 
           <div class="input-wrap">
 
@@ -1043,15 +861,11 @@
 
         </div>
 
-
-        <!-- SENHA -->
-
         <div>
 
           <label for="senha">
             Senha
           </label>
-
 
           <div
             class="
@@ -1070,7 +884,6 @@
               required
             >
 
-
             <button
               class="toggle-password"
               type="button"
@@ -1083,9 +896,6 @@
 
         </div>
 
-
-        <!-- AÇÕES -->
-
         <div class="actions">
 
           <button
@@ -1096,7 +906,6 @@
             Entrar
           </button>
 
-
           <button
             id="btnResend"
             class="secondary"
@@ -1104,7 +913,6 @@
           >
             Reenviar verificação
           </button>
-
 
           <a
             class="secondary-link"
@@ -1115,50 +923,107 @@
 
         </div>
 
-
-        <!-- FEEDBACK -->
-
         <p
           id="feedback"
           class="feedback"
           aria-live="polite"
         ></p>
 
-
       </form>
 
-
       <!-- ====================================================
-           NOTA DO SISTEMA
+           DIAGNÓSTICO
       ===================================================== -->
+
+      <section
+        id="diagnosticPanel"
+        class="diagnostic-panel"
+        aria-live="polite"
+      >
+
+        <h2>
+          Scanner de autenticação
+        </h2>
+
+        <div class="diag-row">
+          <span>Authentication</span>
+          <strong id="diagAuth">
+            aguardando
+          </strong>
+        </div>
+
+        <div class="diag-row">
+          <span>Email</span>
+          <strong id="diagEmail">
+            -
+          </strong>
+        </div>
+
+        <div class="diag-row">
+          <span>UID</span>
+          <strong id="diagUid">
+            -
+          </strong>
+        </div>
+
+        <div class="diag-row">
+          <span>Email verificado</span>
+          <strong id="diagVerified">
+            -
+          </strong>
+        </div>
+
+        <div class="diag-row">
+          <span>Perfil Firestore</span>
+          <strong id="diagProfile">
+            -
+          </strong>
+        </div>
+
+        <div class="diag-row">
+          <span>Bloqueado</span>
+          <strong id="diagBlocked">
+            -
+          </strong>
+        </div>
+
+        <div class="diag-row">
+          <span>Aprovado</span>
+          <strong id="diagApproved">
+            -
+          </strong>
+        </div>
+
+        <div class="diag-row">
+          <span>Role</span>
+          <strong id="diagRole">
+            -
+          </strong>
+        </div>
+
+        <div class="diag-row">
+          <span>Patente</span>
+          <strong id="diagRank">
+            -
+          </strong>
+        </div>
+
+      </section>
 
       <p class="system-note">
 
         <strong>
-          Firebase V9.2.1:
+          Modo diagnóstico:
         </strong>
 
-        sessão persistente,
-        e-mail verificado
-        e perfil
-
-        <code>
-          users/{uid}
-        </code>
-
-        obrigatório.
+        este painel apenas lê o estado retornado pelo Firebase.
+        Ele não ignora autenticação e não libera acesso manualmente.
 
       </p>
-
 
     </section>
 
   </main>
-
-
-  <!-- ========================================================
-       JAVASCRIPT
-  ========================================================= -->
 
   <script type="module">
 
@@ -1186,41 +1051,247 @@
         "loginForm"
       );
 
-
     const btnLogin =
       document.getElementById(
         "btnLogin"
       );
-
 
     const btnResend =
       document.getElementById(
         "btnResend"
       );
 
-
     const feedback =
       document.getElementById(
         "feedback"
       );
-
 
     const emailInput =
       document.getElementById(
         "email"
       );
 
-
     const senhaInput =
       document.getElementById(
         "senha"
       );
 
-
     const togglePassword =
       document.querySelector(
         ".toggle-password"
       );
+
+
+    /* ========================================================
+       DIAGNÓSTICO
+    ======================================================== */
+
+    const diagnosticPanel =
+      document.getElementById(
+        "diagnosticPanel"
+      );
+
+    const diagAuth =
+      document.getElementById(
+        "diagAuth"
+      );
+
+    const diagEmail =
+      document.getElementById(
+        "diagEmail"
+      );
+
+    const diagUid =
+      document.getElementById(
+        "diagUid"
+      );
+
+    const diagVerified =
+      document.getElementById(
+        "diagVerified"
+      );
+
+    const diagProfile =
+      document.getElementById(
+        "diagProfile"
+      );
+
+    const diagBlocked =
+      document.getElementById(
+        "diagBlocked"
+      );
+
+    const diagApproved =
+      document.getElementById(
+        "diagApproved"
+      );
+
+    const diagRole =
+      document.getElementById(
+        "diagRole"
+      );
+
+    const diagRank =
+      document.getElementById(
+        "diagRank"
+      );
+
+
+    function statusClass(
+      value,
+      expected = true
+    ) {
+
+      if (
+        value === expected
+      ) {
+
+        return "diag-ok";
+      }
+
+      return "diag-error";
+    }
+
+
+    function resetDiagnostic() {
+
+      diagnosticPanel.classList.remove(
+        "is-visible"
+      );
+
+      [
+        diagAuth,
+        diagEmail,
+        diagUid,
+        diagVerified,
+        diagProfile,
+        diagBlocked,
+        diagApproved,
+        diagRole,
+        diagRank
+      ].forEach(
+        element => {
+
+          element.textContent =
+            "-";
+
+          element.className =
+            "";
+        }
+      );
+    }
+
+
+    function renderDiagnostic(
+      diagnostic
+    ) {
+
+      if (!diagnostic) {
+        return;
+      }
+
+      diagnosticPanel.classList.add(
+        "is-visible"
+      );
+
+
+      diagAuth.textContent =
+        diagnostic.firebaseUser
+          ? "OK"
+          : "NÃO";
+
+      diagAuth.className =
+        statusClass(
+          diagnostic.firebaseUser
+        );
+
+
+      diagEmail.textContent =
+        diagnostic.email ||
+        "não informado";
+
+
+      diagUid.textContent =
+        diagnostic.uid ||
+        "não disponível";
+
+
+      diagVerified.textContent =
+        diagnostic.emailVerified
+          ? "SIM"
+          : "NÃO";
+
+      diagVerified.className =
+        statusClass(
+          diagnostic.emailVerified
+        );
+
+
+      diagProfile.textContent =
+        diagnostic.profileExists
+          ? "ENCONTRADO"
+          : "NÃO CARREGADO";
+
+      diagProfile.className =
+        diagnostic.profileExists
+          ? "diag-ok"
+          : "diag-warning";
+
+
+      diagBlocked.textContent =
+        diagnostic.profileExists
+          ? (
+              diagnostic.bloqueado
+                ? "SIM"
+                : "NÃO"
+            )
+          : "-";
+
+      if (
+        diagnostic.profileExists
+      ) {
+
+        diagBlocked.className =
+          diagnostic.bloqueado
+            ? "diag-error"
+            : "diag-ok";
+      }
+
+
+      diagApproved.textContent =
+        diagnostic.profileExists
+          ? (
+              diagnostic.aprovado
+                ? "SIM"
+                : "NÃO"
+            )
+          : "-";
+
+      if (
+        diagnostic.profileExists
+      ) {
+
+        /*
+         * aprovado=false não significa falha de autenticação.
+         * É apenas estado administrativo.
+         */
+
+        diagApproved.className =
+          diagnostic.aprovado
+            ? "diag-ok"
+            : "diag-warning";
+      }
+
+
+      diagRole.textContent =
+        diagnostic.role ||
+        "-";
+
+
+      diagRank.textContent =
+        diagnostic.patente ||
+        "-";
+    }
 
 
     /* ========================================================
@@ -1235,12 +1306,10 @@
       feedback.textContent =
         message || "";
 
-
       feedback.classList.toggle(
         "ok",
         type === "ok"
       );
-
     }
 
 
@@ -1255,17 +1324,15 @@
       btnLogin.disabled =
         value;
 
-
       btnLogin.textContent =
         value
           ? "Verificando..."
           : "Entrar";
-
     }
 
 
     /* ========================================================
-       TRADUÇÃO DE ERROS
+       ERROS
     ======================================================== */
 
     function translateError(
@@ -1281,46 +1348,41 @@
         "auth/invalid-email":
           "Email inválido.",
 
-
         "auth/invalid-credential":
           "Email ou senha incorretos.",
-
 
         "auth/user-not-found":
           "Email ou senha incorretos.",
 
-
         "auth/wrong-password":
           "Email ou senha incorretos.",
-
 
         "auth/too-many-requests":
           "Muitas tentativas. Aguarde e tente novamente.",
 
-
         "auth/network-request-failed":
           "Falha de conexão. Verifique sua internet.",
 
-
         "auth/email-not-verified":
-          "Confirme o e-mail antes de entrar. Você pode reenviar a mensagem abaixo.",
-
+          "O Firebase ainda informa que este e-mail NÃO foi verificado.",
 
         "auth/account-blocked":
           "Esta identidade está bloqueada.",
 
+        "auth/session-lost":
+          "A sessão Firebase foi perdida.",
 
         "profile/missing":
-          "Conta encontrada, mas o perfil Firestore users/{uid} não existe.",
-
+          "Authentication OK, mas users/{uid} não foi encontrado no Firestore.",
 
         "app/firebase-config-missing":
           "firebase-config.js não está configurado.",
 
-
         "auth/missing-fields":
-          "Informe e-mail e senha."
+          "Informe e-mail e senha.",
 
+        "auth/already-verified":
+          "O Firebase informa que este e-mail já está verificado."
       };
 
 
@@ -1329,12 +1391,11 @@
         error?.message ||
         "Falha ao autenticar."
       );
-
     }
 
 
     /* ========================================================
-       BOTÃO DE REENVIO
+       REENVIO
     ======================================================== */
 
     function showResend(
@@ -1345,12 +1406,11 @@
         "is-visible",
         Boolean(show)
       );
-
     }
 
 
     /* ========================================================
-       PARÂMETROS DA URL
+       URL
     ======================================================== */
 
     const params =
@@ -1358,10 +1418,6 @@
         window.location.search
       );
 
-
-    /* --------------------------------------------------------
-       CADASTRO CONCLUÍDO
-    -------------------------------------------------------- */
 
     if (
       params.get(
@@ -1373,13 +1429,8 @@
         "Conta criada. Abra o e-mail de verificação antes de entrar.",
         "ok"
       );
-
     }
 
-
-    /* --------------------------------------------------------
-       EMAIL VERIFICADO
-    -------------------------------------------------------- */
 
     if (
       params.get(
@@ -1388,16 +1439,11 @@
     ) {
 
       setFeedback(
-        "Verificação concluída. Agora faça login.",
+        "Você retornou do fluxo de verificação. Faça login para confirmar o estado no Firebase.",
         "ok"
       );
-
     }
 
-
-    /* --------------------------------------------------------
-       MOTIVO DO REDIRECT
-    -------------------------------------------------------- */
 
     const reason =
       params.get(
@@ -1413,7 +1459,6 @@
       setFeedback(
         "Faça login para continuar."
       );
-
     }
 
 
@@ -1423,14 +1468,12 @@
     ) {
 
       setFeedback(
-        "Seu e-mail ainda precisa ser confirmado."
+        "A página protegida detectou emailVerified = false."
       );
-
 
       showResend(
         true
       );
-
     }
 
 
@@ -1440,31 +1483,41 @@
     ) {
 
       setFeedback(
-        "O perfil Firestore da conta não foi encontrado."
+        "O perfil Firestore users/{uid} não foi encontrado."
       );
-
     }
 
 
     if (
       reason ===
-      "account-blocked"
+      "account-blocked" ||
+      reason ===
+      "blocked"
     ) {
 
       setFeedback(
         "Esta identidade está bloqueada."
       );
+    }
 
+
+    if (
+      reason ===
+      "profile-error"
+    ) {
+
+      setFeedback(
+        "A página secreta encontrou um erro ao carregar o perfil."
+      );
     }
 
 
     /* ========================================================
-       MOSTRAR / OCULTAR SENHA
+       MOSTRAR SENHA
     ======================================================== */
 
     togglePassword.addEventListener(
       "click",
-
       () => {
 
         const isPassword =
@@ -1486,12 +1539,10 @@
 
         togglePassword.setAttribute(
           "aria-label",
-
           isPassword
             ? "Ocultar senha"
             : "Mostrar senha"
         );
-
       }
     );
 
@@ -1502,10 +1553,7 @@
 
     form.addEventListener(
       "submit",
-
-      async (
-        event
-      ) => {
+      async event => {
 
         event.preventDefault();
 
@@ -1517,6 +1565,8 @@
         const password =
           senhaInput.value;
 
+
+        resetDiagnostic();
 
         showResend(
           false
@@ -1531,25 +1581,43 @@
 
 
           setFeedback(
-            "Validando identidade...",
+            "Consultando Firebase Authentication...",
             "ok"
           );
 
 
-          await login(
-            email,
-            password
+          const result =
+            await login(
+              email,
+              password
+            );
+
+
+          renderDiagnostic(
+            result.diagnostic
           );
 
 
           setFeedback(
-            "Acesso liberado. Redirecionando...",
+            "Autenticação concluída. Redirecionando...",
             "ok"
           );
 
 
-          window.location.replace(
-            HOME_PAGE
+          /*
+           * Pequeno atraso para você conseguir enxergar
+           * o diagnóstico quando o login estiver correto.
+           */
+
+          window.setTimeout(
+            () => {
+
+              window.location.replace(
+                HOME_PAGE
+              );
+
+            },
+            1200
           );
 
 
@@ -1560,6 +1628,11 @@
           console.error(
             "Erro no login:",
             error
+          );
+
+
+          renderDiagnostic(
+            error?.diagnostic
           );
 
 
@@ -1578,27 +1651,23 @@
             showResend(
               true
             );
-
           }
 
 
           setLoading(
             false
           );
-
         }
-
       }
     );
 
 
     /* ========================================================
-       REENVIAR VERIFICAÇÃO
+       REENVIAR EMAIL
     ======================================================== */
 
     btnResend.addEventListener(
       "click",
-
       async () => {
 
         const email =
@@ -1632,14 +1701,21 @@
 
         try {
 
-          await resendVerification(
-            email,
-            password
+          const result =
+            await resendVerification(
+              email,
+              password
+            );
+
+
+          console.info(
+            "Verificação reenviada:",
+            result
           );
 
 
           setFeedback(
-            "Novo e-mail de verificação enviado.",
+            "Novo e-mail enviado. Abra a mensagem e clique no link de confirmação.",
             "ok"
           );
 
@@ -1649,8 +1725,13 @@
         ) {
 
           console.error(
-            "Erro ao reenviar verificação:",
+            "Erro ao reenviar:",
             error
+          );
+
+
+          renderDiagnostic(
+            error?.diagnostic
           );
 
 
@@ -1669,35 +1750,75 @@
 
           btnResend.textContent =
             "Reenviar verificação";
-
         }
-
       }
     );
 
 
     /* ========================================================
-       USUÁRIO JÁ AUTENTICADO
+       SESSÃO JÁ EXISTENTE
     ======================================================== */
 
     getCurrentUser(
-
       (
-        user
+        user,
+        profile,
+        error,
+        diagnostic
       ) => {
 
         if (
-          user
+          diagnostic
         ) {
 
-          window.location.replace(
-            HOME_PAGE
+          console.info(
+            "[LOGIN] Diagnóstico da sessão:",
+            diagnostic
           );
-
         }
 
-      }
 
+        if (
+          error
+        ) {
+
+          console.error(
+            "[LOGIN] Sessão:",
+            error
+          );
+
+          return;
+        }
+
+
+        if (
+          user &&
+          profile
+        ) {
+
+          renderDiagnostic(
+            diagnostic
+          );
+
+
+          setFeedback(
+            "Sessão Firebase já está válida.",
+            "ok"
+          );
+
+
+          window.setTimeout(
+            () => {
+
+              window.location.replace(
+                HOME_PAGE
+              );
+
+            },
+            700
+          );
+        }
+      }
     );
 
   </script>
