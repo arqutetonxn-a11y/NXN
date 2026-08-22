@@ -10,7 +10,7 @@
   >
 
   <title>
-    Cadastro • Cyber-Nexis V9.3
+    Cadastro • Cyber-Nexis V9.2.1
   </title>
 
   <meta
@@ -18,160 +18,434 @@
     content="Criação de identidade Cyber-Nexis."
   >
 
+
+  <!-- ========================================================
+       PARTICLES.JS
+  ========================================================= -->
+
   <script
     src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"
-    defer>
-  </script>
+    defer
+  ></script>
 
   <script
     src="particles-config.js"
-    defer>
-  </script>
+    defer
+  ></script>
+
 
   <style>
 
+    /* ========================================================
+       CYBER-NEXIS REGISTER V9.2.1
+    ======================================================== */
+
     :root {
-      --panel: rgba(0, 8, 14, .94);
-      --panel2: rgba(0, 2, 5, .98);
+      --bg: #000;
 
-      --accent: #18b8ff;
-      --accent2: #53d8ff;
+      --panel:
+        rgba(
+          0,
+          8,
+          14,
+          .92
+        );
 
-      --text: #eef9ff;
-      --muted: #8aa3b0;
+      --panel-2:
+        rgba(
+          0,
+          2,
+          5,
+          .97
+        );
 
-      --ok: #5fe6bc;
-      --warn: #ffd166;
-      --danger: #ff6f86;
+      --accent:
+        #18b8ff;
 
-      --border: rgba(24, 184, 255, .28);
+      --accent-2:
+        #53d8ff;
+
+      --accent-dark:
+        #075277;
+
+      --text-high:
+        #eef9ff;
+
+      --text-medium:
+        #adc5d2;
+
+      --text-low:
+        #718b99;
+
+      --ok:
+        #5fe6bc;
+
+      --danger:
+        #ff6f86;
+
+      --radius:
+        20px;
     }
+
+
+    /* ========================================================
+       RESET
+    ======================================================== */
 
     * {
-      box-sizing: border-box;
+      box-sizing:
+        border-box;
     }
+
+
+    html {
+      min-height:
+        100%;
+    }
+
 
     body {
-      margin: 0;
+      margin:
+        0;
 
-      min-height: 100vh;
+      min-height:
+        100vh;
 
-      display: grid;
+      display:
+        grid;
 
-      place-items: center;
+      place-items:
+        center;
 
-      padding: 20px;
+      padding:
+        24px;
 
-      background: #000;
+      color:
+        var(
+          --text-high
+        );
 
-      color: var(--text);
+      background:
+        #000;
 
       font-family:
-        "Courier New",
         "Segoe UI",
+        "Courier New",
         monospace;
 
-      overflow-x: hidden;
+      overflow-x:
+        hidden;
     }
 
+
+    /* ========================================================
+       GRADE DE FUNDO
+    ======================================================== */
+
     body::before {
-      content: "";
+      content:
+        "";
 
-      position: fixed;
+      position:
+        fixed;
 
-      inset: 0;
+      inset:
+        0;
 
-      pointer-events: none;
+      pointer-events:
+        none;
 
       background:
         linear-gradient(
-          rgba(50, 196, 255, .014) 1px,
-          transparent 1px
+          rgba(
+            50,
+            196,
+            255,
+            .015
+          )
+          1px,
+          transparent
+          1px
         ),
+
         linear-gradient(
           90deg,
-          rgba(50, 196, 255, .014) 1px,
-          transparent 1px
+          rgba(
+            50,
+            196,
+            255,
+            .015
+          )
+          1px,
+          transparent
+          1px
         );
 
       background-size:
-        42px 42px;
+        42px
+        42px;
+
+      z-index:
+        0;
     }
+
+
+    /* ========================================================
+       PARTÍCULAS
+    ======================================================== */
 
     #particles-js {
-      position: fixed;
+      position:
+        fixed;
 
-      inset: 0;
+      inset:
+        0;
 
-      z-index: 0;
+      z-index:
+        0;
 
-      pointer-events: none;
+      pointer-events:
+        none;
     }
 
-    .shell {
+
+    /* ========================================================
+       CONTAINER
+    ======================================================== */
+
+    .auth-shell {
+      position:
+        relative;
+
+      z-index:
+        2;
+
       width:
         min(
           100%,
-          500px
+          460px
         );
-
-      position: relative;
-
-      z-index: 2;
     }
 
-    .card {
-      border:
-        1px solid
-        var(--border);
 
-      border-radius:
-        20px;
+    /* ========================================================
+       CARD
+    ======================================================== */
+
+    .auth-card {
+      position:
+        relative;
 
       padding:
         clamp(
-          24px,
-          5vw,
-          40px
+          26px,
+          6vw,
+          42px
+        );
+
+      border:
+        1px solid
+        rgba(
+          24,
+          184,
+          255,
+          .30
+        );
+
+      border-radius:
+        var(
+          --radius
         );
 
       background:
         linear-gradient(
           145deg,
-          var(--panel),
-          var(--panel2)
+          var(
+            --panel
+          ),
+          var(
+            --panel-2
+          )
         );
 
       box-shadow:
-        0 30px 80px
-        rgba(0, 0, 0, .75),
+        0
+        30px
+        80px
+        rgba(
+          0,
+          0,
+          0,
+          .75
+        ),
 
-        0 0 34px
-        rgba(24, 184, 255, .09);
+        0
+        0
+        36px
+        rgba(
+          24,
+          184,
+          255,
+          .10
+        ),
+
+        inset
+        0
+        0
+        32px
+        rgba(
+          24,
+          184,
+          255,
+          .025
+        );
+
+      overflow:
+        hidden;
     }
 
-    .kicker {
+
+    /* ========================================================
+       EFEITO SCAN
+    ======================================================== */
+
+    .auth-card::before {
+      content:
+        "";
+
+      position:
+        absolute;
+
+      inset:
+        0;
+
+      pointer-events:
+        none;
+
+      background:
+        linear-gradient(
+          110deg,
+          transparent
+          20%,
+
+          rgba(
+            83,
+            216,
+            255,
+            .07
+          ),
+
+          transparent
+          60%
+        );
+
+      transform:
+        translateX(
+          -110%
+        );
+
+      animation:
+        scan
+        6s
+        linear
+        infinite;
+    }
+
+
+    @keyframes scan {
+
+      0% {
+        transform:
+          translateX(
+            -110%
+          );
+      }
+
+      55%,
+      100% {
+        transform:
+          translateX(
+            110%
+          );
+      }
+
+    }
+
+
+    /* ========================================================
+       KICKER
+    ======================================================== */
+
+    .auth-kicker {
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      margin-bottom:
+        14px;
+
       color:
-        var(--accent2);
+        var(
+          --accent-2
+        );
 
       font-size:
-        .74rem;
-
-      letter-spacing:
-        2px;
+        .72rem;
 
       font-weight:
         900;
+
+      letter-spacing:
+        2px;
 
       text-transform:
         uppercase;
     }
 
+
+    .auth-kicker::before {
+      content:
+        "";
+
+      width:
+        8px;
+
+      height:
+        8px;
+
+      border-radius:
+        50%;
+
+      background:
+        var(
+          --accent
+        );
+
+      box-shadow:
+        0
+        0
+        16px
+        var(
+          --accent
+        );
+    }
+
+
+    /* ========================================================
+       TÍTULO
+    ======================================================== */
+
     h1 {
       margin:
-        12px
-        0
-        10px;
+        0;
+
+      color:
+        #fff;
 
       font-size:
         clamp(
@@ -180,23 +454,44 @@
           3rem
         );
 
+      line-height:
+        1;
+
       text-transform:
         uppercase;
 
-      line-height:
-        1;
+      text-shadow:
+        0
+        0
+        22px
+        rgba(
+          24,
+          184,
+          255,
+          .25
+        );
     }
 
+
     .subtitle {
+      margin:
+        14px
+        0
+        26px;
+
       color:
-        #b4c8d2;
+        var(
+          --text-medium
+        );
 
       line-height:
         1.7;
-
-      margin-bottom:
-        24px;
     }
+
+
+    /* ========================================================
+       FORM
+    ======================================================== */
 
     form {
       display:
@@ -206,6 +501,7 @@
         14px;
     }
 
+
     label {
       display:
         block;
@@ -214,7 +510,9 @@
         7px;
 
       color:
-        var(--muted);
+        var(
+          --text-low
+        );
 
       font-size:
         .76rem;
@@ -223,16 +521,18 @@
         900;
 
       letter-spacing:
-        1px;
+        1.5px;
 
       text-transform:
         uppercase;
     }
 
+
     .input-wrap {
       position:
         relative;
     }
+
 
     input {
       width:
@@ -242,7 +542,7 @@
         48px;
 
       padding:
-        12px
+        13px
         14px;
 
       border:
@@ -251,18 +551,18 @@
           24,
           184,
           255,
-          .25
+          .27
         );
 
       border-radius:
-        11px;
+        12px;
 
       background:
         rgba(
           0,
           0,
           0,
-          .7
+          .72
         );
 
       color:
@@ -273,39 +573,57 @@
 
       outline:
         0;
+
+      transition:
+        .2s
+        ease;
     }
+
 
     input:focus {
       border-color:
-        var(--accent2);
+        var(
+          --accent-2
+        );
 
       box-shadow:
-        0 0 0 3px
+        0
+        0
+        0
+        3px
         rgba(
           24,
           184,
           255,
-          .08
+          .09
         );
     }
 
-    .password input {
+
+    /* ========================================================
+       SENHA
+    ======================================================== */
+
+    .password-field input {
       padding-right:
         54px;
     }
 
-    .toggle {
+
+    .toggle-password {
       position:
         absolute;
-
-      right:
-        7px;
 
       top:
         50%;
 
+      right:
+        7px;
+
       transform:
-        translateY(-50%);
+        translateY(
+          -50%
+        );
 
       width:
         38px;
@@ -313,20 +631,17 @@
       height:
         38px;
 
-      padding:
-        0;
-
       border:
         1px solid
         rgba(
           24,
           184,
           255,
-          .16
+          .15
         );
 
       border-radius:
-        8px;
+        9px;
 
       background:
         rgba(
@@ -337,11 +652,18 @@
         );
 
       color:
-        var(--accent2);
+        var(
+          --accent-2
+        );
 
       cursor:
         pointer;
     }
+
+
+    /* ========================================================
+       AÇÕES
+    ======================================================== */
 
     .actions {
       display:
@@ -354,10 +676,14 @@
         4px;
     }
 
+
     button,
-    .link-btn {
+    .secondary-link {
       min-height:
         46px;
+
+      width:
+        100%;
 
       display:
         inline-flex;
@@ -367,9 +693,6 @@
 
       justify-content:
         center;
-
-      width:
-        100%;
 
       border-radius:
         10px;
@@ -383,26 +706,34 @@
           .34
         );
 
-      padding:
-        10px
-        14px;
-
       font:
         inherit;
 
       font-weight:
         900;
 
+      letter-spacing:
+        .8px;
+
       text-decoration:
         none;
 
       cursor:
         pointer;
+
+      transition:
+        .2s
+        ease;
     }
+
+
+    /* ========================================================
+       BOTÃO PRINCIPAL
+    ======================================================== */
 
     .primary {
       color:
-        #fff;
+        #effbff;
 
       background:
         linear-gradient(
@@ -410,9 +741,44 @@
           #128dc5,
           #075277
         );
+
+      box-shadow:
+        0
+        0
+        18px
+        rgba(
+          24,
+          184,
+          255,
+          .15
+        );
     }
 
-    .link-btn {
+
+    .primary:hover:not(:disabled) {
+      transform:
+        translateY(
+          -1px
+        );
+
+      box-shadow:
+        0
+        0
+        26px
+        rgba(
+          24,
+          184,
+          255,
+          .25
+        );
+    }
+
+
+    /* ========================================================
+       LINK SECUNDÁRIO
+    ======================================================== */
+
+    .secondary-link {
       color:
         #8bdfff;
 
@@ -425,13 +791,19 @@
         );
     }
 
+
     button:disabled {
       opacity:
-        .55;
+        .58;
 
       cursor:
         wait;
     }
+
+
+    /* ========================================================
+       FEEDBACK
+    ======================================================== */
 
     .feedback {
       min-height:
@@ -442,32 +814,37 @@
         0
         0;
 
-      text-align:
-        center;
-
       color:
-        var(--danger);
+        var(
+          --danger
+        );
+
+      font-size:
+        .88rem;
 
       line-height:
         1.5;
 
-      font-size:
-        .88rem;
+      text-align:
+        center;
     }
+
 
     .feedback.ok {
       color:
-        var(--ok);
+        var(
+          --ok
+        );
     }
 
-    .feedback.warn {
-      color:
-        var(--warn);
-    }
 
-    .note {
+    /* ========================================================
+       NOTA DO SISTEMA
+    ======================================================== */
+
+    .system-note {
       margin-top:
-        18px;
+        20px;
 
       padding-top:
         16px;
@@ -478,20 +855,95 @@
           24,
           184,
           255,
-          .1
+          .12
         );
 
       color:
-        #6d8592;
+        var(
+          --text-low
+        );
+
+      font-size:
+        .75rem;
+
+      line-height:
+        1.65;
 
       text-align:
         center;
+    }
 
-      font-size:
-        .74rem;
 
-      line-height:
-        1.6;
+    .system-note strong {
+      color:
+        var(
+          --accent-2
+        );
+    }
+
+
+    /* ========================================================
+       FOCO
+    ======================================================== */
+
+    :focus-visible {
+      outline:
+        2px solid
+        var(
+          --accent-2
+        );
+
+      outline-offset:
+        3px;
+    }
+
+
+    /* ========================================================
+       RESPONSIVO
+    ======================================================== */
+
+    @media (
+      max-width:
+      500px
+    ) {
+
+      body {
+        padding:
+          14px;
+      }
+
+
+      .auth-card {
+        padding:
+          24px
+          18px;
+
+        border-radius:
+          15px;
+      }
+
+    }
+
+
+    /* ========================================================
+       ACESSIBILIDADE
+    ======================================================== */
+
+    @media (
+      prefers-reduced-motion:
+      reduce
+    ) {
+
+      *,
+      *::before,
+      *::after {
+        animation:
+          none !important;
+
+        transition:
+          none !important;
+      }
+
     }
 
   </style>
@@ -501,487 +953,527 @@
 
 <body>
 
-<div
-  id="particles-js"
-  aria-hidden="true">
-</div>
+
+  <!-- ========================================================
+       PARTÍCULAS
+  ========================================================= -->
+
+  <div
+    id="particles-js"
+    aria-hidden="true"
+  ></div>
 
 
-<main class="shell">
+  <!-- ========================================================
+       CADASTRO
+  ========================================================= -->
 
-  <section class="card">
+  <main class="auth-shell">
 
-    <span class="kicker">
-      CYBER-NEXIS //
-      ENROLLMENT V9.3
-    </span>
+    <section
+      class="auth-card"
+      aria-labelledby="register-title"
+    >
 
-
-    <h1>
-      Criar Conta
-    </h1>
-
-
-    <p class="subtitle">
-
-      A identidade nasce como
-
-      <strong>
-        Observador N0
-      </strong>.
-
-      A verificação do e-mail
-      é necessária antes do
-      acesso autenticado.
-
-    </p>
+      <span class="auth-kicker">
+        Cyber-Nexis // Enrollment V9.2.1
+      </span>
 
 
-    <form id="registerForm">
-
-      <!-- EMAIL -->
-
-      <div>
-
-        <label for="email">
-          Email operacional
-        </label>
-
-        <div class="input-wrap">
-
-          <input
-            id="email"
-            type="email"
-            autocomplete="email"
-            placeholder="operador@email.com"
-            required
-          >
-
-        </div>
-
-      </div>
+      <h1 id="register-title">
+        Criar Conta
+      </h1>
 
 
-      <!-- SENHA -->
+      <p class="subtitle">
 
-      <div>
+        A identidade nasce como
 
-        <label for="senha">
-          Senha
-        </label>
+        <strong>
+          Observador N0
+        </strong>
 
-        <div
-          class="
-            input-wrap
-            password
-          "
-        >
+        e só poderá fazer login
+        depois que o endereço de
+        e-mail for confirmado.
 
-          <input
-            id="senha"
-            type="password"
-            autocomplete="new-password"
-            minlength="8"
-            placeholder="mínimo 8 caracteres"
-            required
-          >
-
-
-          <button
-            id="togglePassword"
-            class="toggle"
-            type="button"
-            aria-label="Mostrar senhas"
-          >
-            ◉
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- CONFIRMAÇÃO -->
-
-      <div>
-
-        <label for="confirmarSenha">
-          Confirmar senha
-        </label>
-
-        <div class="input-wrap">
-
-          <input
-            id="confirmarSenha"
-            type="password"
-            autocomplete="new-password"
-            minlength="8"
-            placeholder="repita a senha"
-            required
-          >
-
-        </div>
-
-      </div>
-
-
-      <!-- AÇÕES -->
-
-      <div class="actions">
-
-        <button
-          id="btnRegister"
-          class="primary"
-          type="submit"
-        >
-          Registrar
-        </button>
-
-
-        <a
-          class="link-btn"
-          href="login.html"
-        >
-          Voltar ao login
-        </a>
-
-      </div>
-
-
-      <!-- MENSAGEM -->
-
-      <p
-        id="feedback"
-        class="feedback"
-        aria-live="polite">
       </p>
 
-    </form>
+
+      <!-- ====================================================
+           FORMULÁRIO
+      ===================================================== -->
+
+      <form
+        id="registerForm"
+        autocomplete="on"
+      >
 
 
-    <p class="note">
+        <!-- EMAIL -->
 
-      Se a conta e o perfil
-      forem criados, mas o envio
-      do e-mail falhar, a identidade
-      será preservada para permitir
-      um novo envio pelo login.
+        <div>
 
-    </p>
-
-  </section>
-
-</main>
+          <label for="email">
+            Email operacional
+          </label>
 
 
-<script type="module">
+          <div class="input-wrap">
 
-  import {
-    getCurrentUser,
-    register
-  } from "./site.js";
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="operador@email.com"
+              required
+            >
 
+          </div>
 
-  const form =
-    document.getElementById(
-      "registerForm"
-    );
-
-
-  const emailInput =
-    document.getElementById(
-      "email"
-    );
+        </div>
 
 
-  const senhaInput =
-    document.getElementById(
-      "senha"
-    );
+        <!-- SENHA -->
+
+        <div>
+
+          <label for="senha">
+            Senha
+          </label>
 
 
-  const confirmInput =
-    document.getElementById(
-      "confirmarSenha"
-    );
+          <div
+            class="
+              input-wrap
+              password-field
+            "
+          >
+
+            <input
+              id="senha"
+              name="senha"
+              type="password"
+              autocomplete="new-password"
+              minlength="6"
+              placeholder="mínimo 6 caracteres"
+              required
+            >
 
 
-  const btnRegister =
-    document.getElementById(
-      "btnRegister"
-    );
+            <button
+              class="toggle-password"
+              type="button"
+              aria-label="Mostrar senhas"
+            >
+              ◉
+            </button>
+
+          </div>
+
+        </div>
 
 
-  const togglePassword =
-    document.getElementById(
-      "togglePassword"
-    );
+        <!-- CONFIRMAÇÃO -->
+
+        <div>
+
+          <label for="confirmarSenha">
+            Confirmar senha
+          </label>
 
 
-  const feedback =
-    document.getElementById(
-      "feedback"
-    );
+          <div class="input-wrap">
+
+            <input
+              id="confirmarSenha"
+              name="confirmarSenha"
+              type="password"
+              autocomplete="new-password"
+              minlength="6"
+              placeholder="repita a senha"
+              required
+            >
+
+          </div>
+
+        </div>
 
 
-  // =========================================================
-  // FEEDBACK
-  // =========================================================
+        <!-- AÇÕES -->
 
-  function setFeedback(
-    message = "",
-    type = "error"
-  ) {
+        <div class="actions">
 
-    feedback.textContent =
-      message;
-
-
-    feedback.className =
-      "feedback";
+          <button
+            id="btnRegister"
+            class="primary"
+            type="submit"
+          >
+            Registrar
+          </button>
 
 
-    if (
-      type === "ok"
+          <a
+            class="secondary-link"
+            href="login.html"
+          >
+            Voltar ao login
+          </a>
+
+        </div>
+
+
+        <!-- FEEDBACK -->
+
+        <p
+          id="feedback"
+          class="feedback"
+          aria-live="polite"
+        ></p>
+
+
+      </form>
+
+
+      <!-- ====================================================
+           NOTA
+      ===================================================== -->
+
+      <p class="system-note">
+
+        <strong>
+          Nascimento da identidade:
+        </strong>
+
+        Observador N0
+        ·
+        0 XP
+        ·
+        0 créditos
+        ·
+        status pendente.
+
+      </p>
+
+
+    </section>
+
+  </main>
+
+
+  <!-- ========================================================
+       JAVASCRIPT
+  ========================================================= -->
+
+  <script type="module">
+
+    import {
+      getCurrentUser,
+      register
+    } from "./site.js";
+
+
+    /* ========================================================
+       ELEMENTOS
+    ======================================================== */
+
+    const form =
+      document.getElementById(
+        "registerForm"
+      );
+
+
+    const btnRegister =
+      document.getElementById(
+        "btnRegister"
+      );
+
+
+    const feedback =
+      document.getElementById(
+        "feedback"
+      );
+
+
+    const emailInput =
+      document.getElementById(
+        "email"
+      );
+
+
+    const senhaInput =
+      document.getElementById(
+        "senha"
+      );
+
+
+    const confirmInput =
+      document.getElementById(
+        "confirmarSenha"
+      );
+
+
+    const togglePassword =
+      document.querySelector(
+        ".toggle-password"
+      );
+
+
+    /* ========================================================
+       FEEDBACK
+    ======================================================== */
+
+    function setFeedback(
+      message,
+      type = "error"
     ) {
 
-      feedback.classList.add(
-        "ok"
+      feedback.textContent =
+        message || "";
+
+
+      feedback.classList.toggle(
+        "ok",
+        type === "ok"
       );
 
     }
 
 
-    if (
-      type === "warn"
-    ) {
+    /* ========================================================
+       LOADING
+    ======================================================== */
 
-      feedback.classList.add(
-        "warn"
-      );
-
-    }
-
-  }
-
-
-  // =========================================================
-  // LOADING
-  // =========================================================
-
-  function setBusy(
-    value
-  ) {
-
-    btnRegister.disabled =
-      value;
-
-
-    btnRegister.textContent =
+    function setLoading(
       value
-        ? "Criando..."
-        : "Registrar";
+    ) {
 
-  }
-
-
-  // =========================================================
-  // ERROS
-  // =========================================================
-
-  function translateError(
-    error
-  ) {
-
-    const messages = {
-
-      "auth/email-already-in-use":
-        "Este e-mail já está cadastrado.",
+      btnRegister.disabled =
+        value;
 
 
-      "auth/invalid-email":
-        "E-mail inválido.",
-
-
-      "auth/weak-password":
-        "A senha precisa ter pelo menos 8 caracteres.",
-
-
-      "auth/operation-not-allowed":
-        "O provedor Email/Senha não está habilitado no Firebase.",
-
-
-      "auth/network-request-failed":
-        "Falha de conexão com o Firebase.",
-
-
-      "profile/save-failed":
-        "A conta foi criada, mas o perfil Firestore não pôde ser salvo.",
-
-
-      "app/firebase-config-missing":
-        "firebase-config.js está incompleto."
-
-    };
-
-
-    return (
-      messages[
-        error?.code
-      ] ||
-
-      error?.message ||
-
-      "Não foi possível criar a conta."
-    );
-
-  }
-
-
-  // =========================================================
-  // MOSTRAR / OCULTAR SENHAS
-  // =========================================================
-
-  togglePassword.addEventListener(
-    "click",
-
-    () => {
-
-      const show =
-        senhaInput.type ===
-        "password";
-
-
-      senhaInput.type =
-        show
-          ? "text"
-          : "password";
-
-
-      confirmInput.type =
-        show
-          ? "text"
-          : "password";
-
-
-      togglePassword.textContent =
-        show
-          ? "◎"
-          : "◉";
+      btnRegister.textContent =
+        value
+          ? "Criando..."
+          : "Registrar";
 
     }
-  );
 
 
-  // =========================================================
-  // CADASTRO
-  // =========================================================
+    /* ========================================================
+       TRADUÇÃO DE ERROS
+    ======================================================== */
 
-  form.addEventListener(
-    "submit",
+    function translateError(
+      error
+    ) {
 
-    async (
-      event
-    ) => {
-
-      event.preventDefault();
+      const code =
+        error?.code || "";
 
 
-      const email =
-        emailInput.value.trim();
+      const messages = {
+
+        "auth/email-already-in-use":
+          "Este e-mail já está cadastrado.",
 
 
-      const password =
-        senhaInput.value;
+        "auth/invalid-email":
+          "E-mail inválido.",
 
 
-      const confirmation =
-        confirmInput.value;
+        "auth/weak-password":
+          "A senha precisa ter pelo menos 6 caracteres.",
 
 
-      // CAMPOS VAZIOS
+        "auth/operation-not-allowed":
+          "Ative o provedor Email/Senha no Firebase Authentication.",
 
-      if (
-        !email ||
-        !password ||
-        !confirmation
-      ) {
 
-        setFeedback(
-          "Preencha todos os campos."
+        "auth/network-request-failed":
+          "Falha de conexão.",
+
+
+        "profile/save-failed":
+          "O Authentication criou a conta, mas o perfil não passou pelas Security Rules.",
+
+
+        "app/firebase-config-missing":
+          "firebase-config.js não está configurado."
+
+      };
+
+
+      return (
+        messages[code] ||
+        error?.message ||
+        "Não foi possível criar a conta."
+      );
+
+    }
+
+
+    /* ========================================================
+       MOSTRAR / OCULTAR SENHAS
+    ======================================================== */
+
+    togglePassword.addEventListener(
+      "click",
+
+      () => {
+
+        const show =
+          senhaInput.type ===
+          "password";
+
+
+        senhaInput.type =
+          show
+            ? "text"
+            : "password";
+
+
+        confirmInput.type =
+          show
+            ? "text"
+            : "password";
+
+
+        togglePassword.textContent =
+          show
+            ? "◎"
+            : "◉";
+
+
+        togglePassword.setAttribute(
+          "aria-label",
+
+          show
+            ? "Ocultar senhas"
+            : "Mostrar senhas"
         );
-
-        return;
 
       }
+    );
 
 
-      // TAMANHO DA SENHA
+    /* ========================================================
+       CADASTRO
+    ======================================================== */
 
-      if (
-        password.length < 8
-      ) {
+    form.addEventListener(
+      "submit",
 
-        setFeedback(
-          "A senha precisa ter pelo menos 8 caracteres."
-        );
+      async (
+        event
+      ) => {
 
-        return;
-
-      }
-
-
-      // CONFIRMAÇÃO
-
-      if (
-        password !==
-        confirmation
-      ) {
-
-        setFeedback(
-          "As senhas não coincidem."
-        );
-
-        return;
-
-      }
+        event.preventDefault();
 
 
-      try {
-
-        setBusy(
-          true
-        );
+        const email =
+          emailInput.value.trim();
 
 
-        setFeedback(
-          "Criando Authentication e perfil Firestore...",
-          "ok"
-        );
+        const password =
+          senhaInput.value;
 
 
-        const result =
+        const confirmation =
+          confirmInput.value;
+
+
+        /* ----------------------------------------------------
+           CAMPOS OBRIGATÓRIOS
+        ---------------------------------------------------- */
+
+        if (
+          !email ||
+          !password ||
+          !confirmation
+        ) {
+
+          setFeedback(
+            "Preencha todos os campos."
+          );
+
+          return;
+        }
+
+
+        /* ----------------------------------------------------
+           TAMANHO DA SENHA
+        ---------------------------------------------------- */
+
+        if (
+          password.length < 6
+        ) {
+
+          setFeedback(
+            "A senha precisa ter pelo menos 6 caracteres."
+          );
+
+          return;
+        }
+
+
+        /* ----------------------------------------------------
+           SENHAS DIFERENTES
+        ---------------------------------------------------- */
+
+        if (
+          password !==
+          confirmation
+        ) {
+
+          setFeedback(
+            "As senhas não coincidem."
+          );
+
+          return;
+        }
+
+
+        try {
+
+          setLoading(
+            true
+          );
+
+
+          setFeedback(
+            "Criando identidade Observador N0...",
+            "ok"
+          );
+
+
+          /* --------------------------------------------------
+             CRIA CONTA
+          -------------------------------------------------- */
+
           await register(
             email,
             password
           );
 
 
-        // =====================================================
-        // EMAIL ENVIADO
-        // =====================================================
-
-        if (
-          result.verificationSent
-        ) {
+          /* --------------------------------------------------
+             SUCESSO
+          -------------------------------------------------- */
 
           setFeedback(
-            "Conta e perfil criados. O Firebase aceitou o envio da verificação.",
+            "Conta criada. Verificação enviada. Indo para o login...",
             "ok"
           );
 
 
-          setTimeout(
+          /* --------------------------------------------------
+             REDIRECT PARA LOGIN
+          -------------------------------------------------- */
+
+          window.setTimeout(
+
             () => {
 
               window.location.replace(
@@ -989,96 +1481,64 @@
               );
 
             },
-            1000
+
+            900
+
           );
 
 
-        } else {
+        } catch (
+          error
+        ) {
 
-          // ===================================================
-          // CONTA CRIADA, MAS EMAIL FALHOU
-          // ===================================================
-
-          console.warn(
-            "[CADASTRO] E-mail não confirmado como enviado:",
-            result.verificationError
+          console.error(
+            "Erro no cadastro:",
+            error
           );
 
 
           setFeedback(
-            "Conta e perfil foram criados, mas o envio da verificação falhou. Você poderá tentar novamente no login.",
-            "warn"
+            translateError(
+              error
+            )
           );
 
 
-          setTimeout(
-            () => {
-
-              window.location.replace(
-                "login.html?verification=failed"
-              );
-
-            },
-            1400
+          setLoading(
+            false
           );
 
         }
 
-
-      } catch (
-        error
-      ) {
-
-        console.error(
-          "[CADASTRO]",
-          error
-        );
+      }
+    );
 
 
-        setFeedback(
-          translateError(
-            error
-          )
-        );
+    /* ========================================================
+       USUÁRIO JÁ AUTENTICADO
+    ======================================================== */
 
+    getCurrentUser(
 
-        setBusy(
-          false
-        );
+      (
+        user
+      ) => {
+
+        if (
+          user
+        ) {
+
+          window.location.replace(
+            "Index.html"
+          );
+
+        }
 
       }
 
-    }
-  );
+    );
 
-
-  // =========================================================
-  // SESSÃO JÁ EXISTENTE
-  // =========================================================
-
-  getCurrentUser(
-    (
-      user,
-      profile
-    ) => {
-
-      if (
-        user &&
-        user.emailVerified &&
-        profile &&
-        profile.bloqueado !== true
-      ) {
-
-        window.location.replace(
-          "Index.html"
-        );
-
-      }
-
-    }
-  );
-
-</script>
+  </script>
 
 </body>
 
