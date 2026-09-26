@@ -1,6 +1,7 @@
 // ============================================================
-// CYBER-NEXIS V9.2.1 — AUTH GATEWAY
-// Authentication + perfil usuarios/{uid}
+// CYBER-NEXIS
+// site.js
+// Firebase Authentication + Firestore
 // ============================================================
 
 import {
@@ -14,7 +15,9 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   onAuthStateChanged,
+  reload,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
@@ -27,17 +30,28 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
 
 
-/* ============================================================
-   FUNÇÕES INTERNAS
-============================================================ */
+// ============================================================
+// CONFIGURAÇÃO
+// ============================================================
+
+const LOGIN_PAGE = "login.html";
+const HOME_PAGE = "Index.html";
+
+
+// ============================================================
+// ERRO PADRONIZADO
+// ============================================================
 
 function authError(code, message) {
   const error = new Error(message);
   error.code = code;
-
   return error;
 }
 
+
+// ============================================================
+// NORMALIZAR E-MAIL
+// ============================================================
 
 function normalizeEmail(email) {
   return String(email || "")
@@ -46,73 +60,60 @@ function normalizeEmail(email) {
 }
 
 
-function redirectTo(path, reason = "") {
-  const url = new URL(
-    path,
-    window.location.href
-  );
+// ============================================================
+// REDIRECIONAMENTO
+// ============================================================
 
-  if (reason) {
-    url.searchParams.set(
-      "reason",
-      reason
-    );
-  }
-
-  window.location.replace(
-    url.href
-  );
+function redirectTo(page) {
+  window.location.href = page;
 }
 
+
+// ============================================================
+// ESPERAR FIREBASE
+// ============================================================
 
 async function waitFirebase() {
   assertFirebaseConfigured();
 
-  await authReady;
+  if (authReady) {
+    await authReady;
+  }
+
+  return auth;
 }
 
 
-/* ============================================================
-   PERFIL DO USUÁRIO
-============================================================ */
+// ============================================================
+// LER PERFIL DO USUÁRIO
+// usuarios/{uid}
+// ============================================================
 
 async function readProfile(uid) {
-  if (!uid) {
-    return null;
-  }
+  const profileRef = doc(db, "usuarios", uid);
+  const snapshot = await getDoc(profileRef);
 
-  const snap = await getDoc(
-    doc(
-      db,
-      "usuarios",
-      uid
-    )
-  );
-
-  if (!snap.exists()) {
+  if (!snapshot.exists()) {
     return null;
   }
 
   return {
-    id: snap.id,
-    ...snap.data()
+    id: snapshot.id,
+    ...snapshot.data()
   };
 }
 
 
-/* ============================================================
-   PERFIL INICIAL
-============================================================ */
+// ============================================================
+// PERFIL INICIAL
+// ============================================================
 
 function initialProfile(user) {
   return {
     uid: user.uid,
-
-    email:
-      user.email || "",
+    email: user.email || "",
 
     codinome: "",
-
     bio: "",
 
     avatar: "🧬",
@@ -120,7 +121,6 @@ function initialProfile(user) {
     patente: "Observador N0",
 
     nivel: 0,
-
     nivelNumero: 0,
 
     role: "observer",
@@ -130,493 +130,388 @@ function initialProfile(user) {
     status: "pendente",
 
     xp: 0,
-
     creditos: 0,
 
     aprovado: false,
-
     bloqueado: false,
 
     missoesConcluidas: 0,
-
     treinamentosConcluidos: 0,
-
     lojaCompras: 0,
-
     denunciasEnviadas: 0,
 
-    createdAt:
-      serverTimestamp(),
-
-    updatedAt:
-      serverTimestamp()
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
   };
 }
 
 
-/* ============================================================
-   CADASTRO
-============================================================ */
+// ============================================================
+// REGISTRO
+// ============================================================
 
-export async function register(
-  email,
-  password
-) {
-
+export async function register(email, password) {
   await waitFirebase();
 
-  const cleanEmail =
-    normalizeEmail(email);
+  const cleanEmail = normalizeEmail(email);
 
-
-  if (
-    !cleanEmail ||
-    !password
-  ) {
-
+  if (!cleanEmail) {
     throw authError(
-      "auth/missing-fields",
-      "Informe e-mail e senha."
+      "auth/missing-email",
+      "Informe seu e-mail."
     );
   }
 
+  if (!password) {
+    throw authError(
+      "auth/missing-password",
+      "Informe sua senha."
+    );
+  }
 
-  if (
-    String(password).length < 6
-  ) {
-
+  if (password.length < 6) {
     throw authError(
       "auth/weak-password",
       "A senha precisa ter pelo menos 6 caracteres."
     );
   }
 
-
-  /* ----------------------------------------------------------
-     CRIA USUÁRIO NO FIREBASE AUTHENTICATION
-  ---------------------------------------------------------- */
-
-  const credential =
-    await createUserWithEmailAndPassword(
-      auth,
-      cleanEmail,
-      password
-    );
-
-
-  const user =
-    credential.user;
-
+  let credential = null;
+  let profileCreated = false;
 
   try {
+    // --------------------------------------------------------
+    // CRIAR CONTA
+    // --------------------------------------------------------
 
-    /* --------------------------------------------------------
-       CRIA PERFIL NO FIRESTORE
+    credential =
+      await createUserWithEmailAndPassword(
+        auth,
+        cleanEmail,
+        password
+      );
 
-       usuarios/{uid}
+    const user = credential.user;
 
-       O usuário nasce como:
+    // --------------------------------------------------------
+    // CRIAR PERFIL NO FIRESTORE
+    // --------------------------------------------------------
 
-       Observador N0
-       role: observer
-       XP: 0
-       créditos: 0
-       aprovado: false
-       bloqueado: false
-    -------------------------------------------------------- */
+    const profileRef = doc(
+      db,
+      "usuarios",
+      user.uid
+    );
 
     await setDoc(
-      doc(
-        db,
-        "usuarios",
-        user.uid
-      ),
-
+      profileRef,
       initialProfile(user)
     );
 
+    profileCreated = true;
 
-    /* --------------------------------------------------------
-       ENVIA VERIFICAÇÃO DE EMAIL
-    -------------------------------------------------------- */
+    // --------------------------------------------------------
+    // E-MAIL DE VERIFICAÇÃO
+    // --------------------------------------------------------
 
-    await sendEmailVerification(
-      user,
-
-      {
-        url: new URL(
+    const actionCodeSettings = {
+      url:
+        new URL(
           "login.html?verified=1",
           window.location.href
         ).href,
 
-        handleCodeInApp: false
-      }
+      handleCodeInApp: false
+    };
+
+    await sendEmailVerification(
+      user,
+      actionCodeSettings
     );
 
-
-    /* --------------------------------------------------------
-       APÓS CADASTRAR:
-       NÃO MANTÉM O USUÁRIO LOGADO
-    -------------------------------------------------------- */
+    // --------------------------------------------------------
+    // DESLOGAR
+    // --------------------------------------------------------
 
     await signOut(auth);
 
-
     return {
-      email: cleanEmail,
+      user,
       verificationSent: true
     };
-
 
   } catch (error) {
 
     console.error(
-      "[CYBER-NEXIS] Falha ao concluir cadastro:",
+      "Erro durante o cadastro:",
       error
     );
 
+    // --------------------------------------------------------
+    // LIMPEZA DE SEGURANÇA
+    // --------------------------------------------------------
 
-    /* --------------------------------------------------------
-       TENTA VERIFICAR SE O PERFIL FOI CRIADO
-    -------------------------------------------------------- */
+    if (credential?.user && !profileCreated) {
+      try {
+        await deleteUser(credential.user);
+      } catch (deleteError) {
+        console.error(
+          "Erro ao remover usuário incompleto:",
+          deleteError
+        );
+      }
+    }
 
     try {
-
-      const profile =
-        await readProfile(
-          user.uid
-        );
-
-
-      /*
-       * Se nem o perfil conseguiu ser criado,
-       * removemos a conta incompleta.
-       */
-
-      if (!profile) {
-
-        await deleteUser(
-          user
-        );
-
-      } else {
-
-        /*
-         * Se o perfil existe, mantemos a conta,
-         * mas encerramos a sessão.
-         */
-
-        await signOut(auth);
-      }
-
-
-    } catch (cleanupError) {
-
-      console.error(
-        "[CYBER-NEXIS] Falha na limpeza do cadastro:",
-        cleanupError
-      );
-    }
-
-
-    /* --------------------------------------------------------
-       ERRO DAS SECURITY RULES
-    -------------------------------------------------------- */
-
-    if (
-      error?.code ===
-      "permission-denied"
-    ) {
-
-      throw authError(
-        "profile/save-failed",
-        "O perfil não pôde ser criado. Verifique as Security Rules do Firestore."
-      );
-    }
-
+      await signOut(auth);
+    } catch (_) {}
 
     throw error;
   }
 }
 
 
-/* ============================================================
-   REENVIAR VERIFICAÇÃO DE EMAIL
-============================================================ */
+// ============================================================
+// REENVIAR VERIFICAÇÃO
+// ============================================================
 
 export async function resendVerification(
   email,
   password
 ) {
-
   await waitFirebase();
 
+  const cleanEmail = normalizeEmail(email);
 
-  const cleanEmail =
-    normalizeEmail(email);
-
-
-  if (
-    !cleanEmail ||
-    !password
-  ) {
-
+  if (!cleanEmail) {
     throw authError(
-      "auth/missing-fields",
-      "Informe e-mail e senha para reenviar a verificação."
+      "auth/missing-email",
+      "Informe seu e-mail."
     );
   }
 
-
-  /* ----------------------------------------------------------
-     FAZ LOGIN TEMPORÁRIO
-  ---------------------------------------------------------- */
-
-  const credential =
-    await signInWithEmailAndPassword(
-      auth,
-      cleanEmail,
-      password
+  if (!password) {
+    throw authError(
+      "auth/missing-password",
+      "Informe sua senha."
     );
-
+  }
 
   try {
 
-    await credential.user.reload();
+    // --------------------------------------------------------
+    // LOGIN TEMPORÁRIO
+    // --------------------------------------------------------
 
+    const credential =
+      await signInWithEmailAndPassword(
+        auth,
+        cleanEmail,
+        password
+      );
 
-    /* --------------------------------------------------------
-       EMAIL JÁ VERIFICADO
-    -------------------------------------------------------- */
+    const user = credential.user;
 
-    if (
-      credential.user.emailVerified
-    ) {
+    // --------------------------------------------------------
+    // ATUALIZAR DADOS
+    // --------------------------------------------------------
 
+    await reload(user);
+
+    if (user.emailVerified) {
       throw authError(
         "auth/already-verified",
         "Este e-mail já foi verificado."
       );
     }
 
+    // --------------------------------------------------------
+    // REENVIAR E-MAIL
+    // --------------------------------------------------------
 
-    /* --------------------------------------------------------
-       ENVIA NOVA VERIFICAÇÃO
-    -------------------------------------------------------- */
-
-    await sendEmailVerification(
-      credential.user,
-
-      {
-        url: new URL(
+    const actionCodeSettings = {
+      url:
+        new URL(
           "login.html?verified=1",
           window.location.href
         ).href,
 
-        handleCodeInApp: false
-      }
+      handleCodeInApp: false
+    };
+
+    await sendEmailVerification(
+      user,
+      actionCodeSettings
     );
 
+    return true;
 
   } finally {
 
-    /*
-     * Nunca deixa a sessão temporária aberta.
-     */
+    // --------------------------------------------------------
+    // DESLOGAR
+    // --------------------------------------------------------
 
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (_) {}
+  }
+}
+
+
+// ============================================================
+// REDEFINIR SENHA
+// ============================================================
+
+export async function resetPassword(email) {
+  await waitFirebase();
+
+  const cleanEmail = normalizeEmail(email);
+
+  if (!cleanEmail) {
+    throw authError(
+      "auth/missing-email",
+      "Informe seu e-mail para redefinir a senha."
+    );
   }
 
+  // Firebase envia o e-mail de redefinição.
+  await sendPasswordResetEmail(
+    auth,
+    cleanEmail
+  );
 
   return true;
 }
 
 
-/* ============================================================
-   LOGIN
-============================================================ */
+// ============================================================
+// LOGIN
+// ============================================================
 
 export async function login(
   email,
   password
 ) {
-
   await waitFirebase();
 
+  const cleanEmail = normalizeEmail(email);
 
-  const cleanEmail =
-    normalizeEmail(email);
-
-
-  if (
-    !cleanEmail ||
-    !password
-  ) {
-
+  if (!cleanEmail || !password) {
     throw authError(
       "auth/missing-fields",
-      "Informe e-mail e senha."
+      "Preencha e-mail e senha."
     );
   }
 
-
-  /* ----------------------------------------------------------
-     FIREBASE AUTHENTICATION
-  ---------------------------------------------------------- */
-
-  const credential =
-    await signInWithEmailAndPassword(
-      auth,
-      cleanEmail,
-      password
-    );
-
-
-  const user =
-    credential.user;
-
-
   try {
 
-    /* --------------------------------------------------------
-       ATUALIZA DADOS DO USUÁRIO
-    -------------------------------------------------------- */
+    // --------------------------------------------------------
+    // LOGIN
+    // --------------------------------------------------------
 
-    await user.reload();
+    const credential =
+      await signInWithEmailAndPassword(
+        auth,
+        cleanEmail,
+        password
+      );
 
+    const user = credential.user;
 
-    /* --------------------------------------------------------
-       VERIFICA EMAIL
-    -------------------------------------------------------- */
+    // --------------------------------------------------------
+    // ATUALIZAR INFORMAÇÕES DO USUÁRIO
+    // --------------------------------------------------------
 
-    if (
-      !user.emailVerified
-    ) {
+    await reload(user);
+
+    // --------------------------------------------------------
+    // VERIFICAR E-MAIL
+    // --------------------------------------------------------
+
+    if (!user.emailVerified) {
 
       throw authError(
         "auth/email-not-verified",
-        "Confirme o e-mail antes de entrar."
+        "Seu e-mail ainda não foi verificado."
       );
     }
 
-
-    /* --------------------------------------------------------
-       PROCURA PERFIL NO FIRESTORE
-    -------------------------------------------------------- */
+    // --------------------------------------------------------
+    // BUSCAR PERFIL
+    // --------------------------------------------------------
 
     const profile =
-      await readProfile(
-        user.uid
-      );
-
-
-    /* --------------------------------------------------------
-       PERFIL NÃO EXISTE
-    -------------------------------------------------------- */
+      await readProfile(user.uid);
 
     if (!profile) {
 
       throw authError(
         "profile/missing",
-        "Sua conta existe no Authentication, mas o perfil usuarios/{uid} não foi encontrado."
+        "Perfil do usuário não encontrado."
       );
     }
 
+    // --------------------------------------------------------
+    // VERIFICAR BLOQUEIO
+    // --------------------------------------------------------
 
-    /* --------------------------------------------------------
-       USUÁRIO BLOQUEADO
-    -------------------------------------------------------- */
-
-    if (
-      profile.bloqueado === true
-    ) {
+    if (profile.bloqueado === true) {
 
       throw authError(
         "auth/account-blocked",
-        "Esta identidade está bloqueada."
+        "Esta conta está bloqueada."
       );
     }
-
-
-    /* --------------------------------------------------------
-       LOGIN APROVADO
-    -------------------------------------------------------- */
 
     return {
       user,
       profile
     };
 
-
   } catch (error) {
 
-    /*
-     * Se qualquer verificação falhar,
-     * encerra a sessão.
-     */
+    // --------------------------------------------------------
+    // GARANTIR LOGOUT EM CASO DE ERRO
+    // --------------------------------------------------------
 
-    await signOut(auth);
+    try {
+      await signOut(auth);
+    } catch (_) {}
 
     throw error;
   }
 }
 
 
-/* ============================================================
-   OBTER SESSÃO ATUAL
-============================================================ */
+// ============================================================
+// USUÁRIO ATUAL
+// ============================================================
 
-export async function getCurrentSession() {
-
+export async function getCurrentUser() {
   await waitFirebase();
 
+  return auth.currentUser;
+}
 
-  const user =
-    auth.currentUser;
 
+// ============================================================
+// SESSÃO ATUAL
+// ============================================================
+
+export async function getCurrentSession() {
+  await waitFirebase();
+
+  const user = auth.currentUser;
 
   if (!user) {
     return null;
   }
 
-
-  await user.reload();
-
-
-  /* ----------------------------------------------------------
-     EMAIL NÃO VERIFICADO
-  ---------------------------------------------------------- */
-
-  if (
-    !user.emailVerified
-  ) {
-
-    return null;
-  }
-
-
-  /* ----------------------------------------------------------
-     CARREGA PERFIL
-  ---------------------------------------------------------- */
+  await reload(user);
 
   const profile =
-    await readProfile(
-      user.uid
-    );
-
-
-  /* ----------------------------------------------------------
-     PERFIL INVÁLIDO OU BLOQUEADO
-  ---------------------------------------------------------- */
-
-  if (
-    !profile ||
-    profile.bloqueado === true
-  ) {
-
-    return null;
-  }
-
+    await readProfile(user.uid);
 
   return {
     user,
@@ -625,388 +520,111 @@ export async function getCurrentSession() {
 }
 
 
-/* ============================================================
-   OBSERVADOR DE AUTENTICAÇÃO
-============================================================ */
+// ============================================================
+// PROTEGER PÁGINA
+// ============================================================
 
-export function getCurrentUser(
-  callback
-) {
+export async function protectPage() {
+  await waitFirebase();
 
-  if (
-    typeof callback !==
-    "function"
-  ) {
+  const user = auth.currentUser;
 
-    throw new TypeError(
-      "getCurrentUser precisa receber uma função callback."
-    );
+  if (!user) {
+    redirectTo(LOGIN_PAGE);
+    return null;
   }
 
+  await reload(user);
 
-  let unsubscribe =
-    () => {};
+  if (!user.emailVerified) {
 
+    try {
+      await signOut(auth);
+    } catch (_) {}
 
-  waitFirebase()
+    redirectTo(LOGIN_PAGE);
 
-    .then(() => {
+    return null;
+  }
 
-      unsubscribe =
-        onAuthStateChanged(
-          auth,
+  const profile =
+    await readProfile(user.uid);
 
-          async (user) => {
+  if (!profile) {
 
-            /* ----------------------------------------------
-               SEM USUÁRIO
-            ---------------------------------------------- */
+    try {
+      await signOut(auth);
+    } catch (_) {}
 
-            if (!user) {
+    redirectTo(LOGIN_PAGE);
 
-              callback(null);
+    return null;
+  }
 
-              return;
-            }
+  if (profile.bloqueado === true) {
 
+    try {
+      await signOut(auth);
+    } catch (_) {}
 
-            try {
+    redirectTo(LOGIN_PAGE);
 
-              await user.reload();
+    return null;
+  }
 
-
-              /* --------------------------------------------
-                 EMAIL NÃO VERIFICADO
-              -------------------------------------------- */
-
-              if (
-                !user.emailVerified
-              ) {
-
-                callback(null);
-
-                return;
-              }
-
-
-              /* --------------------------------------------
-                 CARREGA PERFIL
-              -------------------------------------------- */
-
-              const profile =
-                await readProfile(
-                  user.uid
-                );
-
-
-              /* --------------------------------------------
-                 PERFIL AUSENTE OU BLOQUEADO
-              -------------------------------------------- */
-
-              if (
-                !profile ||
-                profile.bloqueado === true
-              ) {
-
-                callback(null);
-
-                return;
-              }
-
-
-              /* --------------------------------------------
-                 USUÁRIO AUTORIZADO
-              -------------------------------------------- */
-
-              callback(
-                user,
-                profile
-              );
-
-
-            } catch (error) {
-
-              console.error(
-                "[CYBER-NEXIS] Sessão:",
-                error
-              );
-
-
-              callback(
-                null,
-                null,
-                error
-              );
-            }
-          }
-        );
-    })
-
-
-    .catch((error) => {
-
-      console.error(
-        "[CYBER-NEXIS] Firebase:",
-        error
-      );
-
-
-      callback(
-        null,
-        null,
-        error
-      );
-    });
-
-
-  /* ----------------------------------------------------------
-     CANCELA O OBSERVADOR
-  ---------------------------------------------------------- */
-
-  return () =>
-    unsubscribe();
-}
-
-
-/* ============================================================
-   PROTEGER PÁGINAS
-============================================================ */
-
-export function protectPage(
-  redirect = "login.html"
-) {
-
-  /* ----------------------------------------------------------
-     ESCONDE A PÁGINA DURANTE A VERIFICAÇÃO
-
-     Isso evita que conteúdo protegido apareça
-     por alguns milissegundos antes do redirect.
-  ---------------------------------------------------------- */
-
-  const guard =
-    document.createElement(
-      "style"
-    );
-
-
-  guard.dataset.authGuard =
-    "true";
-
-
-  guard.textContent =
-    "html{visibility:hidden!important}";
-
-
-  document.head.appendChild(
-    guard
-  );
-
-
-  let unsubscribe =
-    () => {};
-
-
-  waitFirebase()
-
-    .then(() => {
-
-      unsubscribe =
-        onAuthStateChanged(
-          auth,
-
-          async (user) => {
-
-            /* ----------------------------------------------
-               NÃO ESTÁ LOGADO
-            ---------------------------------------------- */
-
-            if (!user) {
-
-              redirectTo(
-                redirect,
-                "login-required"
-              );
-
-              return;
-            }
-
-
-            try {
-
-              await user.reload();
-
-
-              /* --------------------------------------------
-                 EMAIL NÃO VERIFICADO
-              -------------------------------------------- */
-
-              if (
-                !user.emailVerified
-              ) {
-
-                await signOut(auth);
-
-
-                redirectTo(
-                  redirect,
-                  "email-not-verified"
-                );
-
-
-                return;
-              }
-
-
-              /* --------------------------------------------
-                 PERFIL FIRESTORE
-              -------------------------------------------- */
-
-              const profile =
-                await readProfile(
-                  user.uid
-                );
-
-
-              /* --------------------------------------------
-                 PERFIL NÃO EXISTE
-              -------------------------------------------- */
-
-              if (!profile) {
-
-                await signOut(auth);
-
-
-                redirectTo(
-                  redirect,
-                  "profile-missing"
-                );
-
-
-                return;
-              }
-
-
-              /* --------------------------------------------
-                 CONTA BLOQUEADA
-              -------------------------------------------- */
-
-              if (
-                profile.bloqueado ===
-                true
-              ) {
-
-                await signOut(auth);
-
-
-                redirectTo(
-                  redirect,
-                  "account-blocked"
-                );
-
-
-                return;
-              }
-
-
-              /* --------------------------------------------
-                 ACESSO AUTORIZADO
-
-                 Mostra a página.
-              -------------------------------------------- */
-
-              guard.remove();
-
-
-            } catch (error) {
-
-              console.error(
-                "[CYBER-NEXIS] Guard:",
-                error
-              );
-
-
-              await signOut(auth);
-
-
-              redirectTo(
-                redirect,
-                "session-error"
-              );
-            }
-          }
-        );
-    })
-
-
-    .catch((error) => {
-
-      console.error(
-        "[CYBER-NEXIS] Falha ao iniciar Firebase:",
-        error
-      );
-
-
-      redirectTo(
-        redirect,
-        "firebase-error"
-      );
-    });
-
-
-  /* ----------------------------------------------------------
-     FUNÇÃO DE LIMPEZA
-  ---------------------------------------------------------- */
-
-  return () => {
-
-    unsubscribe();
-
-
-    if (
-      guard.isConnected
-    ) {
-
-      guard.remove();
-    }
+  return {
+    user,
+    profile
   };
 }
 
 
-/* ============================================================
-   LOGOUT
-============================================================ */
+// ============================================================
+// LOGOUT
+// ============================================================
 
-export async function logout(
-  redirect = "login.html"
-) {
-
+export async function logout() {
   await waitFirebase();
-
 
   await signOut(auth);
 
-
-  if (redirect) {
-
-    window.location.replace(
-      redirect
-    );
-  }
+  redirectTo(LOGIN_PAGE);
 }
 
 
-/* ============================================================
-   OBTER DADOS DE UM USUÁRIO
-============================================================ */
+// ============================================================
+// DADOS DO USUÁRIO
+// ============================================================
 
-export async function getUserData(
-  uid
-) {
-
+export async function getUserData(uid = null) {
   await waitFirebase();
 
+  const user = auth.currentUser;
 
-  return readProfile(
-    uid
+  const targetUid =
+    uid ||
+    user?.uid;
+
+  if (!targetUid) {
+    return null;
+  }
+
+  return await readProfile(
+    targetUid
+  );
+}
+
+
+// ============================================================
+// OBSERVADOR DE AUTENTICAÇÃO
+// ============================================================
+
+export function watchAuth(callback) {
+
+  assertFirebaseConfigured();
+
+  return onAuthStateChanged(
+    auth,
+    callback
   );
 }
