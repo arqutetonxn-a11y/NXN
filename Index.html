@@ -1,407 +1,1428 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
 
-  <title>Cyber-Nexis — Rede Discreta de Observação e Análise</title>
-  <meta name="description" content="A Cyber-Nexis é uma rede descentralizada de especialistas dedicada à observação ética e à intervenção controlada em falhas sistêmicas.">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="Styles.css">
-  <link rel="stylesheet" href="painel-operacoes.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css">
+    <meta
+        name="description"
+        content="CYBER NEXIS — comunidade de cibersegurança, hackers éticos, aprendizado, análise e proteção digital."
+    >
 
-  <!-- Scripts externos -->
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js" defer></script>
+    <meta
+        name="theme-color"
+        content="#05070a"
+    >
 
-  <!-- Scripts internos -->
-  <script src="onboarding.js" defer></script>
-  <script src="sombra-digital.js" defer></script>
-  <script src="teste_observacao.js" defer></script>
- <script src="protocolo_sentinel.js" defer></script>
-  <script src="particles-config.js" defer></script>
-  <script src="painel-operacoes.js" defer></script>
-  <link rel="stylesheet" href="jogo-nexus.css">
+    <title>CYBER NEXIS | Cibersegurança</title>
+
+    <!-- =========================================================
+         FAVICON
+    ========================================================== -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="assets/images/logo.png"
+    >
+
+    <!-- =========================================================
+         CSS
+    ========================================================== -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
 </head>
 
-<body class="cnx-blue-theme">
- <script type="module">
-  import { protectPage, logout } from "./site.js";
+<body class="home-page">
 
-  protectPage("login.html");
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+    <header class="site-header" id="siteHeader">
 
-  window.addEventListener("DOMContentLoaded", () => {
-    const logoutButton = document.getElementById("logout");
+        <div class="container header-container">
 
-    logoutButton?.addEventListener("click", async () => {
-      try {
-        logoutButton.disabled = true;
-        await logout();
-        window.location.replace("login.html");
-      } catch (error) {
-        console.error("Erro ao fazer logout:", error);
-        logoutButton.disabled = false;
-      }
-    });
-  });
-</script>  
-  <!-- Background partículas -->
-  <div id="particles-js"></div>
+            <!-- LOGO -->
+            <a
+                href="index.html"
+                class="site-brand"
+                aria-label="CYBER NEXIS - Início"
+            >
+                <img
+                    src="assets/images/logo.png"
+                    alt="CYBER NEXIS"
+                    class="site-logo"
+                >
 
-  <header>
-    <div class="container header-inner">
-      <div class="logo-cyber">
-        <img src="Imagem/Logotipo.png" alt="Logotipo.png">
-      </div>
+                <div class="site-brand-text">
+                    <span class="brand-name">CYBER NEXIS</span>
+                    <span class="brand-subtitle">// CYBERSECURITY</span>
+                </div>
+            </a>
 
-      <nav class="nav-links-container" aria-label="Navegação principal">
-        <div class="nav-links">
-          <a href="recrutamento.html">Recrutamento</a>
-          <a href="#protocolo-sentinel">Protocolo Sentinel</a>
-          <a href="manual.html">Manual</a>
-          <a href="Regras.html">Regras</a>
-          <a href="contato.html">Contato</a>
-          <a href="chat.html">chat online</a>
-          <a href="quiz.html">Teste quiz</a>
-        </div>
-
-        <select class="lang-select" onchange="changeLanguage(this.value)" aria-label="Selecionar idioma">
-          <option value="pt-BR">Português</option>
-          <option value="en-US">English</option>
-          <option value="es-ES">Español</option>
-        </select>
-
-        <button id="logout" type="button">Sair</button>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container">
-    <section class="section">
-      <h2>SOBRE A ORGANIZAÇÃO</h2>
-      <p>A Cyber-Nexis é uma organização independente de pesquisa e operações em segurança digital. Sua estrutura é deliberadamente não pública. A existência de uma hierarquia funcional é parte essencial do seu modelo operacional, garantindo coordenação, segurança e isolamento de informação. A liderança é centralizada em nível estratégico, enquanto as operações são distribuídas em camadas técnicas. O sistema não é aberto ao público. O acesso é restrito e progressivo.</p>
-      <img src="Imagem/CNX06.png" width="1024" height="1024" alt="Mapa e estrutura de núcleos Cyber-Nexis" class="gallery-image">
-    </section>
-
-    <section id="central-operacoes" class="section ops-command-center" aria-labelledby="ops-title">
-      <div class="ops-heading">
-        <div>
-          <span class="ops-kicker">CYBER-NEXIS // CENTRAL N0</span>
-          <h2 id="ops-title">PAINEL DE OPERAÇÕES</h2>
-          <p>Estado real desta sessão, integridade do navegador e etapas persistentes da triagem.</p>
-        </div>
-        <div class="ops-live-badge"><span></span> SISTEMA ATIVO</div>
-      </div>
-
-      <div class="ops-stats" aria-label="Estatísticas da rede">
-        <article class="ops-stat-card">
-          <span>CONEXÃO</span>
-          <strong id="ops-active-nodes">0</strong>
-          <small>estado online deste dispositivo</small>
-        </article>
-        <article class="ops-stat-card">
-          <span>INTEGRIDADE LOCAL</span>
-          <strong id="ops-integrity-score">0%</strong>
-          <small>verificações do navegador</small>
-        </article>
-        <article class="ops-stat-card">
-          <span>REGISTROS LOCAIS</span>
-          <strong id="ops-packets">0</strong>
-          <small>dados Cyber-Nexis neste navegador</small>
-        </article>
-        <article class="ops-stat-card">
-          <span>RISCO ATUAL</span>
-          <strong id="ops-risk-level">BAIXO</strong>
-          <small id="ops-last-sync">sincronizando...</small>
-        </article>
-      </div>
-
-      <div class="ops-main-grid">
-        <article class="ops-panel ops-feed-panel">
-          <header class="ops-panel-header">
-            <div><span>◉</span> EVENTOS REAIS DO SITE</div>
-            <span id="ops-feed-count">00 EVENTOS</span>
-          </header>
-          <div id="ops-live-feed" class="ops-live-feed" aria-live="polite"></div>
-        </article>
-
-        <article class="ops-panel ops-terminal-panel">
-          <header class="ops-panel-header">
-            <div><span>&gt;_</span> TERMINAL CNX</div>
-            <button id="ops-terminal-restart" class="ops-icon-button" type="button" aria-label="Reiniciar terminal">↻</button>
-          </header>
-          <div class="ops-terminal-toolbar">
-            <i></i><i></i><i></i><span>root@cyber-nexis:~</span>
-          </div>
-          <div id="ops-terminal-output" class="ops-terminal-output" aria-live="polite"></div>
-          <div class="ops-terminal-line"><span>operator@cnx:~$</span><i class="ops-cursor"></i></div>
-        </article>
-      </div>
-
-      <article class="ops-panel ops-missions-panel">
-        <header class="ops-panel-header ops-missions-header">
-          <div>
-            <span>▣</span> ETAPAS DA TRIAGEM
-            <small id="ops-mission-date"></small>
-          </div>
-          <div class="ops-progress-copy"><strong id="ops-mission-completed">0/3</strong> concluídas</div>
-        </header>
-        <div class="ops-progress-track" aria-hidden="true"><span id="ops-progress-bar"></span></div>
-        <div id="ops-mission-list" class="ops-mission-list"></div>
-        <p id="ops-mission-message" class="ops-mission-message" aria-live="polite"></p>
-      </article>
-    </section>
-
-    <section id="protocolo-sentinel" class="section sentinel-game">
-      <canvas id="sentinel-matrix" aria-hidden="true"></canvas>
-
-      <div class="sentinel-content">
-        <div class="sentinel-header">
-          <div>
-            <span class="sentinel-kicker">CYBER-NEXIS // TRIAGEM</span>
-            <h2>PROTOCOLO SENTINEL</h2>
-          </div>
-
-          <div class="sentinel-clock-box">
-            <span>HORA LOCAL</span>
-            <strong id="sentinel-clock">00:00:00</strong>
-          </div>
-        </div>
-
-        <div class="sentinel-panel">
-          <div class="sentinel-lock">⌬</div>
-
-          <p class="sentinel-subtitle">
-            Desafio individual por sessão. Responda com precisão; tentativas e bloqueios são preservados.
-          </p>
-
-          <h3 id="sentinel-question" class="sentinel-question">
-            Inicializando protocolo...
-          </h3>
-
-          <form id="sentinel-form" class="sentinel-form" autocomplete="off">
-            <label for="sentinel-answer" class="sr-only">Resposta do Protocolo Sentinel</label>
-
-            <div class="sentinel-input-wrap">
-              <span>&gt;</span>
-              <input
-                id="sentinel-answer"
-                type="text"
-                placeholder="digite sua resposta..."
-                spellcheck="false"
-                autocomplete="off"
-              />
-            </div>
-
-            <button id="sentinel-button" type="submit">
-              VERIFICAR ACESSO
+            <!-- MENU MOBILE -->
+            <button
+                type="button"
+                class="menu-toggle"
+                id="menuToggle"
+                aria-label="Abrir menu"
+                aria-controls="mainNavigation"
+                aria-expanded="false"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
-          </form>
 
-          <p id="sentinel-status" class="sentinel-status">
-            <span>Status:</span> aguardando operador...
-          </p>
-        </div>
+            <!-- NAVEGAÇÃO -->
+            <nav
+                class="main-navigation"
+                id="mainNavigation"
+                aria-label="Navegação principal"
+            >
 
-        <div class="sentinel-footer">
-          <div>⌖ Tentativas: <strong id="sentinel-attempts">0</strong></div>
-          <div>▣ Camada: <strong id="sentinel-layer">Pública</strong></div>
-          <div>▥ Sessão: <strong id="sentinel-window">analisando...</strong></div>
-        </div>
-      </div>
+                <a
+                    href="index.html"
+                    class="nav-link active"
+                >
+                    Início
+                </a>
 
-      <div id="sentinel-overlay" class="sentinel-overlay" aria-live="polite">
-        <div class="sentinel-result">
-          <h3 id="sentinel-result-title">ANALISANDO...</h3>
-          <p id="sentinel-result-message">Verificando assinatura de resposta.</p>
-          <div class="sentinel-loader"></div>
-        </div>
-      </div>
+                <a
+                    href="#sobre"
+                    class="nav-link"
+                >
+                    Sobre
+                </a>
 
-      <!--
-        fragmento_sentinel: a verdadeira triagem não mede força, mede observação.
-        pista: a pergunta muda pela hora.
-      -->
-    </section>
+                <a
+                    href="servicos.html"
+                    class="nav-link"
+                >
+                    Serviços
+                </a>
 
+                <a
+                    href="testes.html"
+                    class="nav-link"
+                >
+                    Habilidades
+                </a>
 
-    <section class="section">
-      <h2>ESTRUTURA INTERNA</h2>
-      <p>A organização é composta por três camadas funcionais: Camada Estratégica, Camada Operacional e Camada de Avaliação. Nenhuma camada possui acesso completo ao sistema. A separação de informação é um mecanismo de segurança.</p>
-      <div class="image-gallery">
-        <img src="Imagem/CNX07.jpg" alt="Rede descentralizada da Cyber-Nexis" class="gallery-image">
-      </div>
-    </section>
+                <a
+                    href="regras.html"
+                    class="nav-link"
+                >
+                    Regras
+                </a>
 
-    <section class="section">
-      <h2>MISSÃO</h2>
-      <p>A Cyber-Nexis atua em análise e resposta a vulnerabilidades estruturais em ambientes digitais. O objetivo não é exposição pública. É correção técnica de falhas sistêmicas. Intervenções são raras, precisas e calculadas.</p>
-      <img src="Imagem/Grupo 01.png" alt="Missão operacional da Cyber-Nexis" width="1024" height="1024" class="gallery-image">
-    </section>
+                <a
+                    href="contato.html"
+                    class="nav-link"
+                >
+                    Contato
+                </a>
 
-    <section id="recrutamento" class="section">
-      <h2>RECRUTAMENTO</h2>
-      <p>Não há inscrição aberta. Convites não são solicitados. São estendidos. Avaliação ocorre antes do contato direto. Capacidade técnica é pressuposto. Discrição é requisito. Tentativas de acesso não autorizadas são registradas e ignoradas. Integração é progressiva. Confiança é cumulativa.</p>
-      <div class="form-actions">
-        <button class="btn" type="button" onclick="location.href='recrutamento.html'">Solicitar Indicação</button>
-      </div>
-    </section>
+            </nav>
 
-    <section class="section">
-      <h2>VISÃO</h2>
-      <p>Sistemas digitais tornam-se instáveis quando crescem sem auditoria. A função da Cyber-Nexis é atuar como mecanismo de equilíbrio técnico. Isso envolve observação, análise e intervenção controlada quando necessário.</p>
-      <img src="Imagem/Garoto.jpeg" width="1024" height="1024" alt="Visão estratégica Cyber-Nexis" class="gallery-image">
-    </section>
+            <!-- AÇÕES -->
+            <div class="header-actions">
 
-    <section class="section">
-      <h2>HIERARQUIA</h2>
-      <p>Compartimentação. Acesso por necessidade. Conhecimento por função. Nenhuma unidade possui visão total. Nenhuma liderança é pública. Coordenação ocorre por validação cruzada. Confiança é matemática, não emocional.</p>
-      <img src="Imagem/CNX09.png" alt="Diagrama de estrutura descentralizada" class="gallery-image">
-    </section>
+                <a
+                    href="login.html"
+                    class="header-login"
+                >
+                    Login
+                </a>
 
-    <section class="section">
-      <h2>CAUSA</h2>
-      <p>A organização existe para reduzir vulnerabilidades estruturais em sistemas digitais e sociais. A abordagem é técnica, não ideológica. A ação é baseada em análise, não opinião.</p>
-      <img src="Imagem/Grupo 02.png" width="1024" height="1024" alt="Causa da Cyber-Nexis" class="gallery-image">
-    </section>
+                <a
+                    href="cadastro.html"
+                    class="btn btn-small"
+                >
+                    Cadastro
+                </a>
 
-
-    <section class="section">
-      <h2>PROTOCOLOS</h2>
-      <p>Informação é fracionada. Comunicação é contingente. Persistência é risco. Exposição individual é falha sistêmica. Nenhuma ação ocorre sem cálculo de impacto e risco. Operações são descartáveis. Identidades não. Erro é analisado. Erro repetido é exclusão.</p>
-      <img src="Imagem/86773513-ca70-4338-b0c2-d56f1c6292c2.jpeg" width="1024" height="1024" alt="Protocolos e fluxos de decisão Cyber-Nexis" class="gallery-image">
-    </section>
-
-<section id="teste-observacao" class="section observation-lab">
-      <canvas id="obs-matrix" aria-hidden="true"></canvas>
-
-      <div class="obs-content">
-        <div class="obs-topline">
-          <div>
-            <span class="obs-kicker">CYBER-NEXIS // CAMADA N0</span>
-            <h2>TESTE DE OBSERVAÇÃO</h2>
-            <p>Não procure força. Procure detalhe. O sistema registra cada escolha e restaura o progresso após atualizar a página.</p>
-          </div>
-
-          <div class="obs-clock-card">
-            <span>SCAN LOCAL</span>
-            <strong id="obs-clock">00:00:00</strong>
-          </div>
-        </div>
-
-        <div class="obs-grid">
-          <div class="obs-visual-panel">
-            <div class="obs-frame-header">
-              <span>VISOR // RUÍDO CONTROLADO</span>
-              <span id="obs-round-tag">N0-01</span>
             </div>
 
-            <div class="obs-image-shell">
-              <img id="imagem-mini-jogo" alt="Imagem do mini jogo de observação">
-              <div class="obs-reticle"></div>
-              <div class="obs-scanline"></div>
-            </div>
-          </div>
-
-          <div class="obs-console-panel">
-            <div class="obs-mini-status">
-              <span>STATUS</span>
-              <strong id="obs-integrity">AGUARDANDO</strong>
-            </div>
-
-            <p id="pergunta-mini-jogo" class="obs-question"></p>
-
-            <div id="opcoes-mini-jogo" class="obs-options"></div>
-
-            <p id="feedback-mini-jogo" class="obs-feedback" aria-live="polite"></p>
-            <p id="progresso-mini-jogo" class="obs-progress"></p>
-
-            <div class="obs-terminal-feed" aria-hidden="true">
-              <p>&gt; calibrando ruído visual...</p>
-              <p>&gt; injetando falso padrão...</p>
-              <p>&gt; aguardando operador atento...</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <button id="acesso-oculto" class="obs-secret-button" style="display:none;" type="button">
-      Acessar Arquivo Restrito
-    </button>
-
-
-
-    <section id="nexus-gate" class="section nexus-gate">
-      <div class="nexus-game-shell">
-        <div class="nexus-game-header">
-          <div>
-            <span class="nexus-kicker">CYBER-NEXIS // TESTE DE ACESSO</span>
-            <h2>NEXUS GATE</h2>
-            <p>Complete as três fases. A vitória libera a rota para o núcleo restrito.</p>
-          </div>
-          <div class="nexus-progress-box">
-            <span>FASE</span>
-            <strong id="nexus-stage">1 / 3</strong>
-          </div>
         </div>
 
-        <div class="nexus-game-panel">
-          <div class="nexus-status-row">
-            <span id="nexus-status">Aguardando início...</span>
-            <span id="nexus-score">0 pts</span>
-          </div>
+    </header>
 
-          <div id="nexus-content" class="nexus-content">
-            <div class="nexus-intro">
-              <div class="nexus-symbol">⌬</div>
-              <h3>Pronto para entrar no teste?</h3>
-              <p>Memória, lógica e decodificação.</p>
-              <button id="nexus-start" class="btn" type="button">INICIAR JOGO</button>
+
+    <main>
+
+        <!-- =====================================================
+             HERO
+        ====================================================== -->
+        <section class="hero" id="inicio">
+
+            <div class="hero-background">
+
+                <!-- Imagem de fallback -->
+                <img
+                    src="assets/images/hero.jpg"
+                    alt=""
+                    class="hero-image"
+                    aria-hidden="true"
+                >
+
+                <!-- Vídeo principal -->
+                <video
+                    class="hero-video"
+                    autoplay
+                    muted
+                    loop
+                    playsinline
+                    poster="assets/images/hero.jpg"
+                    preload="metadata"
+                    aria-hidden="true"
+                >
+                    <source
+                        src="assets/videos/hero.mp4"
+                        type="video/mp4"
+                    >
+                </video>
+
+                <div class="hero-overlay"></div>
+
             </div>
-          </div>
+
+
+            <div class="container hero-container">
+
+                <div class="hero-content">
+
+                    <div class="hero-kicker">
+                        <span class="status-dot"></span>
+                        SISTEMA ONLINE
+                    </div>
+
+                    <p class="hero-code">
+                        // CYBER NEXIS / NETWORK
+                    </p>
+
+                    <h1 class="hero-title">
+                        SEGURANÇA
+                        <span>SEM FRONTEIRAS.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Uma comunidade dedicada à cibersegurança,
+                        aprendizado técnico e atuação ética para
+                        proteger pessoas, sistemas e organizações.
+                    </p>
+
+                    <div class="hero-actions">
+
+                        <a
+                            href="cadastro.html"
+                            class="btn btn-primary"
+                        >
+                            Entrar na comunidade
+                        </a>
+
+                        <a
+                            href="testes.html"
+                            class="btn btn-outline"
+                        >
+                            Testar habilidades
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SÍMBOLO / LOBO -->
+                <div
+                    class="wolf-frame"
+                    aria-hidden="true"
+                >
+
+                    <div class="wolf-glow"></div>
+
+                    <img
+                        src="assets/images/logo.png"
+                        alt="Símbolo do CYBER NEXIS"
+                        class="wolf-logo"
+                    >
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             STATUS BAR
+        ====================================================== -->
+        <section class="status-bar">
+
+            <div class="container status-container">
+
+                <div class="status-item">
+                    <span class="status-indicator"></span>
+                    <span>SISTEMA</span>
+                    <strong>ONLINE</strong>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-indicator"></span>
+                    <span>REDE</span>
+                    <strong>ATIVA</strong>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-indicator"></span>
+                    <span>COMUNIDADE</span>
+                    <strong>OPERACIONAL</strong>
+                </div>
+
+                <div class="status-item">
+                    <span class="status-indicator"></span>
+                    <span>SEGURANÇA</span>
+                    <strong>MONITORADA</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SOBRE
+        ====================================================== -->
+        <section
+            class="section about-section"
+            id="sobre"
+        >
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+
+                    <span class="section-kicker">
+                        01 // SOBRE
+                    </span>
+
+                    <h2>
+                        CONHEÇA O
+                        <span>CYBER NEXIS</span>
+                    </h2>
+
+                    <p>
+                        Conhecimento, colaboração e responsabilidade
+                        para construir uma comunidade de segurança
+                        digital.
+                    </p>
+
+                </div>
+
+
+                <div class="about-grid">
+
+                    <div class="about-image reveal">
+
+                        <div class="image-frame">
+
+                            <img
+                                src="assets/images/Sobre.png"
+                                alt="Representação visual de cibersegurança"
+                                loading="lazy"
+                            >
+
+                            <div class="image-overlay"></div>
+
+                            <div class="image-label">
+                                NEXUS // COMMUNITY
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="about-content reveal">
+
+                        <span class="content-code">
+                            // WHO WE ARE
+                        </span>
+
+                        <h3>
+                            Uma rede de pessoas
+                            interessadas em proteger.
+                        </h3>
+
+                        <p>
+                            O CYBER NEXIS é apresentado como uma
+                            comunidade voltada ao aprendizado e à
+                            prática responsável em cibersegurança.
+                        </p>
+
+                        <p>
+                            Aqui, conhecimento técnico deve caminhar
+                            junto com autorização, privacidade,
+                            responsabilidade e respeito pelos sistemas
+                            e pelas pessoas.
+                        </p>
+
+
+                        <div class="about-points">
+
+                            <div class="about-point">
+
+                                <span class="point-number">
+                                    01
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Aprendizado
+                                    </strong>
+
+                                    <p>
+                                        Evolução contínua de habilidades
+                                        técnicas.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="about-point">
+
+                                <span class="point-number">
+                                    02
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Colaboração
+                                    </strong>
+
+                                    <p>
+                                        Troca de conhecimento entre
+                                        participantes.
+                                    </p>
+                                </div>
+
+                            </div>
+
+
+                            <div class="about-point">
+
+                                <span class="point-number">
+                                    03
+                                </span>
+
+                                <div>
+                                    <strong>
+                                        Ética
+                                    </strong>
+
+                                    <p>
+                                        Atuação dentro de autorização
+                                        e escopo definido.
+                                    </p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             APRESENTAÇÃO EM VÍDEO
+        ====================================================== -->
+        <section class="section video-section">
+
+            <div class="container">
+
+                <div class="section-heading centered reveal">
+
+                    <span class="section-kicker">
+                        02 // APRESENTAÇÃO
+                    </span>
+
+                    <h2>
+                        ENTRE NO
+                        <span>NEXIS</span>
+                    </h2>
+
+                    <p>
+                        Uma visão geral da proposta da comunidade.
+                    </p>
+
+                </div>
+
+
+                <div class="video-wrapper reveal">
+
+                    <video
+                        controls
+                        playsinline
+                        preload="metadata"
+                        poster="assets/images/nexus.jpg"
+                    >
+                        <source
+                            src="assets/videos/apresentacao.mp4"
+                            type="video/mp4"
+                        >
+
+                        Seu navegador não suporta reprodução de vídeo.
+                    </video>
+
+                    <div class="video-scanline"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             SERVIÇOS
+        ====================================================== -->
+        <section class="section services-section">
+
+            <div class="container">
+
+                <div class="section-heading reveal">
+
+                    <span class="section-kicker">
+                        03 // ATUAÇÃO
+                    </span>
+
+                    <h2>
+                        ÁREAS DE
+                        <span>CONHECIMENTO</span>
+                    </h2>
+
+                    <p>
+                        Conheça algumas das áreas trabalhadas dentro
+                        da proposta do CYBER NEXIS.
+                    </p>
+
+                </div>
+
+
+                <div class="services-grid">
+
+                    <!-- 01 -->
+                    <article class="service-card reveal">
+
+                        <div class="service-image">
+
+                             <img
+                                src="assets/images/seguranca-web.png"
+                                alt="Segurança Web"
+                                loading="lazy"
+                            >
+
+                            <span class="service-number">
+                                01
+                            </span>
+
+                        </div>
+
+                        <div class="service-content">
+
+                            <span class="service-code">
+                                WEB SECURITY
+                            </span>
+
+                            <h3>
+                                Segurança Web
+                            </h3>
+
+                            <p>
+                                Conceitos relacionados à proteção de
+                                aplicações e serviços web.
+                            </p>
+
+                            <a
+                                href="servicos.html"
+                                class="service-link"
+                            >
+                                Explorar
+                                <span>→</span>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- 02 -->
+                    <article class="service-card reveal">
+
+                        <div class="service-image">
+
+                            <img
+                                src="assets/images/vulnerabilidades.png"
+                                alt="Análise de vulnerabilidades"
+                                loading="lazy"
+                            >
+
+                            <span class="service-number">
+                                02
+                            </span>
+
+                        </div>
+
+                        <div class="service-content">
+
+                            <span class="service-code">
+                                VULNERABILITY
+                            </span>
+
+                            <h3>
+                                Vulnerabilidades
+                            </h3>
+
+                            <p>
+                                Estudo de falhas, riscos e formas
+                                responsáveis de identificação.
+                            </p>
+
+                            <a
+                                href="servicos.html"
+                                class="service-link"
+                            >
+                                Explorar
+                                <span>→</span>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- 03 -->
+                    <article class="service-card reveal">
+
+                        <div class="service-image">
+
+                            <img
+                                src="assets/images/auditoria.png"
+                                alt="Auditoria de segurança"
+                                loading="lazy"
+                            >
+
+                            <span class="service-number">
+                                03
+                            </span>
+
+                        </div>
+
+                        <div class="service-content">
+
+                            <span class="service-code">
+                                SECURITY AUDIT
+                            </span>
+
+                            <h3>
+                                Auditoria
+                            </h3>
+
+                            <p>
+                                Avaliação estruturada de segurança
+                                dentro de escopo autorizado.
+                            </p>
+
+                            <a
+                                href="servicos.html"
+                                class="service-link"
+                            >
+                                Explorar
+                                <span>→</span>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- 04 -->
+                    <article class="service-card reveal">
+
+                        <div class="service-image">
+
+                            <img
+                                src="assets/images/redes.jpg"
+                                alt="Segurança de redes"
+                                loading="lazy"
+                            >
+
+                            <span class="service-number">
+                                04
+                            </span>
+
+                        </div>
+
+                        <div class="service-content">
+
+                            <span class="service-code">
+                                NETWORK SECURITY
+                            </span>
+
+                            <h3>
+                                Redes
+                            </h3>
+
+                            <p>
+                                Fundamentos de redes, arquitetura e
+                                princípios de proteção.
+                            </p>
+
+                            <a
+                                href="servicos.html"
+                                class="service-link"
+                            >
+                                Explorar
+                                <span>→</span>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- 05 -->
+                    <article class="service-card reveal">
+
+                        <div class="service-image">
+
+                            <img
+                                src="assets/images/treinamento.jpg"
+                                alt="Treinamento em cibersegurança"
+                                loading="lazy"
+                            >
+
+                            <span class="service-number">
+                                05
+                            </span>
+
+                        </div>
+
+                        <div class="service-content">
+
+                            <span class="service-code">
+                                CONSULTING
+                            </span>
+
+                            <h3>
+                                Consultoria
+                            </h3>
+
+                            <p>
+                                Orientação e organização de conhecimentos
+                                relacionados à segurança digital.
+                            </p>
+
+                            <a
+                                href="servicos.html"
+                                class="service-link"
+                            >
+                                Explorar
+                                <span>→</span>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+
+                    <!-- 06 -->
+                    <article class="service-card reveal">
+
+                        <div class="service-image">
+
+                            <img
+                                src="assets/images/linux.jpg"
+                                alt="Linux e cibersegurança"
+                                loading="lazy"
+                            >
+
+                            <span class="service-number">
+                                06
+                            </span>
+
+                        </div>
+
+                        <div class="service-content">
+
+                            <span class="service-code">
+                                EDUCATION
+                            </span>
+
+                            <h3>
+                                Educação
+                            </h3>
+
+                            <p>
+                                Formação de conhecimentos essenciais
+                                para atuação responsável.
+                            </p>
+
+                            <a
+                                href="servicos.html"
+                                class="service-link"
+                            >
+                                Explorar
+                                <span>→</span>
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CONHECIMENTOS
+        ====================================================== -->
+        <section class="section knowledge-section">
+
+            <div class="container">
+
+                <div class="section-heading centered reveal">
+
+                    <span class="section-kicker">
+                        04 // KNOWLEDGE
+                    </span>
+
+                    <h2>
+                        CONHECIMENTO
+                        <span>É DEFESA</span>
+                    </h2>
+
+                    <p>
+                        Fundamentos que fazem parte da jornada de
+                        aprendizado.
+                    </p>
+
+                </div>
+
+
+                <div class="knowledge-grid">
+
+                    <article class="knowledge-card reveal">
+
+                        <div class="knowledge-icon">
+                            <img
+                                src="assets/icons/network.svg"
+                                alt=""
+                            >
+                        </div>
+
+                        <span>01</span>
+
+                        <h3>
+                            Redes
+                        </h3>
+
+                        <p>
+                            Protocolos, comunicação e arquitetura
+                            de redes.
+                        </p>
+
+                    </article>
+
+
+                    <article class="knowledge-card reveal">
+
+                        <div class="knowledge-icon">
+                            <img
+                                src="assets/icons/linux.svg"
+                                alt=""
+                            >
+                        </div>
+
+                        <span>02</span>
+
+                        <h3>
+                            Linux
+                        </h3>
+
+                        <p>
+                            Sistemas, terminal, permissões e
+                            administração.
+                        </p>
+
+                    </article>
+
+
+                    <article class="knowledge-card reveal">
+
+                        <div class="knowledge-icon">
+                            <img
+                                src="assets/icons/code.svg"
+                                alt=""
+                            >
+                        </div>
+
+                        <span>03</span>
+
+                        <h3>
+                            Programação
+                        </h3>
+
+                        <p>
+                            Lógica, automação e desenvolvimento
+                            de ferramentas.
+                        </p>
+
+                    </article>
+
+
+                    <article class="knowledge-card reveal">
+
+                        <div class="knowledge-icon">
+                            <img
+                                src="assets/icons/shield.svg"
+                                alt=""
+                            >
+                        </div>
+
+                        <span>04</span>
+
+                        <h3>
+                            Segurança Web
+                        </h3>
+
+                        <p>
+                            Princípios de proteção de aplicações
+                            e serviços.
+                        </p>
+
+                    </article>
+
+
+                    <article class="knowledge-card reveal">
+
+                        <div class="knowledge-icon">
+                            <img
+                                src="assets/icons/lock.svg"
+                                alt=""
+                            >
+                        </div>
+
+                        <span>05</span>
+
+                        <h3>
+                            Criptografia
+                        </h3>
+
+                        <p>
+                            Conceitos de proteção e confidencialidade
+                            da informação.
+                        </p>
+
+                    </article>
+
+
+                    <article class="knowledge-card reveal">
+
+                        <div class="knowledge-icon">
+                            <img
+                                src="assets/icons/shield.svg"
+                                alt=""
+                            >
+                        </div>
+
+                        <span>06</span>
+
+                        <h3>
+                            Segurança
+                        </h3>
+
+                        <p>
+                            Fundamentos de análise, proteção e
+                            resposta responsável.
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             TESTES DE HABILIDADES
+        ====================================================== -->
+        <section class="section tests-preview-section">
+
+            <div class="container">
+
+                <div class="tests-preview-grid">
+
+                    <div class="tests-preview-content reveal">
+
+                        <span class="section-kicker">
+                            05 // HABILIDADES
+                        </span>
+
+                        <h2>
+                            DESCUBRA SEU
+                            <span>NÍVEL</span>
+                        </h2>
+
+                        <p>
+                            Participe dos testes educacionais do
+                            CYBER NEXIS e acompanhe sua evolução
+                            dentro da comunidade.
+                        </p>
+
+                        <p>
+                            Os desafios são voltados ao aprendizado
+                            e devem ser realizados somente em
+                            ambientes autorizados.
+                        </p>
+
+                        <a
+                            href="testes.html"
+                            class="btn btn-primary"
+                        >
+                            Acessar testes
+                        </a>
+
+                    </div>
+
+
+                    <div class="tests-preview-terminal reveal">
+
+                        <div class="terminal-window">
+
+                            <div class="terminal-header">
+
+                                <div class="terminal-dots">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+
+                                <span>
+                                    NEXIS://SKILLS
+                                </span>
+
+                            </div>
+
+
+                            <div class="terminal-body">
+
+                                <p>
+                                    <span class="terminal-prompt">
+                                        nex@system:~$
+                                    </span>
+                                    initialize_skills
+                                </p>
+
+                                <p class="terminal-muted">
+                                    Loading knowledge matrix...
+                                </p>
+
+                                <p>
+                                    <span class="terminal-success">
+                                        [OK]
+                                    </span>
+                                    Networking
+                                </p>
+
+                                <p>
+                                    <span class="terminal-success">
+                                        [OK]
+                                    </span>
+                                    Linux
+                                </p>
+
+                                <p>
+                                    <span class="terminal-success">
+                                        [OK]
+                                    </span>
+                                    Web Security
+                                </p>
+
+                                <p>
+                                    <span class="terminal-success">
+                                        [OK]
+                                    </span>
+                                    Cryptography
+                                </p>
+
+                                <p>
+                                    <span class="terminal-prompt">
+                                        nex@system:~$
+                                    </span>
+                                    awaiting_user...
+                                </p>
+
+                                <span class="terminal-cursor"></span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             ÉTICA
+        ====================================================== -->
+        <section class="section ethics-section">
+
+            <div class="container">
+
+                <div class="ethics-box reveal">
+
+                    <div class="ethics-icon">
+                        <img
+                            src="assets/icons/shield.svg"
+                            alt=""
+                        >
+                    </div>
+
+                    <div class="ethics-content">
+
+                        <span class="section-kicker">
+                            06 // PRINCÍPIO
+                        </span>
+
+                        <h2>
+                            HACKER ÉTICO
+                            <span>NÃO É INVASOR.</span>
+                        </h2>
+
+                        <p>
+                            Todo conhecimento técnico deve ser
+                            utilizado com autorização, dentro de
+                            escopo definido e com responsabilidade.
+                        </p>
+
+                        <a
+                            href="regras.html"
+                            class="text-link"
+                        >
+                            Conhecer as regras
+                            <span>→</span>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             NEXUS
+        ====================================================== -->
+        <section class="section nexus-preview-section">
+
+            <div class="container">
+
+                <div class="nexus-preview-grid">
+
+                    <div class="nexus-preview-image reveal">
+
+                        <div class="image-frame">
+
+                            <img
+                                src="assets/images/nexus.jpg"
+                                alt="Interface visual do NEXUS"
+                                loading="lazy"
+                            >
+
+                            <div class="image-overlay"></div>
+
+                            <div class="nexus-overlay-label">
+                                NEXUS // RESTRICTED
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="nexus-preview-content reveal">
+
+                        <span class="section-kicker">
+                            07 // NEXUS
+                        </span>
+
+                        <h2>
+                            CENTRO DE
+                            <span>COMANDO</span>
+                        </h2>
+
+                        <p>
+                            O NEXUS é uma área restrita da plataforma,
+                            destinada a participantes que concluíram
+                            os requisitos definidos pelo sistema.
+                        </p>
+
+                        <div class="nexus-requirements">
+
+                            <div>
+                                <span>01</span>
+                                Conta cadastrada
+                            </div>
+
+                            <div>
+                                <span>02</span>
+                                Teste N0 concluído
+                            </div>
+
+                            <div>
+                                <span>03</span>
+                                Teste N1 concluído
+                            </div>
+
+                            <div>
+                                <span>04</span>
+                                Perfil de habilidades
+                            </div>
+
+                        </div>
+
+                        <a
+                            href="testes.html"
+                            class="btn btn-outline"
+                        >
+                            Ver requisitos
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CONTATO
+        ====================================================== -->
+        <section class="section contact-cta-section">
+
+            <div class="container">
+
+                <div class="contact-cta reveal">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            08 // CONTATO
+                        </span>
+
+                        <h2>
+                            TEM UMA
+                            <span>DÚVIDA?</span>
+                        </h2>
+
+                        <p>
+                            Entre em contato com a equipe do
+                            CYBER NEXIS para informações sobre
+                            a comunidade, serviços e treinamento.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="contato.html"
+                        class="btn btn-primary"
+                    >
+                        Entrar em contato
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================== -->
+    <footer class="site-footer">
+
+        <div class="container footer-container">
+
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="site-brand"
+                >
+
+                    <img
+                        src="assets/images/logo.png"
+                        alt="CYBER NEXIS"
+                        class="site-logo"
+                    >
+
+                    <div class="site-brand-text">
+
+                        <span class="brand-name">
+                            CYBER NEXIS
+                        </span>
+
+                        <span class="brand-subtitle">
+                            // CYBERSECURITY
+                        </span>
+
+                    </div>
+
+                </a>
+
+                <p>
+                    Conhecimento, colaboração e responsabilidade
+                    em cibersegurança.
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Navegação
+                </h3>
+
+                <a href="index.html">
+                    Início
+                </a>
+
+                <a href="#sobre">
+                    Sobre
+                </a>
+
+                <a href="servicos.html">
+                    Serviços
+                </a>
+
+                <a href="testes.html">
+                    Habilidades
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Comunidade
+                </h3>
+
+                <a href="regras.html">
+                    Regras
+                </a>
+
+                <a href="login.html">
+                    Login
+                </a>
+
+                <a href="cadastro.html">
+                    Cadastro
+                </a>
+
+                <a href="contato.html">
+                    Contato
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <h3>
+                    Segurança
+                </h3>
+
+                <p>
+                    Autorização
+                </p>
+
+                <p>
+                    Privacidade
+                </p>
+
+                <p>
+                    Ética
+                </p>
+
+                <p>
+                    Responsabilidade
+                </p>
+
+            </div>
+
         </div>
-      </div>
-    </section>
 
-    <section id="codigo-etica" class="section">
-      <h2>CÓDIGO DE CONDUTA</h2>
-      <p>O código existe para garantir segurança operacional e consistência interna.</p>
 
-      <h3>1. Responsabilidade</h3>
-      <p>Toda ação é vinculada ao seu impacto direto e indireto dentro do sistema.</p>
+        <div class="footer-bottom">
 
-      <h3>2. Proporcionalidade</h3>
-      <p>Qualquer intervenção deve ser limitada ao necessário para atingir o objetivo definido.</p>
+            <div class="container footer-bottom-container">
 
-      <h3>3. Confidencialidade</h3>
-      <p>Informações são distribuídas apenas por nível de acesso.</p>
+                <p>
+                    © <span id="currentYear"></span>
+                    CYBER NEXIS.
+                    Todos os direitos reservados.
+                </p>
 
-      <h3>4. Disciplina Operacional</h3>
-      <p>Desvios repetidos de protocolo resultam em exclusão do sistema.</p>
+                <span class="footer-status">
+                    SYSTEM ONLINE
+                </span>
 
-      <img src="Imagem/Hackers profissionais.jpeg" alt="Equipe atuando sob protocolos" class="gallery-image">
-    </section>
+            </div>
 
-    <section id="testes-operacionais" class="section">
-      <h2>TESTES OPERACIONAIS</h2>
-      <p>O antigo quiz foi substituído pelo Protocolo Sentinel: uma triagem dinâmica que muda conforme a hora local e conduz o visitante por camadas diferentes.</p>
-      <p>Apenas uma janela temporal possui a chave correta para o núcleo restrito. As demais respostas conduzem a camadas públicas de orientação.</p>
-      <div class="form-actions">
-        <button class="btn" type="button" onclick="document.getElementById('protocolo-sentinel')?.scrollIntoView({ behavior: 'smooth' })">
-          Acessar Protocolo Sentinel
-        </button>
-      </div>
-    </section>
-  </main>
+        </div>
 
-  <footer>
-    <p>&copy; 2025 Cyber-Nexis</p>
-  </footer>
+    </footer>
 
-  <script src="jogo-nexus.js"></script>
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+    <script
+        src="js/script.js"
+        defer
+    ></script>
+
 </body>
 </html>
