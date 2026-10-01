@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Perfil do membro CYBER NEXIS."
+    >
+
+    <meta
+        name="theme-color"
+        content="#050505"
+    >
+
+    <title>Meu Perfil | CYBER NEXIS</title>
+
+    <!-- CSS PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- CSS DE AUTENTICAÇÃO / PERFIL -->
+    <link
+        rel="stylesheet"
+        href="css/auth.css"
+    >
+
+</head>
+
+
+<body class="profile-page">
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="site-header">
+
+        <div class="container header-container">
+
+
+            <!-- LOGO -->
+
+            <a
+                href="index.html"
+                class="logo"
+                aria-label="CYBER NEXIS - Página inicial"
+            >
+
+                <span
+                    class="logo-symbol"
+                    aria-hidden="true"
+                >
+                    ◇
+                </span>
+
+                <span class="logo-text">
+                    CYBER_<strong>NEXIS</strong>
+                </span>
+
+            </a>
+
+
+
+            <!-- MENU MOBILE -->
+
+            <button
+                class="menu-toggle"
+                id="menuToggle"
+                type="button"
+                aria-label="Abrir menu"
+                aria-expanded="false"
+                aria-controls="mainNavigation"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+
+            <!-- NAVEGAÇÃO -->
+
+            <nav
+                class="main-navigation"
+                id="mainNavigation"
+                aria-label="Navegação principal"
+            >
+
+                <a
+                    href="index.html"
+                    class="nav-link"
+                >
+                    Início
+                </a>
+
+                <a
+                    href="servicos.html"
+                    class="nav-link"
+                >
+                    Serviços
+                </a>
+
+                <a
+                    href="testes.html"
+                    class="nav-link"
+                >
+                    Habilidades
+                </a>
+
+                <a
+                    href="regras.html"
+                    class="nav-link"
+                >
+                    Regras
+                </a>
+
+                <a
+                    href="contato.html"
+                    class="nav-link"
+                >
+                    Contato
+                </a>
+
+            </nav>
+
+
+
+            <!-- AÇÕES -->
+
+            <div class="header-actions">
+
+                <a
+                    href="perfil.html"
+                    class="btn btn-outline btn-small active"
+                >
+                    Meu perfil
+                </a>
+
+                <button
+                    type="button"
+                    class="btn btn-primary btn-small"
+                    id="logoutButton"
+                >
+                    Sair
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         PERFIL
+    ====================================================== -->
+
+    <main class="profile-main">
+
+
+        <!-- =================================================
+             HERO DO PERFIL
+        ================================================== -->
+
+        <section
+            class="profile-hero"
+            aria-labelledby="profileTitle"
+        >
+
+            <div class="profile-hero-background">
+
+                <img
+                    src="assets/images/nexus.jpg"
+                    alt=""
+                    loading="lazy"
+                >
+
+                <div class="profile-hero-overlay"></div>
+
+                <div class="profile-hero-grid"></div>
+
+            </div>
+
+
+            <div class="container profile-hero-container">
+
+
+                <!-- AVATAR -->
+
+                <div class="profile-avatar-area">
+
+                    <div class="profile-avatar">
+
+                        <img
+                            id="profileAvatar"
+                            src="assets/images/logo.png"
+                            alt="Avatar do membro"
+                        >
+
+                        <span
+                            class="avatar-status"
+                            aria-label="Usuário online"
+                        ></span>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="avatar-edit"
+                        id="changeAvatarButton"
+                    >
+                        Alterar
+                    </button>
+
+                </div>
+
+
+
+                <!-- INFORMAÇÕES -->
+
+                <div class="profile-identity">
+
+                    <p class="eyebrow">
+                        CYBER NEXIS // MEMBER
+                    </p>
+
+
+                    <h1 id="profileTitle">
+                        Seu Perfil
+                    </h1>
+
+
+                    <p
+                        class="profile-username"
+                        id="profileUsername"
+                    >
+                        @usuario
+                    </p>
+
+
+                    <div class="profile-tags">
+
+                        <span class="profile-tag">
+                            MEMBRO
+                        </span>
+
+                        <span class="profile-tag">
+                            N0
+                        </span>
+
+                        <span class="profile-tag status-tag">
+                            ATIVO
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- AÇÕES -->
+
+                <div class="profile-hero-actions">
+
+                    <a
+                        href="#settings"
+                        class="btn btn-outline"
+                    >
+                        Editar perfil
+                    </a>
+
+                    <a
+                        href="testes.html"
+                        class="btn btn-primary"
+                    >
+                        Meus testes
+                        <span aria-hidden="true">→</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CONTEÚDO
+        ================================================== -->
+
+        <section class="section profile-content">
+
+            <div class="container">
+
+
+                <!-- =================================================
+                     STATUS / ESTATÍSTICAS
+                ================================================== -->
+
+                <div class="profile-stats-grid">
+
+
+                    <!-- NÍVEL -->
+
+                    <article class="profile-stat-card">
+
+                        <span class="stat-label">
+                            NÍVEL
+                        </span>
+
+                        <strong
+                            id="profileLevel"
+                            class="stat-value"
+                        >
+                            N0
+                        </strong>
+
+                        <span class="stat-description">
+                            Recruta
+                        </span>
+
+                    </article>
+
+
+
+                    <!-- TESTES -->
+
+                    <article class="profile-stat-card">
+
+                        <span class="stat-label">
+                            TESTES
+                        </span>
+
+                        <strong
+                            id="testsCompleted"
+                            class="stat-value"
+                        >
+                            0
+                        </strong>
+
+                        <span class="stat-description">
+                            concluídos
+                        </span>
+
+                    </article>
+
+
+
+                    <!-- APROVEITAMENTO -->
+
+                    <article class="profile-stat-card">
+
+                        <span class="stat-label">
+                            APROVEITAMENTO
+                        </span>
+
+                        <strong
+                            id="profileScore"
+                            class="stat-value"
+                        >
+                            0%
+                        </strong>
+
+                        <span class="stat-description">
+                            média registrada
+                        </span>
+
+                    </article>
+
+
+
+                    <!-- STATUS -->
+
+                    <article class="profile-stat-card">
+
+                        <span class="stat-label">
+                            STATUS
+                        </span>
+
+                        <strong class="stat-value stat-online">
+                            ONLINE
+                        </strong>
+
+                        <span class="stat-description">
+                            sistema ativo
+                        </span>
+
+                    </article>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     GRID PRINCIPAL
+                ================================================== -->
+
+                <div class="profile-layout">
+
+
+                    <!-- =================================================
+                         COLUNA PRINCIPAL
+                    ================================================== -->
+
+                    <div class="profile-main-column">
+
+
+                        <!-- =============================================
+                             SOBRE O MEMBRO
+                        ============================================== -->
+
+                        <section
+                            class="profile-panel"
+                            id="aboutProfile"
+                        >
+
+                            <div class="panel-header">
+
+                                <div>
+
+                                    <p class="panel-label">
+                                        01 / IDENTIDADE
+                                    </p>
+
+                                    <h2>
+                                        Sobre o membro
+                                    </h2>
+
+                                </div>
+
+                                <span class="panel-number">
+                                    01
+                                </span>
+
+                            </div>
+
+
+                            <div class="profile-description">
+
+                                <p id="profileBio">
+
+                                    Este membro ainda não adicionou
+                                    uma descrição ao seu perfil.
+
+                                </p>
+
+                            </div>
+
+
+                            <div class="profile-info-grid">
+
+
+                                <div class="profile-info-item">
+
+                                    <span>
+                                        Nome
+                                    </span>
+
+                                    <strong id="profileName">
+                                        Membro CYBER NEXIS
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="profile-info-item">
+
+                                    <span>
+                                        Usuário
+                                    </span>
+
+                                    <strong id="profileUser">
+                                        @usuario
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="profile-info-item">
+
+                                    <span>
+                                        Membro desde
+                                    </span>
+
+                                    <strong id="profileJoinDate">
+                                        —
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="profile-info-item">
+
+                                    <span>
+                                        Último acesso
+                                    </span>
+
+                                    <strong id="profileLastAccess">
+                                        —
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+
+                        <!-- =============================================
+                             PROGRESSO
+                        ============================================== -->
+
+                        <section
+                            class="profile-panel"
+                            id="progress"
+                        >
+
+                            <div class="panel-header">
+
+                                <div>
+
+                                    <p class="panel-label">
+                                        02 / PROGRESS
+                                    </p>
+
+                                    <h2>
+                                        Progresso
+                                    </h2>
+
+                                </div>
+
+                                <span class="panel-number">
+                                    02
+                                </span>
+
+                            </div>
+
+
+
+                            <!-- INICIANTE -->
+
+                            <div class="progress-item">
+
+                                <div class="progress-header">
+
+                                    <div>
+
+                                        <span>
+                                            TESTE 01
+                                        </span>
+
+                                        <strong>
+                                            Iniciante
+                                        </strong>
+
+                                    </div>
+
+
+                                    <strong
+                                        id="beginnerProgressText"
+                                    >
+                                        0%
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="progress-bar">
+
+                                    <div
+                                        class="progress-fill"
+                                        id="beginnerProgress"
+                                        style="width: 0%;"
+                                    ></div>
+
+                                </div>
+
+
+                                <div class="progress-footer">
+
+                                    <span>
+                                        Fundamentos
+                                    </span>
+
+                                    <span
+                                        id="beginnerStatus"
+                                    >
+                                        Não iniciado
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- INTERMEDIÁRIO -->
+
+                            <div class="progress-item">
+
+                                <div class="progress-header">
+
+                                    <div>
+
+                                        <span>
+                                            TESTE 02
+                                        </span>
+
+                                        <strong>
+                                            Intermediário
+                                        </strong>
+
+                                    </div>
+
+
+                                    <strong
+                                        id="intermediateProgressText"
+                                    >
+                                        0%
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="progress-bar">
+
+                                    <div
+                                        class="progress-fill"
+                                        id="intermediateProgress"
+                                        style="width: 0%;"
+                                    ></div>
+
+                                </div>
+
+
+                                <div class="progress-footer">
+
+                                    <span>
+                                        Conhecimento técnico
+                                    </span>
+
+                                    <span
+                                        id="intermediateStatus"
+                                    >
+                                        Bloqueado
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- PERFIL -->
+
+                            <div class="progress-item">
+
+                                <div class="progress-header">
+
+                                    <div>
+
+                                        <span>
+                                            PERFIL
+                                        </span>
+
+                                        <strong>
+                                            Perfil de habilidades
+                                        </strong>
+
+                                    </div>
+
+
+                                    <strong
+                                        id="profileTestProgressText"
+                                    >
+                                        0%
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="progress-bar">
+
+                                    <div
+                                        class="progress-fill"
+                                        id="profileTestProgress"
+                                        style="width: 0%;"
+                                    ></div>
+
+                                </div>
+
+
+                                <div class="progress-footer">
+
+                                    <span>
+                                        Perfil educacional
+                                    </span>
+
+                                    <span
+                                        id="profileTestStatus"
+                                    >
+                                        Não iniciado
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+
+                        <!-- =============================================
+                             ÁREAS DE CONHECIMENTO
+                        ============================================== -->
+
+                        <section
+                            class="profile-panel"
+                            id="skills"
+                        >
+
+                            <div class="panel-header">
+
+                                <div>
+
+                                    <p class="panel-label">
+                                        03 / SKILLS
+                                    </p>
+
+                                    <h2>
+                                        Áreas de conhecimento
+                                    </h2>
+
+                                </div>
+
+                                <span class="panel-number">
+                                    03
+                                </span>
+
+                            </div>
+
+
+                            <div class="profile-skills-grid">
+
+
+                                <div class="profile-skill">
+
+                                    <div class="skill-icon">
+                                        ⌁
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Redes
+                                        </strong>
+
+                                        <span>
+                                            Em desenvolvimento
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="profile-skill">
+
+                                    <div class="skill-icon">
+                                        $
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Linux
+                                        </strong>
+
+                                        <span>
+                                            Em desenvolvimento
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="profile-skill">
+
+                                    <div class="skill-icon">
+                                        &lt;/&gt;
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Programação
+                                        </strong>
+
+                                        <span>
+                                            Em desenvolvimento
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="profile-skill">
+
+                                    <div class="skill-icon">
+                                        ◈
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Segurança Web
+                                        </strong>
+
+                                        <span>
+                                            Em desenvolvimento
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="profile-skill">
+
+                                    <div class="skill-icon">
+                                        #
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Criptografia
+                                        </strong>
+
+                                        <span>
+                                            Em desenvolvimento
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="profile-skill">
+
+                                    <div class="skill-icon">
+                                        ⛨
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Análise de Segurança
+                                        </strong>
+
+                                        <span>
+                                            Em desenvolvimento
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+
+
+                        <!-- =============================================
+                             CONQUISTAS
+                        ============================================== -->
+
+                        <section
+                            class="profile-panel"
+                            id="achievements"
+                        >
+
+                            <div class="panel-header">
+
+                                <div>
+
+                                    <p class="panel-label">
+                                        04 / ACHIEVEMENTS
+                                    </p>
+
+                                    <h2>
+                                        Conquistas
+                                    </h2>
+
+                                </div>
+
+                                <span class="panel-number">
+                                    04
+                                </span>
+
+                            </div>
+
+
+                            <div class="achievements-grid">
+
+
+                                <article
+                                    class="achievement-card locked"
+                                    id="achievementBeginner"
+                                >
+
+                                    <div class="achievement-icon">
+                                        ◇
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Primeiro acesso
+                                        </strong>
+
+                                        <span>
+                                            Conclua o teste iniciante.
+                                        </span>
+
+                                    </div>
+
+                                </article>
+
+
+                                <article
+                                    class="achievement-card locked"
+                                    id="achievementIntermediate"
+                                >
+
+                                    <div class="achievement-icon">
+                                        ◈
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Segundo nível
+                                        </strong>
+
+                                        <span>
+                                            Conclua o teste intermediário.
+                                        </span>
+
+                                    </div>
+
+                                </article>
+
+
+                                <article
+                                    class="achievement-card locked"
+                                    id="achievementProfile"
+                                >
+
+                                    <div class="achievement-icon">
+                                        ⬡
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            Perfil definido
+                                        </strong>
+
+                                        <span>
+                                            Complete seu perfil educacional.
+                                        </span>
+
+                                    </div>
+
+                                </article>
+
+
+                                <article
+                                    class="achievement-card locked"
+                                    id="achievementNexus"
+                                >
+
+                                    <div class="achievement-icon">
+                                        N
+                                    </div>
+
+                                    <div>
+
+                                        <strong>
+                                            NEXUS
+                                        </strong>
+
+                                        <span>
+                                            Cumpra os requisitos de acesso.
+                                        </span>
+
+                                    </div>
+
+                                </article>
+
+                            </div>
+
+                        </section>
+
+
+
+                        <!-- =============================================
+                             ATIVIDADE
+                        ============================================== -->
+
+                        <section
+                            class="profile-panel"
+                            id="activity"
+                        >
+
+                            <div class="panel-header">
+
+                                <div>
+
+                                    <p class="panel-label">
+                                        05 / ACTIVITY
+                                    </p>
+
+                                    <h2>
+                                        Atividade recente
+                                    </h2>
+
+                                </div>
+
+                                <span class="panel-number">
+                                    05
+                                </span>
+
+                            </div>
+
+
+                            <div
+                                class="activity-list"
+                                id="activityList"
+                            >
+
+
+                                <div class="activity-empty">
+
+                                    <span
+                                        class="activity-icon"
+                                        aria-hidden="true"
+                                    >
+                                        ◌
+                                    </span>
+
+                                    <p>
+                                        Nenhuma atividade registrada.
+                                    </p>
+
+                                    <span>
+                                        Sua atividade aparecerá aqui
+                                        conforme você utilizar o sistema.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                        </section>
+
+                    </div>
+
+
+
+                    <!-- =================================================
+                         COLUNA LATERAL
+                    ================================================== -->
+
+                    <aside class="profile-sidebar">
+
+
+                        <!-- =============================================
+                             NEXUS
+                        ============================================== -->
+
+                        <section
+                            class="profile-side-card nexus-access-card"
+                            id="nexusAccess"
+                        >
+
+                            <p class="panel-label">
+                                RESTRICTED AREA
+                            </p>
+
+
+                            <div class="nexus-access-symbol">
+                                N
+                            </div>
+
+
+                            <h2>
+                                NEXUS
+                            </h2>
+
+
+                            <p>
+                                Área interna da comunidade com
+                                conteúdos e recursos restritos.
+                            </p>
+
+
+                            <div
+                                class="access-status"
+                                id="nexusAccessStatus"
+                            >
+
+                                <span class="access-status-dot"></span>
+
+                                <span>
+                                    ACESSO BLOQUEADO
+                                </span>
+
+                            </div>
+
+
+                            <a
+                                href="testes.html"
+                                class="btn btn-outline side-card-button"
+                                id="nexusAccessButton"
+                            >
+                                Ver requisitos
+                                <span aria-hidden="true">
+                                    →
+                                </span>
+                            </a>
+
+                        </section>
+
+
+
+                        <!-- =============================================
+                             NÍVEL
+                        ============================================== -->
+
+                        <section
+                            class="profile-side-card level-card"
+                        >
+
+                            <p class="panel-label">
+                                CURRENT LEVEL
+                            </p>
+
+
+                            <div class="level-display">
+
+                                <strong>
+                                    N0
+                                </strong>
+
+                                <span>
+                                    RECRUTA
+                                </span>
+
+                            </div>
+
+
+                            <div class="level-line">
+
+                                <span></span>
+
+                            </div>
+
+
+                            <p>
+                                Continue estudando e complete
+                                os testes disponíveis para avançar.
+                            </p>
+
+                        </section>
+
+
+
+                        <!-- =============================================
+                             LINKS RÁPIDOS
+                        ============================================== -->
+
+                        <section
+                            class="profile-side-card"
+                        >
+
+                            <p class="panel-label">
+                                QUICK ACCESS
+                            </p>
+
+
+                            <nav class="profile-quick-links">
+
+
+                                <a href="#aboutProfile">
+
+                                    <span>
+                                        Identidade
+                                    </span>
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                </a>
+
+
+                                <a href="#progress">
+
+                                    <span>
+                                        Progresso
+                                    </span>
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                </a>
+
+
+                                <a href="#skills">
+
+                                    <span>
+                                        Habilidades
+                                    </span>
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                </a>
+
+
+                                <a href="#achievements">
+
+                                    <span>
+                                        Conquistas
+                                    </span>
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                </a>
+
+
+                                <a href="#activity">
+
+                                    <span>
+                                        Atividade
+                                    </span>
+
+                                    <span>
+                                        →
+                                    </span>
+
+                                </a>
+
+                            </nav>
+
+                        </section>
+
+
+
+                        <!-- =============================================
+                             CONFIGURAÇÕES
+                        ============================================== -->
+
+                        <section
+                            class="profile-side-card"
+                            id="settings"
+                        >
+
+                            <p class="panel-label">
+                                ACCOUNT
+                            </p>
+
+
+                            <h3>
+                                Configurações
+                            </h3>
+
+
+                            <p>
+                                Gerencie as informações e preferências
+                                da sua conta.
+                            </p>
+
+
+                            <button
+                                type="button"
+                                class="side-action"
+                                id="editProfileButton"
+                            >
+
+                                <span>
+                                    Editar informações
+                                </span>
+
+                                <span>
+                                    →
+                                </span>
+
+                            </button>
+
+
+                            <button
+                                type="button"
+                                class="side-action"
+                                id="logoutButtonSide"
+                            >
+
+                                <span>
+                                    Encerrar sessão
+                                </span>
+
+                                <span>
+                                    →
+                                </span>
+
+                            </button>
+
+                        </section>
+
+                    </aside>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             CTA TESTES
+        ================================================== -->
+
+        <section
+            class="profile-test-cta"
+            aria-labelledby="profileTestCtaTitle"
+        >
+
+            <div class="container">
+
+                <div class="profile-test-cta-inner">
+
+                    <div>
+
+                        <p class="eyebrow">
+                            KEEP LEARNING
+                        </p>
+
+                        <h2 id="profileTestCtaTitle">
+                            Continue sua
+                            <span>evolução.</span>
+                        </h2>
+
+                        <p>
+                            Faça os testes de habilidades e
+                            acompanhe seu progresso dentro
+                            do CYBER NEXIS.
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="testes.html"
+                        class="btn btn-primary"
+                    >
+
+                        Acessar testes
+
+                        <span aria-hidden="true">
+                            →
+                        </span>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="site-footer">
+
+        <div class="container footer-container">
+
+
+            <!-- MARCA -->
+
+            <div class="footer-brand">
+
+                <a
+                    href="index.html"
+                    class="logo"
+                >
+
+                    <span
+                        class="logo-symbol"
+                        aria-hidden="true"
+                    >
+                        ◇
+                    </span>
+
+                    <span class="logo-text">
+                        CYBER_<strong>NEXIS</strong>
+                    </span>
+
+                </a>
+
+
+                <p>
+                    Conecte. Aprenda. Proteja.
+                </p>
+
+            </div>
+
+
+
+            <!-- NAVEGAÇÃO -->
+
+            <div class="footer-column">
+
+                <h3>
+                    Navegação
+                </h3>
+
+                <a href="index.html">
+                    Início
+                </a>
+
+                <a href="servicos.html">
+                    Serviços
+                </a>
+
+                <a href="testes.html">
+                    Habilidades
+                </a>
+
+                <a href="contato.html">
+                    Contato
+                </a>
+
+            </div>
+
+
+
+            <!-- COMUNIDADE -->
+
+            <div class="footer-column">
+
+                <h3>
+                    Comunidade
+                </h3>
+
+                <a href="perfil.html">
+                    Meu perfil
+                </a>
+
+                <a href="regras.html">
+                    Regras
+                </a>
+
+                <a href="login.html">
+                    Entrar
+                </a>
+
+                <a href="cadastro.html">
+                    Criar conta
+                </a>
+
+            </div>
+
+
+
+            <!-- STATUS -->
+
+            <div class="footer-column">
+
+                <h3>
+                    Sistema
+                </h3>
+
+                <p>
+                    Ambiente de aprendizado em
+                    cibersegurança responsável.
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- RODAPÉ INFERIOR -->
+
+        <div class="container footer-bottom">
+
+            <p>
+
+                ©
+                <span id="currentYear">
+                    2026
+                </span>
+
+                CYBER NEXIS.
+                Todos os direitos reservados.
+
+            </p>
+
+
+            <a href="#top">
+                Voltar ao topo ↑
+            </a>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="js/script.js"
+        defer
+    ></script>
+
+
+    <script
+        src="js/auth.js"
+        defer
+    ></script>
+
+
+</body>
+
+</html>
