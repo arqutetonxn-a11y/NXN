@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="NEXUS — Centro interno da CYBER NEXIS."
+    >
+
+    <title>NEXUS // CYBER NEXIS</title>
+
+    <link
+        rel="icon"
+        href="assets/images/logo.png"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="css/nexus.css"
+    >
+</head>
+
+
+<body class="nexus-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="nexus-header">
+
+        <div class="nexus-brand">
+
+            <a
+                href="index.html"
+                class="nexus-logo"
+            >
+
+                <img
+                    src="images/logo.jpg"
+                    alt="logo jpg"
+                >
+
+                <div>
+
+                    <strong>
+                        CYBER NEXIS
+                    </strong>
+
+                    <span>
+                        NEXUS COMMAND CENTER
+                    </span>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <div class="nexus-header-status">
+
+            <div class="nexus-online">
+
+                <span class="nexus-online-dot"></span>
+
+                SISTEMA ONLINE
+
+            </div>
+
+            <div
+                class="nexus-clock"
+                id="nexusClock"
+            >
+                --:--:--
+            </div>
+
+        </div>
+
+
+        <div class="nexus-header-actions">
+
+            <button
+                type="button"
+                class="nexus-header-button"
+                id="nexusBackButton"
+            >
+                TESTES
+            </button>
+
+            <button
+                type="button"
+                class="nexus-header-button nexus-danger"
+                id="nexusLogoutButton"
+            >
+                SAIR
+            </button>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTAINER
+    ====================================================== -->
+
+    <main class="nexus-container">
+
+
+        <!-- =================================================
+             ACCESS GATE
+        ================================================== -->
+
+        <section
+            id="nexusAccessGate"
+            class="nexus-access-gate"
+        >
+
+            <div class="nexus-access-card">
+
+                <div class="nexus-access-icon">
+                    N
+                </div>
+
+
+                <div class="nexus-access-content">
+
+                    <span class="nexus-kicker">
+                        NEXUS // ACCESS CONTROL
+                    </span>
+
+                    <h1>
+                        ACESSO RESTRITO
+                    </h1>
+
+                    <p id="nexusAccessMessage">
+                        Verificando credenciais e requisitos...
+                    </p>
+
+
+                    <div class="nexus-requirements">
+
+                        <div
+                            class="nexus-requirement"
+                            data-nexus-requirement="login"
+                        >
+
+                            <span class="requirement-icon">
+                                ○
+                            </span>
+
+                            <span>
+                                Conta autenticada
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="nexus-requirement"
+                            data-nexus-requirement="iniciante"
+                        >
+
+                            <span class="requirement-icon">
+                                ○
+                            </span>
+
+                            <span>
+                                Teste N0 concluído
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="nexus-requirement"
+                            data-nexus-requirement="intermediario"
+                        >
+
+                            <span class="requirement-icon">
+                                ○
+                            </span>
+
+                            <span>
+                                Teste N1 concluído
+                            </span>
+
+                        </div>
+
+
+                        <div
+                            class="nexus-requirement"
+                            data-nexus-requirement="perfil"
+                        >
+
+                            <span class="requirement-icon">
+                                ○
+                            </span>
+
+                            <span>
+                                Perfil de habilidades concluído
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="nexus-access-actions">
+
+                        <a
+                            href="testes.html"
+                            class="btn"
+                        >
+                            VOLTAR AOS TESTES
+                        </a>
+
+                        <a
+                            href="login.html"
+                            class="btn btn-secondary"
+                        >
+                            ENTRAR
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             NEXUS CONTENT
+        ================================================== -->
+
+        <section
+            id="nexusContent"
+            class="nexus-content-wrapper"
+            hidden
+        >
+
+
+            <!-- =============================================
+                 COMMAND HEADER
+            ============================================== -->
+
+            <section class="nexus-command-header">
+
+                <div class="nexus-command-title">
+
+                    <span class="nexus-kicker">
+                        CYBER NEXIS // INTERNAL NETWORK
+                    </span>
+
+                    <h1>
+                        NEXUS
+                    </h1>
+
+                    <p>
+                        Centro interno de treinamento,
+                        colaboração e operações educacionais.
+                    </p>
+
+                </div>
+
+
+                <div class="nexus-command-meta">
+
+                    <div class="nexus-meta-item">
+
+                        <span>
+                            STATUS
+                        </span>
+
+                        <strong>
+                            AUTORIZADO
+                        </strong>
+
+                    </div>
+
+
+                    <div class="nexus-meta-item">
+
+                        <span>
+                            NÍVEL
+                        </span>
+
+                        <strong id="nexusLevel">
+                            N0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="nexus-meta-item">
+
+                        <span>
+                            RANK
+                        </span>
+
+                        <strong id="nexusRank">
+                            N0 RECRUTA
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 IDENTITY
+            ============================================== -->
+
+            <section class="nexus-identity-grid">
+
+
+                <article class="nexus-identity-card">
+
+                    <div class="nexus-identity-icon">
+                        ◈
+                    </div>
+
+                    <div>
+
+                        <span>
+                            OPERADOR
+                        </span>
+
+                        <strong id="nexusUserName">
+                            Usuário
+                        </strong>
+
+                        <small>
+                            @<span id="nexusUsername">
+                                operador
+                            </span>
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+
+                <article class="nexus-identity-card">
+
+                    <div class="nexus-identity-icon">
+                        ◉
+                    </div>
+
+                    <div>
+
+                        <span>
+                            RANK ATUAL
+                        </span>
+
+                        <strong data-nexus-rank>
+                            N0 RECRUTA
+                        </strong>
+
+                        <small>
+                            Progressão baseada nas atividades.
+                        </small>
+
+                    </div>
+
+                </article>
+
+
+
+                <article class="nexus-identity-card">
+
+                    <div class="nexus-identity-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <span>
+                            AUTORIZAÇÃO
+                        </span>
+
+                        <strong>
+                            ATIVA
+                        </strong>
+
+                        <small>
+                            Acesso educacional NEXUS.
+                        </small>
+
+                    </div>
+
+                </article>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 MAIN GRID
+            ============================================== -->
+
+            <div class="nexus-main-grid">
+
+
+                <!-- =========================================
+                     SIDEBAR
+                ========================================== -->
+
+                <aside class="nexus-sidebar">
+
+
+                    <div class="nexus-sidebar-title">
+
+                        <span>
+                            NEXUS
+                        </span>
+
+                        <small>
+                            MODULES
+                        </small>
+
+                    </div>
+
+
+
+                    <nav class="nexus-module-list">
+
+
+                        <button
+                            type="button"
+                            class="nexus-module-button active"
+                            data-nexus-module="profile"
+                        >
+
+                            <span class="module-icon">
+                                ◈
+                            </span>
+
+                            <span>
+                                PERFIL
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="nexus-module-button"
+                            data-nexus-module="training"
+                        >
+
+                            <span class="module-icon">
+                                ▣
+                            </span>
+
+                            <span>
+                                TREINAMENTO
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="nexus-module-button"
+                            data-nexus-module="missions"
+                        >
+
+                            <span class="module-icon">
+                                ◆
+                            </span>
+
+                            <span>
+                                MISSÕES
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="nexus-module-button"
+                            data-nexus-module="ranking"
+                        >
+
+                            <span class="module-icon">
+                                ▲
+                            </span>
+
+                            <span>
+                                RANKING
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="nexus-module-button"
+                            data-nexus-module="documents"
+                        >
+
+                            <span class="module-icon">
+                                ▤
+                            </span>
+
+                            <span>
+                                DOCUMENTOS
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="nexus-module-button"
+                            data-nexus-module="chat"
+                        >
+
+                            <span class="module-icon">
+                                ◌
+                            </span>
+
+                            <span>
+                                CHAT
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="nexus-module-button"
+                            data-nexus-module="notifications"
+                        >
+
+                            <span class="module-icon">
+                                !
+                            </span>
+
+                            <span>
+                                NOTIFICAÇÕES
+                            </span>
+
+                            <span
+                                class="nexus-notification-badge"
+                                id="nexusNotificationBadge"
+                            >
+                                0
+                            </span>
+
+                        </button>
+
+
+
+                        <button
+                            type="button"
+                            class="nexus-module-button"
+                            data-nexus-module="terminal"
+                        >
+
+                            <span class="module-icon">
+                                &gt;_
+                            </span>
+
+                            <span>
+                                TERMINAL
+                            </span>
+
+                        </button>
+
+                    </nav>
+
+
+
+                    <div class="nexus-sidebar-divider"></div>
+
+
+
+                    <div class="nexus-sidebar-status">
+
+                        <span class="nexus-status-label">
+                            CONEXÃO
+                        </span>
+
+                        <strong>
+                            SEGURA
+                        </strong>
+
+                        <small>
+                            NEXUS LOCAL INTERFACE
+                        </small>
+
+                    </div>
+
+
+
+                    <a
+                        href="contato.html"
+                        class="nexus-support-link"
+                    >
+                        REPORTAR PROBLEMA
+                    </a>
+
+                </aside>
+
+
+
+                <!-- =========================================
+                     MODULE CONTENT
+                ========================================== -->
+
+                <section class="nexus-content">
+
+                    <div
+                        id="nexusModuleContent"
+                        class="nexus-module-view"
+                    >
+
+                        <div class="nexus-module-placeholder">
+
+                            <span class="nexus-kicker">
+                                NEXUS
+                            </span>
+
+                            <h2>
+                                CARREGANDO MÓDULO
+                            </h2>
+
+                            <p>
+                                Inicializando interface...
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 SAFE TERMINAL
+            ============================================== -->
+
+            <section
+                class="nexus-terminal-safe"
+                id="nexusTerminalSafe"
+            >
+
+                <div>
+
+                    <span class="nexus-kicker">
+                        TERMINAL
+                    </span>
+
+                    <h2>
+                        AMBIENTE SIMULADO
+                    </h2>
+
+                    <p>
+                        Este terminal é exclusivamente educacional.
+                        Os comandos disponíveis não executam comandos
+                        no sistema operacional nem acessam máquinas
+                        externas.
+                    </p>
+
+                </div>
+
+
+                <div class="nexus-terminal-safe-badge">
+                    SAFE MODE
+                </div>
+
+            </section>
+
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="nexus-footer">
+
+        <div>
+
+            <strong>
+                CYBER NEXIS
+            </strong>
+
+            <span>
+                NEXUS COMMAND CENTER
+            </span>
+
+        </div>
+
+
+        <p>
+            Educação, colaboração e segurança responsável.
+        </p>
+
+
+        <a href="regras.html">
+            Regras de uso
+        </a>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="js/script.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/nexus.js"></script>
+
+</body>
+
+</html>
