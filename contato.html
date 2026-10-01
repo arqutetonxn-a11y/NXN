@@ -2,57 +2,74 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <meta
         name="description"
-        content="Entre em contato com a CYBER NEXIS para dúvidas, segurança digital, treinamentos e informações sobre a organização."
+        content="Entre em contato com o CYBER NEXIS. Envie dúvidas, sugestões, solicitações e assuntos relacionados à segurança digital."
+    >
+
+    <meta
+        name="keywords"
+        content="CYBER NEXIS, contato, cibersegurança, segurança digital, hacker ético, cybersecurity"
     >
 
     <meta name="theme-color" content="#050505">
 
     <title>Contato | CYBER NEXIS</title>
 
+    <!-- CSS principal -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- CSS específico da página, caso exista -->
+    <link rel="stylesheet" href="css/auth.css">
 </head>
 
 <body class="contact-page">
 
-    <!-- =====================================================
+    <!-- =========================================================
          HEADER
-    ====================================================== -->
-    <header class="site-header">
+    ========================================================== -->
+    <header class="site-header" id="top">
 
         <div class="container header-inner">
 
+            <!-- Logo -->
             <a
                 href="index.html"
-                class="logo"
-                aria-label="CYBER NEXIS - Início"
+                class="site-logo"
+                aria-label="CYBER NEXIS - Página inicial"
             >
-                <span class="logo-symbol">◇</span>
+                <span class="logo-symbol" aria-hidden="true">◇</span>
 
                 <span class="logo-text">
                     CYBER_<strong>NEXIS</strong>
                 </span>
             </a>
 
+            <!-- Menu mobile -->
             <button
                 class="menu-toggle"
                 id="menuToggle"
                 type="button"
                 aria-label="Abrir menu"
-                aria-expanded="false"
                 aria-controls="mainNavigation"
+                aria-expanded="false"
             >
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
 
+            <!-- Navegação -->
             <nav
                 class="main-navigation"
                 id="mainNavigation"
+                aria-label="Navegação principal"
             >
 
                 <a href="index.html">
@@ -78,17 +95,19 @@
                 <a
                     href="contato.html"
                     class="active"
+                    aria-current="page"
                 >
                     Contato
                 </a>
 
             </nav>
 
+            <!-- Ações -->
             <div class="header-actions">
 
                 <a
                     href="login.html"
-                    class="btn btn-outline"
+                    class="header-login"
                 >
                     Entrar
                 </a>
@@ -109,9 +128,9 @@
 
     <main>
 
-        <!-- =================================================
+        <!-- =====================================================
              HERO
-        ================================================== -->
+        ====================================================== -->
         <section class="page-hero contact-hero">
 
             <div class="page-hero-background">
@@ -119,7 +138,7 @@
                 <img
                     src="assets/images/nexus.jpg"
                     alt=""
-                    loading="eager"
+                    aria-hidden="true"
                 >
 
                 <div class="page-hero-overlay"></div>
@@ -128,36 +147,73 @@
 
             <div class="container page-hero-content">
 
-                <span class="section-label">
-                    CYBER NEXIS // CONTACT
+                <span class="eyebrow">
+                    06 / CONTACT
                 </span>
 
                 <h1>
-                    Vamos falar sobre
-                    <span>segurança.</span>
+                    Entre em contato.
                 </h1>
 
                 <p>
-                    Envie sua mensagem para tirar dúvidas, conversar sobre
-                    serviços, treinamentos ou assuntos relacionados à
-                    CYBER NEXIS.
+                    Tem uma dúvida, sugestão ou precisa falar
+                    sobre segurança digital? Estamos aqui para ouvir.
                 </p>
 
-                <div class="hero-actions">
+            </div>
 
-                    <a
-                        href="#formulario"
-                        class="btn btn-primary"
-                    >
-                        Enviar mensagem
-                    </a>
+        </section>
 
-                    <a
-                        href="servicos.html"
-                        class="btn btn-outline"
-                    >
-                        Ver serviços
-                    </a>
+
+        <!-- =====================================================
+             STATUS BAR
+        ====================================================== -->
+        <section class="status-section">
+
+            <div class="container">
+
+                <div class="status-bar">
+
+                    <div class="status-item">
+                        <span class="status-label">
+                            SYSTEM
+                        </span>
+
+                        <strong>
+                            CYBER NEXIS
+                        </strong>
+                    </div>
+
+                    <div class="status-item">
+                        <span class="status-label">
+                            MODE
+                        </span>
+
+                        <strong>
+                            ETHICAL
+                        </strong>
+                    </div>
+
+                    <div class="status-item">
+                        <span class="status-label">
+                            CHANNEL
+                        </span>
+
+                        <strong>
+                            CONTACT
+                        </strong>
+                    </div>
+
+                    <div class="status-item">
+                        <span class="status-label">
+                            STATUS
+                        </span>
+
+                        <strong class="status-online">
+                            <span aria-hidden="true">●</span>
+                            ONLINE
+                        </strong>
+                    </div>
 
                 </div>
 
@@ -166,74 +222,28 @@
         </section>
 
 
-        <!-- =================================================
-             STATUS
-        ================================================== -->
-        <section class="status-bar">
-
-            <div class="container status-bar-inner">
-
-                <div class="status-item">
-
-                    <span class="status-dot"></span>
-
-                    <span>CANAL</span>
-
-                    <strong>ABERTO</strong>
-
-                </div>
-
-                <div class="status-item">
-
-                    <span>TIPO</span>
-
-                    <strong>CONTATO</strong>
-
-                </div>
-
-                <div class="status-item">
-
-                    <span>ATENDIMENTO</span>
-
-                    <strong>RESPONSÁVEL</strong>
-
-                </div>
-
-                <div class="status-item">
-
-                    <span>ESCOPO</span>
-
-                    <strong>CYBER NEXIS</strong>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
+        <!-- =====================================================
              INTRODUÇÃO
-        ================================================== -->
+        ====================================================== -->
         <section class="section contact-intro">
 
             <div class="container">
 
                 <div class="section-heading">
 
-                    <span class="section-label">
-                        01 // COMUNICAÇÃO
+                    <span class="eyebrow">
+                        01 / CONNECT
                     </span>
 
                     <h2>
-                        Um canal para
-                        <span>conversar.</span>
+                        Fale com o CYBER NEXIS.
                     </h2>
 
                     <p>
-                        Se você possui uma dúvida, deseja conhecer melhor
-                        a organização ou precisa conversar sobre segurança
-                        digital, envie uma mensagem através do formulário.
+                        O contato é uma das formas mais importantes
+                        de construir uma comunidade segura.
+                        Envie sua mensagem e descreva o assunto
+                        com o máximo de clareza possível.
                     </p>
 
                 </div>
@@ -243,169 +253,150 @@
         </section>
 
 
-        <!-- =================================================
-             CONTATO PRINCIPAL
-        ================================================== -->
-        <section
-            class="section contact-section"
-            id="formulario"
-        >
+        <!-- =====================================================
+             CONTATO + FORMULÁRIO
+        ====================================================== -->
+        <section class="section contact-main">
 
             <div class="container">
 
                 <div class="contact-grid">
 
-                    <!-- =================================================
+                    <!-- =========================================
                          INFORMAÇÕES
-                    ================================================== -->
+                    ========================================== -->
                     <aside class="contact-info">
 
-                        <div class="contact-info-header">
+                        <div class="contact-panel">
 
-                            <span class="section-label">
-                                CYBER NEXIS // CHANNEL
+                            <span class="eyebrow">
+                                CONTACT CHANNEL
                             </span>
 
                             <h2>
-                                Entre em
-                                <span>contato.</span>
+                                Vamos conversar.
                             </h2>
 
                             <p>
-                                Utilize o canal adequado para sua necessidade.
-                                Quanto mais informações relevantes você
-                                fornecer, mais fácil será compreender sua
-                                solicitação.
+                                Utilize o formulário ao lado para
+                                enviar sua mensagem ao CYBER NEXIS.
                             </p>
 
                         </div>
 
 
-                        <div class="contact-info-list">
+                        <!-- Canal principal -->
+                        <div class="contact-card">
 
-                            <!-- ITEM -->
-                            <div class="contact-info-item">
-
-                                <div class="contact-info-icon">
-                                    @
-                                </div>
-
-                                <div>
-
-                                    <span>
-                                        E-MAIL
-                                    </span>
-
-                                    <strong>
-                                        contato@cybernexis.com
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ITEM -->
-                            <div class="contact-info-item">
-
-                                <div class="contact-info-icon">
-                                    ?
-                                </div>
-
-                                <div>
-
-                                    <span>
-                                        DÚVIDAS
-                                    </span>
-
-                                    <strong>
-                                        Informações gerais
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ITEM -->
-                            <div class="contact-info-item">
-
-                                <div class="contact-info-icon">
-                                    #
-                                </div>
-
-                                <div>
-
-                                    <span>
-                                        SERVIÇOS
-                                    </span>
-
-                                    <strong>
-                                        Segurança e consultoria
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- ITEM -->
-                            <div class="contact-info-item">
-
-                                <div class="contact-info-icon">
-                                    ◇
-                                </div>
-
-                                <div>
-
-                                    <span>
-                                        TREINAMENTO
-                                    </span>
-
-                                    <strong>
-                                        Educação em cibersegurança
-                                    </strong>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- AVISO -->
-                        <div class="contact-notice">
-
-                            <span class="section-label">
-                                NOTICE
+                            <span
+                                class="contact-card-number"
+                                aria-hidden="true"
+                            >
+                                01
                             </span>
 
-                            <p>
-                                Não envie senhas, tokens, chaves privadas,
-                                dados pessoais desnecessários ou outras
-                                informações sensíveis através deste formulário.
-                            </p>
+                            <div>
+
+                                <span class="contact-card-label">
+                                    E-MAIL
+                                </span>
+
+                                <h3>
+                                    contato@cybernexis.com
+                                </h3>
+
+                                <p>
+                                    Canal destinado a dúvidas,
+                                    sugestões e assuntos gerais.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Comunidade -->
+                        <div class="contact-card">
+
+                            <span
+                                class="contact-card-number"
+                                aria-hidden="true"
+                            >
+                                02
+                            </span>
+
+                            <div>
+
+                                <span class="contact-card-label">
+                                    COMUNIDADE
+                                </span>
+
+                                <h3>
+                                    CYBER NEXIS
+                                </h3>
+
+                                <p>
+                                    Conecte-se, aprenda e compartilhe
+                                    conhecimento de forma responsável.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Segurança -->
+                        <div class="contact-card">
+
+                            <span
+                                class="contact-card-number"
+                                aria-hidden="true"
+                            >
+                                03
+                            </span>
+
+                            <div>
+
+                                <span class="contact-card-label">
+                                    SECURITY
+                                </span>
+
+                                <h3>
+                                    Comunicação responsável
+                                </h3>
+
+                                <p>
+                                    Nunca envie senhas, tokens,
+                                    chaves privadas ou informações
+                                    altamente sensíveis pelo formulário.
+                                </p>
+
+                            </div>
 
                         </div>
 
                     </aside>
 
 
-                    <!-- =================================================
+                    <!-- =========================================
                          FORMULÁRIO
-                    ================================================== -->
+                    ========================================== -->
                     <div class="contact-form-wrapper">
 
                         <div class="contact-form-header">
 
-                            <span class="section-label">
-                                MESSAGE // FORM
+                            <span class="eyebrow">
+                                MESSAGE / FORM
                             </span>
 
                             <h2>
-                                Envie sua
-                                <span>mensagem.</span>
+                                Envie uma mensagem.
                             </h2>
+
+                            <p>
+                                Preencha os campos abaixo para
+                                registrar seu contato.
+                            </p>
 
                         </div>
 
@@ -413,12 +404,10 @@
                         <form
                             id="contactForm"
                             class="contact-form"
-                            action="#"
-                            method="POST"
                             novalidate
                         >
 
-                            <!-- NOME -->
+                            <!-- Nome -->
                             <div class="form-group">
 
                                 <label for="contactName">
@@ -429,20 +418,16 @@
                                     type="text"
                                     id="contactName"
                                     name="name"
-                                    placeholder="Seu nome"
                                     autocomplete="name"
-                                    maxlength="100"
+                                    placeholder="Seu nome"
+                                    maxlength="80"
                                     required
                                 >
-
-                                <small class="form-help">
-                                    Informe seu nome.
-                                </small>
 
                             </div>
 
 
-                            <!-- E-MAIL -->
+                            <!-- E-mail -->
                             <div class="form-group">
 
                                 <label for="contactEmail">
@@ -453,20 +438,16 @@
                                     type="email"
                                     id="contactEmail"
                                     name="email"
-                                    placeholder="seu@email.com"
                                     autocomplete="email"
-                                    maxlength="150"
+                                    placeholder="seu@email.com"
+                                    maxlength="120"
                                     required
                                 >
-
-                                <small class="form-help">
-                                    Utilize um endereço de e-mail válido.
-                                </small>
 
                             </div>
 
 
-                            <!-- ASSUNTO -->
+                            <!-- Assunto -->
                             <div class="form-group">
 
                                 <label for="contactSubject">
@@ -479,28 +460,32 @@
                                     required
                                 >
 
-                                    <option value="">
+                                    <option
+                                        value=""
+                                        selected
+                                        disabled
+                                    >
                                         Selecione um assunto
                                     </option>
 
-                                    <option value="informacoes">
-                                        Informações gerais
+                                    <option value="duvida">
+                                        Dúvida geral
                                     </option>
 
-                                    <option value="servicos">
-                                        Serviços
-                                    </option>
-
-                                    <option value="treinamento">
-                                        Treinamento
+                                    <option value="sugestao">
+                                        Sugestão
                                     </option>
 
                                     <option value="seguranca">
                                         Segurança digital
                                     </option>
 
-                                    <option value="parceria">
-                                        Parceria
+                                    <option value="servicos">
+                                        Serviços
+                                    </option>
+
+                                    <option value="comunidade">
+                                        Comunidade
                                     </option>
 
                                     <option value="outro">
@@ -512,38 +497,65 @@
                             </div>
 
 
-                            <!-- MENSAGEM -->
+                            <!-- Mensagem -->
                             <div class="form-group">
 
-                                <label for="contactMessage">
-                                    Mensagem
-                                </label>
+                                <div class="form-label-row">
+
+                                    <label for="contactMessage">
+                                        Mensagem
+                                    </label>
+
+                                    <span
+                                        id="messageCounter"
+                                        class="character-counter"
+                                    >
+                                        0 / 1000
+                                    </span>
+
+                                </div>
 
                                 <textarea
                                     id="contactMessage"
                                     name="message"
                                     rows="8"
-                                    maxlength="3000"
-                                    placeholder="Escreva sua mensagem..."
+                                    maxlength="1000"
+                                    placeholder="Descreva sua mensagem..."
                                     required
                                 ></textarea>
 
-                                <div class="textarea-footer">
+                            </div>
 
-                                    <small class="form-help">
-                                        Descreva sua solicitação com clareza.
-                                    </small>
 
-                                    <span id="messageCounter">
-                                        0 / 3000
-                                    </span>
+                            <!-- Aviso -->
+                            <div class="contact-security-notice">
+
+                                <span
+                                    class="notice-icon"
+                                    aria-hidden="true"
+                                >
+                                    !
+                                </span>
+
+                                <div>
+
+                                    <strong>
+                                        Aviso de segurança
+                                    </strong>
+
+                                    <p>
+                                        Não envie senhas, tokens,
+                                        chaves privadas, códigos de
+                                        autenticação ou outras
+                                        informações confidenciais.
+                                    </p>
 
                                 </div>
 
                             </div>
 
 
-                            <!-- CONSENTIMENTO -->
+                            <!-- Termos -->
                             <div class="form-checkbox">
 
                                 <input
@@ -554,27 +566,24 @@
                                 >
 
                                 <label for="contactAgreement">
-
-                                    Confirmo que as informações enviadas
-                                    são adequadas para este canal e que
-                                    não estou compartilhando senhas,
-                                    tokens ou chaves privadas.
-
+                                    Confirmo que não estou enviando
+                                    credenciais ou informações
+                                    sensíveis através deste formulário.
                                 </label>
 
                             </div>
 
 
-                            <!-- MENSAGEM DO FORM -->
+                            <!-- Mensagem de retorno -->
                             <div
-                                class="form-message"
                                 id="contactFormMessage"
+                                class="form-message"
                                 role="status"
                                 aria-live="polite"
                             ></div>
 
 
-                            <!-- BOTÃO -->
+                            <!-- Botão -->
                             <button
                                 type="submit"
                                 class="btn btn-primary contact-submit"
@@ -583,9 +592,13 @@
                                     Enviar mensagem
                                 </span>
 
-                                <span aria-hidden="true">
+                                <span
+                                    aria-hidden="true"
+                                    class="btn-arrow"
+                                >
                                     →
                                 </span>
+
                             </button>
 
                         </form>
@@ -599,185 +612,26 @@
         </section>
 
 
-        <!-- =================================================
-             TIPOS DE CONTATO
-        ================================================== -->
-        <section class="section contact-topics-section">
-
-            <div class="container">
-
-                <div class="section-heading">
-
-                    <span class="section-label">
-                        02 // ASSUNTOS
-                    </span>
-
-                    <h2>
-                        Sobre o que
-                        <span>podemos conversar?</span>
-                    </h2>
-
-                </div>
-
-
-                <div class="contact-topics-grid">
-
-                    <!-- TÓPICO 01 -->
-                    <article class="contact-topic-card">
-
-                        <span class="contact-topic-number">
-                            01
-                        </span>
-
-                        <div class="contact-topic-icon">
-                            ?
-                        </div>
-
-                        <h3>
-                            Dúvidas
-                        </h3>
-
-                        <p>
-                            Perguntas sobre a CYBER NEXIS, seus objetivos,
-                            funcionamento e ambientes educacionais.
-                        </p>
-
-                    </article>
-
-
-                    <!-- TÓPICO 02 -->
-                    <article class="contact-topic-card">
-
-                        <span class="contact-topic-number">
-                            02
-                        </span>
-
-                        <div class="contact-topic-icon">
-                            #
-                        </div>
-
-                        <h3>
-                            Serviços
-                        </h3>
-
-                        <p>
-                            Informações sobre segurança web, análise de
-                            vulnerabilidades, auditoria, redes e consultoria.
-                        </p>
-
-                    </article>
-
-
-                    <!-- TÓPICO 03 -->
-                    <article class="contact-topic-card">
-
-                        <span class="contact-topic-number">
-                            03
-                        </span>
-
-                        <div class="contact-topic-icon">
-                            ◈
-                        </div>
-
-                        <h3>
-                            Treinamentos
-                        </h3>
-
-                        <p>
-                            Assuntos relacionados a aprendizado, testes,
-                            laboratórios e desenvolvimento de habilidades.
-                        </p>
-
-                    </article>
-
-
-                    <!-- TÓPICO 04 -->
-                    <article class="contact-topic-card">
-
-                        <span class="contact-topic-number">
-                            04
-                        </span>
-
-                        <div class="contact-topic-icon">
-                            ◇
-                        </div>
-
-                        <h3>
-                            Parcerias
-                        </h3>
-
-                        <p>
-                            Propostas de colaboração e iniciativas
-                            relacionadas à educação e segurança digital.
-                        </p>
-
-                    </article>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
-             SEGURANÇA DO CONTATO
-        ================================================== -->
-        <section class="section contact-security-section">
-
-            <div class="container">
-
-                <div class="contact-security-panel">
-
-                    <div class="contact-security-symbol">
-                        ◇
-                    </div>
-
-                    <div class="contact-security-content">
-
-                        <span class="section-label">
-                            03 // SECURITY NOTICE
-                        </span>
-
-                        <h2>
-                            Proteja suas
-                            <span>informações.</span>
-                        </h2>
-
-                        <p>
-                            Um canal de contato não deve ser utilizado para
-                            transmitir credenciais ou segredos técnicos.
-                            Nunca envie senhas, códigos de autenticação,
-                            tokens de acesso, chaves privadas ou informações
-                            que possam comprometer uma conta ou sistema.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- =================================================
+        <!-- =====================================================
              FAQ
-        ================================================== -->
-        <section class="section contact-faq-section">
+        ====================================================== -->
+        <section class="section contact-faq">
 
             <div class="container">
 
                 <div class="section-heading">
 
-                    <span class="section-label">
-                        04 // FAQ
+                    <span class="eyebrow">
+                        02 / FAQ
                     </span>
 
                     <h2>
-                        Perguntas
-                        <span>frequentes.</span>
+                        Perguntas frequentes.
                     </h2>
+
+                    <p>
+                        Algumas respostas antes de entrar em contato.
+                    </p>
 
                 </div>
 
@@ -788,16 +642,15 @@
                     <details class="faq-item">
 
                         <summary>
-                            Como posso fazer parte da CYBER NEXIS?
+                            Como posso fazer parte do CYBER NEXIS?
                         </summary>
 
                         <div class="faq-answer">
 
                             <p>
-                                Você pode começar criando uma conta e
-                                realizando os testes educacionais disponíveis.
-                                O fluxo de acesso e as regras da organização
-                                devem ser respeitados.
+                                Você pode começar criando uma conta
+                                e conhecendo as áreas de conhecimento,
+                                testes e regras da comunidade.
                             </p>
 
                         </div>
@@ -809,16 +662,15 @@
                     <details class="faq-item">
 
                         <summary>
-                            Os testes permitem atacar sistemas reais?
+                            O CYBER NEXIS realiza testes de segurança?
                         </summary>
 
                         <div class="faq-answer">
 
                             <p>
-                                Não. Os testes e exercícios têm finalidade
-                                educacional. Qualquer atividade prática deve
-                                ocorrer somente em ambientes próprios,
-                                controlados ou explicitamente autorizados.
+                                Atividades de segurança devem ocorrer
+                                somente com autorização adequada e
+                                dentro de um escopo definido.
                             </p>
 
                         </div>
@@ -830,16 +682,17 @@
                     <details class="faq-item">
 
                         <summary>
-                            Posso solicitar ajuda com segurança digital?
+                            Posso enviar uma vulnerabilidade encontrada?
                         </summary>
 
                         <div class="faq-answer">
 
                             <p>
-                                Sim. Utilize o formulário para explicar sua
-                                necessidade. Não envie credenciais, tokens,
-                                chaves privadas ou outras informações
-                                sensíveis.
+                                Sim. Ao relatar uma possível
+                                vulnerabilidade, descreva o problema
+                                de forma responsável e evite divulgar
+                                informações sensíveis ou realizar
+                                ações fora de um ambiente autorizado.
                             </p>
 
                         </div>
@@ -851,16 +704,16 @@
                     <details class="faq-item">
 
                         <summary>
-                            Como funciona o acesso ao NEXUS?
+                            Posso enviar uma dúvida sobre segurança?
                         </summary>
 
                         <div class="faq-answer">
 
                             <p>
-                                O NEXUS é uma área restrita. O fluxo
-                                educacional da plataforma pode exigir a
-                                conclusão de etapas de avaliação antes que
-                                determinadas áreas sejam disponibilizadas.
+                                Sim. Explique o contexto da dúvida
+                                e, sempre que possível, informe o
+                                objetivo educacional ou defensivo
+                                da sua solicitação.
                             </p>
 
                         </div>
@@ -872,16 +725,16 @@
                     <details class="faq-item">
 
                         <summary>
-                            Posso relatar uma vulnerabilidade?
+                            Posso enviar senhas ou chaves privadas?
                         </summary>
 
                         <div class="faq-answer">
 
                             <p>
-                                Sim. Utilize um canal apropriado e descreva
-                                apenas as informações necessárias para
-                                compreender o problema. Evite enviar dados
-                                privados ou credenciais.
+                                Não. Nunca envie senhas, tokens,
+                                chaves privadas, códigos de
+                                autenticação ou outras credenciais
+                                pelo formulário de contato.
                             </p>
 
                         </div>
@@ -895,27 +748,76 @@
         </section>
 
 
-        <!-- =================================================
-             CTA
-        ================================================== -->
-        <section class="section cta-section">
+        <!-- =====================================================
+             SEGURANÇA
+        ====================================================== -->
+        <section class="section contact-security">
 
             <div class="container">
 
-                <div class="cta-panel">
+                <div class="security-panel">
 
-                    <span class="section-label">
-                        CYBER NEXIS // NEXT STEP
+                    <div class="security-panel-content">
+
+                        <span class="eyebrow">
+                            SECURITY FIRST
+                        </span>
+
+                        <h2>
+                            Comunicação também exige segurança.
+                        </h2>
+
+                        <p>
+                            O CYBER NEXIS valoriza privacidade,
+                            responsabilidade e autorização.
+                            Antes de compartilhar qualquer informação,
+                            certifique-se de que ela não contém dados
+                            que possam comprometer você ou terceiros.
+                        </p>
+
+                        <a
+                            href="regras.html"
+                            class="btn btn-secondary"
+                        >
+                            Conhecer as regras
+                        </a>
+
+                    </div>
+
+                    <div
+                        class="security-panel-mark"
+                        aria-hidden="true"
+                    >
+                        <span>CN</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CTA
+        ====================================================== -->
+        <section class="section contact-cta">
+
+            <div class="container">
+
+                <div class="cta-box">
+
+                    <span class="eyebrow">
+                        CYBER NEXIS
                     </span>
 
                     <h2>
-                        Pronto para
-                        <span>começar?</span>
+                        Conhecimento. Responsabilidade. Proteção.
                     </h2>
 
                     <p>
-                        Conheça os serviços, teste seus conhecimentos ou
-                        faça parte da comunidade.
+                        Faça parte de uma comunidade dedicada
+                        ao aprendizado e à segurança digital.
                     </p>
 
                     <div class="cta-actions">
@@ -924,12 +826,12 @@
                             href="cadastro.html"
                             class="btn btn-primary"
                         >
-                            Criar conta
+                            Criar minha conta
                         </a>
 
                         <a
                             href="testes.html"
-                            class="btn btn-outline"
+                            class="btn btn-secondary"
                         >
                             Testar habilidades
                         </a>
@@ -945,90 +847,117 @@
     </main>
 
 
-    <!-- =====================================================
+    <!-- =========================================================
          FOOTER
-    ====================================================== -->
+    ========================================================== -->
     <footer class="site-footer">
 
         <div class="container">
 
-            <div class="footer-main">
+            <div class="footer-grid">
 
+                <!-- Marca -->
                 <div class="footer-brand">
 
                     <a
                         href="index.html"
-                        class="logo"
+                        class="site-logo"
                     >
-
-                        <span class="logo-symbol">
+                        <span
+                            class="logo-symbol"
+                            aria-hidden="true"
+                        >
                             ◇
                         </span>
 
                         <span class="logo-text">
                             CYBER_<strong>NEXIS</strong>
                         </span>
-
                     </a>
 
                     <p>
-                        Conhecimento, segurança e responsabilidade
-                        no mundo digital.
+                        Comunidade de hackers éticos dedicada
+                        a conhecimento, segurança digital,
+                        aprendizado e proteção.
                     </p>
 
                 </div>
 
 
-                <div class="footer-links">
+                <!-- Navegação -->
+                <div class="footer-column">
 
-                    <div class="footer-column">
+                    <h3>
+                        Navegação
+                    </h3>
 
-                        <h3>
-                            Navegação
-                        </h3>
+                    <a href="index.html">
+                        Início
+                    </a>
 
-                        <a href="index.html">
-                            Início
-                        </a>
+                    <a href="servicos.html">
+                        Serviços
+                    </a>
 
-                        <a href="index.html#sobre">
-                            Sobre
-                        </a>
+                    <a href="testes.html">
+                        Habilidades
+                    </a>
 
-                        <a href="servicos.html">
-                            Serviços
-                        </a>
+                    <a href="regras.html">
+                        Regras
+                    </a>
 
-                        <a href="testes.html">
-                            Habilidades
-                        </a>
+                    <a href="contato.html">
+                        Contato
+                    </a>
 
-                    </div>
+                </div>
 
 
-                    <div class="footer-column">
+                <!-- Conta -->
+                <div class="footer-column">
 
-                        <h3>
-                            Organização
-                        </h3>
+                    <h3>
+                        Acesso
+                    </h3>
 
-                        <a href="regras.html">
-                            Regras
-                        </a>
+                    <a href="login.html">
+                        Entrar
+                    </a>
 
-                        <a href="contato.html">
-                            Contato
-                        </a>
+                    <a href="cadastro.html">
+                        Criar conta
+                    </a>
 
-                        <a href="login.html">
-                            Entrar
-                        </a>
+                    <a href="perfil.html">
+                        Meu perfil
+                    </a>
 
-                        <a href="cadastro.html">
-                            Criar conta
-                        </a>
+                    <a href="testes.html">
+                        Testes
+                    </a>
 
-                    </div>
+                </div>
+
+
+                <!-- Segurança -->
+                <div class="footer-column">
+
+                    <h3>
+                        Segurança
+                    </h3>
+
+                    <a href="regras.html">
+                        Código de conduta
+                    </a>
+
+                    <a href="regras.html">
+                        Uso responsável
+                    </a>
+
+                    <a href="contato.html">
+                        Comunicação
+                    </a>
 
                 </div>
 
@@ -1037,13 +966,17 @@
 
             <div class="footer-bottom">
 
-                <span>
-                    © <span id="currentYear"></span> CYBER NEXIS
-                </span>
+                <p>
+                    ©
+                    <span data-current-year>
+                        2026
+                    </span>
+                    CYBER NEXIS. Todos os direitos reservados.
+                </p>
 
-                <span>
-                    CONHECER • APRENDER • PROTEGER
-                </span>
+                <p>
+                    ETHICAL • SECURE • RESPONSIBLE
+                </p>
 
             </div>
 
@@ -1052,10 +985,15 @@
     </footer>
 
 
-    <!-- =====================================================
-         JAVASCRIPT
-    ====================================================== -->
-    <script src="js/script.js"></script>
+    <!-- =========================================================
+         SCRIPTS
+    ========================================================== -->
+
+    <!-- JavaScript global -->
+    <script src="js/script.js" defer></script>
+
+    <!-- JavaScript de autenticação -->
+    <script src="js/auth.js" defer></script>
 
 </body>
 </html>
