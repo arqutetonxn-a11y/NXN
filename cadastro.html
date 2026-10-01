@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Crie sua conta no CYBER NEXIS e faça parte de uma comunidade dedicada ao aprendizado em cibersegurança."
+    >
+
+    <meta
+        name="theme-color"
+        content="#050505"
+    >
+
+    <title>Criar conta | CYBER NEXIS</title>
+
+    <!-- CSS PRINCIPAL -->
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+    <!-- CSS DE AUTENTICAÇÃO -->
+    <link
+        rel="stylesheet"
+        href="css/auth.css"
+    >
+
+</head>
+
+
+<body class="auth-page register-page">
+
+
+    <!-- =====================================================
+         BACKGROUND
+    ====================================================== -->
+
+    <div
+        class="auth-background"
+        aria-hidden="true"
+    >
+
+        <!-- IMAGEM DE FUNDO -->
+
+        <img
+            src="assets/images/nexus.jpg"
+            alt=""
+            class="auth-background-image"
+        >
+
+
+        <!-- VÍDEO DE FUNDO -->
+
+        <video
+            class="auth-background-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            poster="assets/images/nexus.jpg"
+        >
+
+            <source
+                src="assets/videos/hero.mp4"
+                type="video/mp4"
+            >
+
+        </video>
+
+
+        <!-- CAMADA ESCURA -->
+
+        <div class="auth-background-overlay"></div>
+
+
+        <!-- GRADE FUTURISTA -->
+
+        <div class="auth-grid"></div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="auth-header">
+
+        <div class="container auth-header-container">
+
+
+            <!-- LOGO -->
+
+            <a
+                href="index.html"
+                class="logo"
+                aria-label="CYBER NEXIS - Página inicial"
+            >
+
+                <span
+                    class="logo-symbol"
+                    aria-hidden="true"
+                >
+                    ◇
+                </span>
+
+                <span class="logo-text">
+                    CYBER_<strong>NEXIS</strong>
+                </span>
+
+            </a>
+
+
+            <!-- VOLTAR -->
+
+            <a
+                href="index.html"
+                class="back-link"
+            >
+
+                <span aria-hidden="true">
+                    ←
+                </span>
+
+                Voltar para o início
+
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="auth-main">
+
+
+        <div class="container auth-container register-container">
+
+
+            <!-- =================================================
+                 INTRODUÇÃO
+            ================================================== -->
+
+            <section
+                class="auth-intro register-intro"
+                aria-labelledby="registerTitle"
+            >
+
+                <p class="eyebrow">
+                    CYBER NEXIS // REGISTRATION
+                </p>
+
+
+                <h1 id="registerTitle">
+
+                    Faça parte do
+                    <span>NEXIS.</span>
+
+                </h1>
+
+
+                <div class="auth-line"></div>
+
+
+                <p class="auth-intro-text">
+
+                    Crie sua conta e comece sua jornada de
+                    aprendizado em segurança digital.
+
+                </p>
+
+
+                <!-- ETAPAS -->
+
+                <div class="register-steps">
+
+
+                    <div class="register-step active">
+
+                        <span class="step-number">
+                            01
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Criar conta
+                            </strong>
+
+                            <p>
+                                Cadastre seus dados.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="register-step">
+
+                        <span class="step-number">
+                            02
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Aprender
+                            </strong>
+
+                            <p>
+                                Explore os conteúdos.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="register-step">
+
+                        <span class="step-number">
+                            03
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Desenvolver
+                            </strong>
+
+                            <p>
+                                Teste suas habilidades.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="register-step">
+
+                        <span class="step-number">
+                            04
+                        </span>
+
+                        <div>
+
+                            <strong>
+                                Evoluir
+                            </strong>
+
+                            <p>
+                                Avance dentro da comunidade.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 FORMULÁRIO
+            ================================================== -->
+
+            <section class="auth-card register-card">
+
+
+                <!-- CABEÇALHO -->
+
+                <div class="auth-card-header">
+
+                    <span class="auth-card-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <p class="auth-card-label">
+                            NEW MEMBER
+                        </p>
+
+                        <h2>
+                            Criar conta
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FORMULÁRIO -->
+
+                <form
+                    id="registerForm"
+                    class="auth-form"
+                    action="#"
+                    method="POST"
+                    novalidate
+                >
+
+
+                    <!-- =========================================
+                         NOME
+                    ========================================== -->
+
+                    <div class="form-group">
+
+                        <label for="registerName">
+                            Nome completo
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span
+                                class="input-icon"
+                                aria-hidden="true"
+                            >
+                                ◇
+                            </span>
+
+
+                            <input
+                                type="text"
+                                id="registerName"
+                                name="registerName"
+                                placeholder="Seu nome completo"
+                                autocomplete="name"
+                                minlength="3"
+                                maxlength="100"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         USUÁRIO
+                    ========================================== -->
+
+                    <div class="form-group">
+
+                        <label for="registerUsername">
+                            Nome de usuário
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span
+                                class="input-icon"
+                                aria-hidden="true"
+                            >
+                                @
+                            </span>
+
+
+                            <input
+                                type="text"
+                                id="registerUsername"
+                                name="registerUsername"
+                                placeholder="seu_usuario"
+                                autocomplete="username"
+                                minlength="3"
+                                maxlength="30"
+                                pattern="[A-Za-z0-9_.-]+"
+                                required
+                            >
+
+                        </div>
+
+
+                        <small class="input-help">
+                            Use de 3 a 30 caracteres:
+                            letras, números, ponto, hífen ou underline.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         EMAIL
+                    ========================================== -->
+
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            E-mail
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span
+                                class="input-icon"
+                                aria-hidden="true"
+                            >
+                                @
+                            </span>
+
+
+                            <input
+                                type="email"
+                                id="registerEmail"
+                                name="registerEmail"
+                                placeholder="seu@email.com"
+                                autocomplete="email"
+                                maxlength="120"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         SENHA
+                    ========================================== -->
+
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            Senha
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span
+                                class="input-icon"
+                                aria-hidden="true"
+                            >
+                                *
+                            </span>
+
+
+                            <input
+                                type="password"
+                                id="registerPassword"
+                                name="registerPassword"
+                                placeholder="Crie uma senha segura"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="128"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleRegisterPassword"
+                                aria-label="Mostrar senha"
+                                aria-pressed="false"
+                            >
+
+                                <span aria-hidden="true">
+                                    ◉
+                                </span>
+
+                            </button>
+
+                        </div>
+
+
+                        <!-- INDICADOR DE SENHA -->
+
+                        <div
+                            class="password-strength"
+                            id="passwordStrength"
+                            aria-live="polite"
+                        >
+
+                            <div class="strength-bars">
+
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+
+                            </div>
+
+
+                            <span
+                                class="strength-text"
+                                id="passwordStrengthText"
+                            >
+                                Mínimo de 8 caracteres
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         CONFIRMAR SENHA
+                    ========================================== -->
+
+                    <div class="form-group">
+
+                        <label for="confirmPassword">
+                            Confirmar senha
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span
+                                class="input-icon"
+                                aria-hidden="true"
+                            >
+                                *
+                            </span>
+
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                placeholder="Digite a senha novamente"
+                                autocomplete="new-password"
+                                minlength="8"
+                                maxlength="128"
+                                required
+                            >
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleConfirmPassword"
+                                aria-label="Mostrar confirmação da senha"
+                                aria-pressed="false"
+                            >
+
+                                <span aria-hidden="true">
+                                    ◉
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         REGRAS
+                    ========================================== -->
+
+                    <div class="agreement-box">
+
+                        <label class="checkbox-label agreement-label">
+
+                            <input
+                                type="checkbox"
+                                id="acceptRules"
+                                name="acceptRules"
+                                required
+                            >
+
+                            <span class="custom-checkbox"></span>
+
+
+                            <span>
+
+                                Eu li e concordo com as
+
+                                <a
+                                    href="regras.html"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    regras e princípios
+                                </a>
+
+                                do CYBER NEXIS.
+
+                            </span>
+
+                        </label>
+
+                    </div>
+
+
+
+                    <!-- =========================================
+                         MENSAGEM
+                    ========================================== -->
+
+                    <div
+                        id="registerMessage"
+                        class="form-message"
+                        role="alert"
+                        aria-live="polite"
+                    ></div>
+
+
+
+                    <!-- =========================================
+                         BOTÃO
+                    ========================================== -->
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary auth-submit"
+                    >
+
+                        <span>
+                            CRIAR CONTA
+                        </span>
+
+                        <span aria-hidden="true">
+                            →
+                        </span>
+
+                    </button>
+
+
+                </form>
+
+
+
+                <!-- =================================================
+                     LOGIN
+                ================================================== -->
+
+                <div class="auth-divider">
+
+                    <span></span>
+
+                    <p>
+                        já possui uma conta?
+                    </p>
+
+                    <span></span>
+
+                </div>
+
+
+                <a
+                    href="login.html"
+                    class="btn btn-outline auth-register"
+                >
+
+                    Entrar na minha conta
+
+                    <span aria-hidden="true">
+                        →
+                    </span>
+
+                </a>
+
+
+
+                <!-- =================================================
+                     AVISO
+                ================================================== -->
+
+                <div class="auth-notice">
+
+                    <span
+                        class="notice-icon"
+                        aria-hidden="true"
+                    >
+                        !
+                    </span>
+
+
+                    <p>
+
+                        O CYBER NEXIS é um ambiente de
+                        aprendizado e segurança responsável.
+                        Utilize seu conhecimento somente em
+                        ambientes autorizados.
+
+                    </p>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="auth-footer">
+
+        <div class="container auth-footer-container">
+
+
+            <p>
+
+                ©
+                <span id="currentYear">
+                    2026
+                </span>
+
+                CYBER NEXIS.
+
+            </p>
+
+
+            <div class="auth-footer-links">
+
+                <a href="regras.html">
+                    Regras
+                </a>
+
+                <a href="contato.html">
+                    Contato
+                </a>
+
+                <a href="login.html">
+                    Entrar
+                </a>
+
+                <a href="index.html">
+                    Início
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="js/script.js"
+        defer
+    ></script>
+
+
+    <script
+        src="js/auth.js"
+        defer
+    ></script>
+
+
+</body>
+
+</html>
