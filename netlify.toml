@@ -1,0 +1,5 @@
+[build]
+  # This site contains ready-to-publish HTML, CSS, and JavaScript.
+  base = "."
+  command = ""
+  publish = "."
