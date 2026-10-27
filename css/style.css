@@ -1,0 +1,1103 @@
+/* =========================================================
+   CYBER NEXIS
+   CSS GLOBAL
+   ========================================================= */
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    background: #050505;
+}
+
+body {
+    min-height: 100vh;
+    background: #050505;
+    color: #f5f5f5;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    line-height: 1.6;
+
+    overflow-x: hidden;
+}
+
+::selection {
+    background: #ffffff;
+    color: #000000;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+video {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    border: 0;
+}
+
+ul,
+ol {
+    list-style: none;
+}
+
+
+/* =========================================================
+   VARIÁVEIS
+   ========================================================= */
+
+:root {
+
+    --black: #050505;
+    --black-soft: #080808;
+    --black-light: #0c0c0c;
+
+    --white: #ffffff;
+    --white-soft: #eeeeee;
+
+    --gray-100: #dddddd;
+    --gray-200: #bbbbbb;
+    --gray-300: #999999;
+    --gray-400: #777777;
+    --gray-500: #555555;
+    --gray-600: #333333;
+
+    --border: rgba(255, 255, 255, 0.10);
+    --border-light: rgba(255, 255, 255, 0.18);
+    --border-strong: rgba(255, 255, 255, 0.30);
+
+    --container: 1240px;
+
+    --transition: 0.25s ease;
+}
+
+
+/* =========================================================
+   CONTAINER
+   ========================================================= */
+
+.container {
+    width: min(
+        calc(100% - 40px),
+        var(--container)
+    );
+
+    margin-inline: auto;
+}
+
+
+/* =========================================================
+   UTILITÁRIOS
+   ========================================================= */
+
+.hidden {
+    display: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: var(--gray-400);
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.full-width {
+    width: 100%;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #252525;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #444444;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+
+    background: rgba(5, 5, 5, 0.88);
+
+    border-bottom: 1px solid var(--border);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.header-container,
+.header-inner {
+    min-height: 76px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+
+/* =========================================================
+   MARCA
+   ========================================================= */
+
+.site-brand,
+.brand {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 11px;
+
+    flex-shrink: 0;
+}
+
+.site-logo,
+.brand-logo {
+    width: 38px;
+    height: 38px;
+
+    object-fit: contain;
+
+    filter:
+        grayscale(1)
+        brightness(1.15);
+
+    transition:
+        transform var(--transition),
+        filter var(--transition);
+}
+
+.site-brand:hover .site-logo,
+.brand:hover .brand-logo {
+    transform: rotate(-3deg) scale(1.05);
+
+    filter:
+        grayscale(0)
+        brightness(1.15);
+}
+
+.site-brand-text {
+    display: flex;
+    flex-direction: column;
+
+    gap: 1px;
+}
+
+.brand-name {
+    color: var(--white);
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+    white-space: nowrap;
+}
+
+.brand-subtitle {
+    color: var(--gray-500);
+
+    font-size: 0.52rem;
+    font-weight: 600;
+
+    letter-spacing: 0.14em;
+}
+
+.brand-text {
+    color: var(--white);
+
+    font-size: 0.78rem;
+    font-weight: 700;
+
+    letter-spacing: 0.18em;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   NAVEGAÇÃO
+   ========================================================= */
+
+.main-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+}
+
+.main-navigation a {
+    position: relative;
+
+    padding: 10px 12px;
+
+    color: var(--gray-400);
+
+    font-size: 0.72rem;
+    font-weight: 600;
+
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+
+    transition:
+        color var(--transition),
+        background var(--transition);
+}
+
+.main-navigation a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 12px;
+    right: 12px;
+    bottom: 4px;
+
+    height: 1px;
+
+    background: #ffffff;
+
+    transform: scaleX(0);
+    transform-origin: center;
+
+    transition:
+        transform var(--transition);
+}
+
+.main-navigation a:hover,
+.main-navigation a.active {
+    color: var(--white);
+}
+
+.main-navigation a:hover::after,
+.main-navigation a.active::after {
+    transform: scaleX(1);
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+   ========================================================= */
+
+.header-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+}
+
+.header-login {
+    color: var(--gray-300);
+
+    font-size: 0.66rem;
+    font-weight: 700;
+
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+
+    transition:
+        color var(--transition);
+}
+
+.header-login:hover {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   MENU MOBILE
+   ========================================================= */
+
+.menu-toggle {
+    display: none;
+
+    width: 42px;
+    height: 42px;
+
+    padding: 9px;
+
+    background: transparent;
+
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    display: block;
+
+    width: 100%;
+    height: 1px;
+
+    margin: 6px 0;
+
+    background: #ffffff;
+
+    transition:
+        transform var(--transition),
+        opacity var(--transition);
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 46px;
+
+    padding: 0 20px;
+
+    border: 1px solid transparent;
+    border-radius: 3px;
+
+    font-size: 0.70rem;
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        color var(--transition),
+        background var(--transition),
+        border-color var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    color: #000000;
+    background: #ffffff;
+
+    border-color: #ffffff;
+}
+
+.btn-primary:hover {
+    color: #ffffff;
+    background: transparent;
+
+    box-shadow:
+        0 0 25px rgba(255, 255, 255, 0.08);
+}
+
+.btn-outline {
+    color: #ffffff;
+
+    background: transparent;
+
+    border-color: var(--border-light);
+}
+
+.btn-outline:hover {
+    background: #ffffff;
+    color: #000000;
+
+    border-color: #ffffff;
+}
+
+.btn-ghost {
+    color: var(--gray-300);
+
+    background: transparent;
+
+    border-color: transparent;
+}
+
+.btn-ghost:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-small {
+    min-height: 38px;
+    padding-inline: 14px;
+
+    font-size: 0.64rem;
+}
+
+.btn-large {
+    min-height: 54px;
+    padding-inline: 26px;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+    position: relative;
+
+    min-height: 680px;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
+
+    overflow: hidden;
+}
+
+.hero-background img,
+.hero-background video {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    opacity: 0.35;
+
+    filter:
+        grayscale(1)
+        contrast(1.15);
+}
+
+.hero-background video {
+    z-index: 1;
+}
+
+.hero-background img {
+    z-index: 0;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+
+    z-index: 2;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(5, 5, 5, 0.98) 0%,
+            rgba(5, 5, 5, 0.80) 45%,
+            rgba(5, 5, 5, 0.40) 100%
+        );
+}
+
+.hero-container {
+    position: relative;
+    z-index: 3;
+
+    min-height: 680px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 50px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 4;
+
+    width: min(
+        100%,
+        800px
+    );
+
+    padding: 100px 0;
+}
+
+.hero-code {
+    margin-bottom: 12px;
+
+    color: var(--gray-500);
+
+    font-size: 0.62rem;
+    font-weight: 700;
+
+    letter-spacing: 0.16em;
+}
+
+.hero-kicker {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 25px;
+
+    color: var(--gray-300);
+
+    font-size: 0.68rem;
+    font-weight: 700;
+
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+.hero-kicker::before {
+    content: "";
+
+    width: 28px;
+    height: 1px;
+
+    background: #ffffff;
+}
+
+.hero-kicker .status-dot {
+    display: none;
+}
+
+.hero h1 {
+    max-width: 850px;
+
+    margin-bottom: 25px;
+
+    font-size: clamp(
+        3.5rem,
+        9vw,
+        8rem
+    );
+
+    line-height: 0.87;
+
+    letter-spacing: -0.07em;
+}
+
+.hero h1 span {
+    display: block;
+
+    color: transparent;
+
+    -webkit-text-stroke: 1px #ffffff;
+}
+
+.hero-title {
+    max-width: 850px;
+
+    margin-bottom: 25px;
+
+    font-size: clamp(
+        3.5rem,
+        9vw,
+        8rem
+    );
+
+    line-height: 0.87;
+
+    letter-spacing: -0.07em;
+}
+
+.hero-title span {
+    display: block;
+
+    color: transparent;
+
+    -webkit-text-stroke: 1px #ffffff;
+}
+
+.hero-description {
+    max-width: 650px;
+
+    margin-bottom: 35px;
+
+    color: var(--gray-300);
+
+    font-size: 1rem;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   LOBO / SÍMBOLO
+   ========================================================= */
+
+.wolf-frame {
+    position: relative;
+
+    width: min(
+    
+    
+/* =====================================================
+   CYBER NEXIS — PAINEL DE PERGUNTAS NEXUS
+   Adicionar ao final de css/style.css
+   ===================================================== */
+
+.test-exam-section {
+    padding-top: clamp(32px, 5vw, 64px);
+    padding-bottom: clamp(48px, 7vw, 88px);
+}
+
+.test-exam-section .container {
+    width: min(100% - 32px, 1120px);
+    margin-inline: auto;
+}
+
+.test-exam-section .test-panel {
+    width: 100%;
+    max-width: 1000px;
+    margin-inline: auto;
+    padding: clamp(18px, 4vw, 38px);
+    background:
+        radial-gradient(
+            ellipse at 50% 0%,
+            rgba(0, 153, 255, 0.10),
+            transparent 55%
+        ),
+        #070b12;
+    border: 1px solid rgba(48, 174, 255, 0.24);
+    border-radius: 22px;
+    box-shadow:
+        0 0 35px rgba(0, 136, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.test-exam-section .test-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.test-exam-section .test-topbar > div {
+    display: grid;
+    gap: 6px;
+}
+
+.test-exam-section .test-topbar span {
+    color: #7892ad;
+    font-size: 0.72rem;
+    letter-spacing: 0.13em;
+}
+
+.test-exam-section .test-topbar strong {
+    color: #e6f5ff;
+    font-size: 0.95rem;
+}
+
+.test-exam-section .test-progress {
+    height: 6px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    background: #142235;
+    border-radius: 99px;
+}
+
+.test-exam-section .test-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #087bff, #42d7ff);
+    border-radius: inherit;
+    box-shadow: 0 0 14px rgba(39, 183, 255, 0.65);
+    transition: width 300ms ease;
+}
+
+.nexus-question-box {
+    padding: clamp(20px, 4vw, 42px);
+    background: rgba(10, 18, 30, 0.96);
+    border: 1px solid rgba(47, 155, 255, 0.22);
+    border-radius: 18px;
+}
+
+.nexus-question-box .question-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.nexus-question-box .question-heading-main {
+    min-width: 0;
+}
+
+.nexus-question-box .section-label {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: #40c5ff;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+}
+
+.nexus-question-box #questionText {
+    max-width: 760px;
+    margin: 0;
+    color: #f0f7ff;
+    font-size: clamp(1.4rem, 3vw, 2.15rem);
+    line-height: 1.35;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+}
+
+.nexus-question-box .question-instruction {
+    margin: 16px 0 0;
+    color: #91a8c0;
+    font-size: 0.96rem;
+    line-height: 1.7;
+}
+
+.nexus-question-box .question-symbol {
+    flex: 0 0 auto;
+    color: #35bcff;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    text-shadow: 0 0 22px rgba(39, 174, 255, 0.55);
+}
+
+.nexus-answer-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 13px;
+}
+
+.nexus-answer-options .answer-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    min-height: 76px;
+    padding: 17px 20px;
+    text-align: left;
+    color: #dceafa;
+    background: linear-gradient(
+        110deg,
+        rgba(15, 31, 49, 0.96),
+        rgba(9, 19, 32, 0.96)
+    );
+    border: 1px solid #243b53;
+    border-radius: 13px;
+    cursor: pointer;
+    transition:
+        border-color 180ms ease,
+        background 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+}
+
+.nexus-answer-options .answer-option:hover:not(:disabled),
+.nexus-answer-options .answer-option:focus-visible {
+    border-color: #27baff;
+    background: #10243a;
+    box-shadow: 0 0 18px rgba(0, 157, 255, 0.12);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.nexus-answer-options .answer-letter {
+    display: grid;
+    place-items: center;
+    flex: 0 0 40px;
+    width: 40px;
+    height: 40px;
+    color: #64cfff;
+    background: #10283e;
+    border: 1px solid #285777;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.nexus-answer-options .answer-text {
+    flex: 1;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.nexus-answer-options .answer-option.selected {
+    border-color: #37bfff;
+}
+
+.nexus-answer-options .answer-option.correct {
+    color: #d8ffed;
+    background: rgba(9, 65, 48, 0.45);
+    border-color: #26d99a;
+    box-shadow: 0 0 18px rgba(38, 217, 154, 0.08);
+}
+
+.nexus-answer-options .answer-option.correct .answer-letter {
+    color: #8affcd;
+    background: #104b38;
+    border-color: #26d99a;
+}
+
+.nexus-answer-options .answer-option.incorrect {
+    color: #ffe3e8;
+    background: rgba(87, 24, 40, 0.38);
+    border-color: #ff647c;
+}
+
+.nexus-answer-options .answer-option.incorrect .answer-letter {
+    color: #ff9bab;
+    background: #4b1c2a;
+    border-color: #ff647c;
+}
+
+.nexus-answer-options .answer-option:disabled {
+    cursor: default;
+    opacity: 1;
+}
+
+.nexus-feedback-area {
+    margin-top: 22px;
+}
+
+.nexus-question-box #answerFeedback:empty,
+.nexus-question-box #answerFeedback[hidden] {
+    display: none;
+}
+
+.nexus-question-box #answerFeedback {
+    padding: 20px 22px;
+    color: #c8d9e9;
+    background: #0d1825;
+    border: 1px solid #284056;
+    border-left: 4px solid #36bdff;
+    border-radius: 12px;
+    line-height: 1.7;
+    animation: nexusFeedbackIn 220ms ease-out;
+}
+
+.nexus-question-box #answerFeedback.correct {
+    background: rgba(9, 62, 45, 0.34);
+    border-color: rgba(38, 217, 154, 0.55);
+    border-left-color: #26d99a;
+}
+
+.nexus-question-box #answerFeedback.incorrect {
+    background: rgba(75, 24, 38, 0.30);
+    border-color: rgba(255, 100, 124, 0.48);
+    border-left-color: #ff647c;
+}
+
+.nexus-question-box #answerFeedback strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #56caff;
+    font-size: 0.8rem;
+    letter-spacing: 0.09em;
+}
+
+.nexus-question-box #answerFeedback.correct strong {
+    color: #6ef0b4;
+}
+
+.nexus-question-box #answerFeedback.incorrect strong {
+    color: #ff8fa2;
+}
+
+.nexus-question-box #answerFeedback p {
+    margin: 0;
+    color: #d1dfed;
+}
+
+.nexus-question-box .nexus-question-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(80, 130, 175, 0.18);
+}
+
+.nexus-question-box .question-footer-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: #819bb5;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+}
+
+.nexus-question-box .question-status-dot {
+    width: 7px;
+    height: 7px;
+    background: #29d99a;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(41, 217, 154, 0.75);
+}
+
+.nexus-question-box #nextQuestion {
+    min-height: 48px;
+    padding: 13px 22px;
+    color: #ffffff;
+    background: linear-gradient(110deg, #087cff, #079fe8);
+    border: 1px solid #28b9ff;
+    border-radius: 10px;
+    font-weight: 700;
+    letter-spacing: 0.025em;
+    box-shadow: 0 0 18px rgba(0, 133, 255, 0.15);
+    transition: filter 180ms ease, box-shadow 180ms ease;
+}
+
+.nexus-question-box #nextQuestion:hover:not(:disabled) {
+    filter: brightness(1.12);
+    box-shadow: 0 0 24px rgba(0, 157, 255, 0.3);
+}
+
+.nexus-question-box #nextQuestion:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+    box-shadow: none;
+}
+
+@keyframes nexusFeedbackIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .test-exam-section .container {
+        width: min(100% - 20px, 1120px);
+    }
+
+    .test-exam-section .test-panel {
+        padding: 14px;
+        border-radius: 16px;
+    }
+
+    .test-exam-section .test-topbar {
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .nexus-question-box {
+        padding: 18px 14px;
+    }
+
+    .nexus-question-box .question-heading {
+        gap: 10px;
+        margin-bottom: 23px;
+    }
+
+    .nexus-question-box .question-symbol {
+        font-size: 1.8rem;
+    }
+
+    .nexus-answer-options .answer-option {
+        gap: 12px;
+        min-height: 68px;
+        padding: 13px;
+    }
+
+    .nexus-answer-options .answer-letter {
+        flex-basis: 34px;
+        width: 34px;
+        height: 34px;
+    }
+
+    .nexus-question-box .nexus-question-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .nexus-question-box #nextQuestion {
+        width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nexus-question-box *,
+    .nexus-question-box *::before,
+    .nexus-question-box *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
