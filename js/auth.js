@@ -23,7 +23,13 @@ import {
     window.__CYBER_NEXIS_AUTH_INITIALIZED__ = true;
 
     let currentUser = null;
-    let authReady = false;
+let authReady = false;
+
+let resolveAuthReady;
+
+const authReadyPromise = new Promise((resolve) => {
+    resolveAuthReady = resolve;
+});
 
     function getElement(id) {
         return document.getElementById(id);
