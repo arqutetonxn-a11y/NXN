@@ -1,9 +1,7 @@
 
 "use strict";
 
-import {
-    auth
-} from "./firebase.js";
+import { auth } from "./firebase.js";
 
 import {
     signInWithEmailAndPassword,
@@ -23,13 +21,12 @@ import {
     window.__CYBER_NEXIS_AUTH_INITIALIZED__ = true;
 
     let currentUser = null;
-let authReady = false;
+    let authReady = false;
+    let resolveAuthReady;
 
-let resolveAuthReady;
-
-const authReadyPromise = new Promise((resolve) => {
-    resolveAuthReady = resolve;
-});
+    const authReadyPromise = new Promise((resolve) => {
+        resolveAuthReady = resolve;
+    });
 
     function getElement(id) {
         return document.getElementById(id);
@@ -92,8 +89,14 @@ const authReadyPromise = new Promise((resolve) => {
 
         button.addEventListener("click", function () {
             const show = password.type === "password";
+
             password.type = show ? "text" : "password";
-            button.setAttribute("aria-pressed", String(show));
+
+            button.setAttribute(
+                "aria-pressed",
+                String(show)
+            );
+
             button.setAttribute(
                 "aria-label",
                 show ? "Ocultar senha" : "Mostrar senha"
@@ -130,9 +133,10 @@ const authReadyPromise = new Promise((resolve) => {
             }
 
             try {
-                const persistence = rememberMe && rememberMe.checked
-                    ? browserLocalPersistence
-                    : browserSessionPersistence;
+                const persistence =
+                    rememberMe && rememberMe.checked
+                        ? browserLocalPersistence
+                        : browserSessionPersistence;
 
                 await setPersistence(auth, persistence);
 
@@ -149,8 +153,15 @@ const authReadyPromise = new Promise((resolve) => {
 
                 window.location.replace("nexus.html");
             } catch (error) {
-                console.error("Erro de autenticação:", error.code);
-                showMessage(friendlyError(error), "error");
+                console.error(
+                    "Erro de autenticação:",
+                    error.code
+                );
+
+                showMessage(
+                    friendlyError(error),
+                    "error"
+                );
             } finally {
                 if (submitButton) {
                     submitButton.disabled = false;
@@ -179,18 +190,24 @@ const authReadyPromise = new Promise((resolve) => {
                     "Digite o seu e-mail no campo acima para recuperar a senha.",
                     "info"
                 );
+
                 emailInput.focus();
                 return;
             }
 
             try {
                 await sendPasswordResetEmail(auth, email);
+
                 showMessage(
                     "Se a conta estiver registada, receberás as instruções de recuperação no e-mail.",
                     "success"
                 );
             } catch (error) {
-                console.error("Erro de recuperação:", error.code);
+                console.error(
+                    "Erro de recuperação:",
+                    error.code
+                );
+
                 showMessage(
                     "Não foi possível iniciar a recuperação. Confirme o e-mail e tente novamente.",
                     "error"
@@ -201,25 +218,53 @@ const authReadyPromise = new Promise((resolve) => {
 
     function initCurrentYear() {
         const year = getElement("currentYear");
-        if (year) year.textContent = String(new Date().getFullYear());
+
+        if (year) {
+            year.textContent = String(
+                new Date().getFullYear()
+            );
+        }
     }
 
-    onAuthStateChanged(auth, function (user) {
-        currentUser = user;
-        authReady = true;
-    });
+    // O NEXUS poderá aguardar esta confirmação.
+    onAuthStateChanged(
+        auth,
+        function (user) {
+            currentUser = user;
+            authReady = true;
+            resolveAuthReady(user);
+        },
+        function (error) {
+            console.error(
+                "Erro ao verificar a sessão:",
+                error.code
+            );
 
-    // Compatibilidade com os ficheiros existentes do NEXUS.
+            currentUser = null;
+            authReady = true;
+            resolveAuthReady(null);
+        }
+    );
+
     window.CyberNexisAuth = {
         getCurrentUser: function () {
             return currentUser;
         },
+
         isLoggedIn: function () {
             return authReady && currentUser !== null;
         },
+
+        waitForAuthReady: function () {
+            return authReadyPromise;
+        },
+
         logout: async function () {
-            await signOut(auth);
-            window.location.replace("login.html");
+            try {
+                await signOut(auth);
+            } finally {
+                window.location.replace("login.html");
+            }
         }
     };
 
