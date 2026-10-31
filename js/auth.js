@@ -226,7 +226,7 @@ import {
         }
     }
 
-    // O NEXUS poderá aguardar esta confirmação.
+    // Aguarda a confirmação do estado de autenticação.
     onAuthStateChanged(
         auth,
         function (user) {
@@ -246,6 +246,7 @@ import {
         }
     );
 
+    // API pública de autenticação do CYBER NEXIS.
     window.CyberNexisAuth = {
         getCurrentUser: function () {
             return currentUser;
@@ -257,6 +258,17 @@ import {
 
         waitForAuthReady: function () {
             return authReadyPromise;
+        },
+
+        // NOVO: fornece o token Firebase para o backend.
+        getIdToken: async function (forceRefresh = false) {
+            await authReadyPromise;
+
+            if (!currentUser) {
+                throw new Error("Usuário não autenticado.");
+            }
+
+            return await currentUser.getIdToken(forceRefresh);
         },
 
         logout: async function () {
