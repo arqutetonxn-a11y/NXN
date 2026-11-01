@@ -1,4 +1,3 @@
-
 /* =========================================================
    CYBER NEXIS — SISTEMA DE TESTES
    Arquivo: js/tests.js
@@ -320,6 +319,13 @@
         questionIndex: 0,
         score: 0,
         selectedAnswer: null,
+
+        // Respostas enviadas para validação oficial.
+        answers: [],
+
+        // Evita múltiplos envios simultâneos.
+        isSubmitting: false,
+
         profileAnswers: []
     };
 
@@ -379,6 +385,7 @@
 
     function addActivity(type, title, description) {
         const auth = window.CyberNexisAuth;
+
         if (auth && typeof auth.addActivity === "function") {
             auth.addActivity(type, title, description);
         }
@@ -393,7 +400,9 @@
         const intermediatePassed = hasPassed("intermediario");
         const profileCompleted = hasCompletedProfile();
 
-        const buttons = all(".test-start-button[data-test], .test-start[data-test]");
+        const buttons = all(
+            ".test-start-button[data-test], .test-start[data-test]"
+        );
 
         buttons.forEach((button) => {
             const level = button.dataset.test;
@@ -421,19 +430,26 @@
             if (completed) {
                 button.textContent = "Refazer teste";
             } else if (!unlocked) {
-                button.textContent = level === "intermediario"
-                    ? "Complete o N0"
-                    : "Complete o N1";
+                button.textContent =
+                    level === "intermediario"
+                        ? "Complete o N0"
+                        : "Complete o N1";
             } else {
                 button.textContent = "Iniciar teste";
             }
 
             if (card) {
                 card.classList.toggle("locked", !unlocked);
-                card.classList.toggle("available", unlocked && !completed);
+                card.classList.toggle(
+                    "available",
+                    unlocked && !completed
+                );
                 card.classList.toggle("completed", completed);
 
-                const status = card.querySelector(".test-level-status, .test-status");
+                const status = card.querySelector(
+                    ".test-level-status, .test-status"
+                );
+
                 if (status) {
                     status.textContent = completed
                         ? "CONCLUÍDO"
@@ -454,6 +470,7 @@
         if (!button) return;
 
         const auth = window.CyberNexisAuth;
+
         const authAllowsAccess = Boolean(
             auth &&
             typeof auth.canAccessNexus === "function" &&
@@ -469,8 +486,13 @@
             ? authAllowsAccess
             : educationComplete;
 
-        button.setAttribute("aria-disabled", String(!unlocked));
+        button.setAttribute(
+            "aria-disabled",
+            String(!unlocked)
+        );
+
         button.classList.toggle("disabled", !unlocked);
+
         button.textContent = unlocked
             ? "Acessar NEXUS"
             : "Verificar acesso";
@@ -493,18 +515,27 @@
 
         if (level === "intermediario") {
             if (!hasPassed("iniciante")) {
-                showMessage("Conclua e seja aprovado no teste Iniciante antes de acessar o Intermediário.");
+                showMessage(
+                    "Conclua e seja aprovado no teste Iniciante antes de acessar o Intermediário."
+                );
                 return;
             }
+
             startKnowledgeTest("intermediario");
             return;
         }
 
         if (level === "perfil") {
-            if (!hasPassed("iniciante") || !hasPassed("intermediario")) {
-                showMessage("Conclua e seja aprovado nos testes Iniciante e Intermediário antes de realizar o perfil.");
+            if (
+                !hasPassed("iniciante") ||
+                !hasPassed("intermediario")
+            ) {
+                showMessage(
+                    "Conclua e seja aprovado nos testes Iniciante e Intermediário antes de realizar o perfil."
+                );
                 return;
             }
+
             startProfileTest();
         }
     }
@@ -514,6 +545,8 @@
         state.questionIndex = 0;
         state.score = 0;
         state.selectedAnswer = null;
+        state.answers = [];
+        state.isSubmitting = false;
 
         setVisible($("testSelection"), false);
         setVisible($("testPanel"), true);
@@ -522,14 +555,20 @@
         setVisible($("profileResult"), false);
 
         const title = $("currentTestLevel");
+
         if (title) {
-            title.textContent = level === "iniciante"
-                ? "N0 INICIANTE"
-                : "N1 INTERMEDIÁRIO";
+            title.textContent =
+                level === "iniciante"
+                    ? "N0 INICIANTE"
+                    : "N1 INTERMEDIÁRIO";
         }
 
         renderQuestion();
-        $("testPanel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        $("testPanel")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
     }
 
     function currentQuestions() {
@@ -567,7 +606,9 @@
                 `${((state.questionIndex + 1) / questions.length) * 100}%`;
         }
 
-        if (questionText) questionText.textContent = question.question;
+        if (questionText) {
+            questionText.textContent = question.question;
+        }
 
         if (feedback) {
             feedback.className = "";
@@ -577,6 +618,7 @@
 
         if (nextButton) {
             nextButton.disabled = true;
+
             nextButton.textContent =
                 state.questionIndex === questions.length - 1
                     ? "Finalizar teste"
@@ -585,17 +627,23 @@
 
         if (!options) return;
 
-        options.innerHTML = question.options.map((option, index) => `
-            <button
-                type="button"
-                class="answer-option"
-                data-answer="${index}"
-                aria-pressed="false"
-            >
-                <span class="answer-letter">${String.fromCharCode(65 + index)}</span>
-                <span class="answer-text">${escapeHTML(option)}</span>
-            </button>
-        `).join("");
+        options.innerHTML = question.options
+            .map((option, index) => `
+                <button
+                    type="button"
+                    class="answer-option"
+                    data-answer="${index}"
+                    aria-pressed="false"
+                >
+                    <span class="answer-letter">
+                        ${String.fromCharCode(65 + index)}
+                    </span>
+                    <span class="answer-text">
+                        ${escapeHTML(option)}
+                    </span>
+                </button>
+            `)
+            .join("");
 
         all("#answerOptions .answer-option").forEach((button) => {
             button.addEventListener("click", () => {
@@ -611,45 +659,88 @@
     function chooseAnswer(answerIndex) {
         if (state.selectedAnswer !== null) return;
 
-        const question = currentQuestions()[state.questionIndex];
+        const question =
+            currentQuestions()[state.questionIndex];
+
         if (!question) return;
 
         state.selectedAnswer = answerIndex;
 
+        // Guarda a resposta escolhida para o servidor.
+        state.answers[state.questionIndex] = answerIndex;
+
+        // Mantido temporariamente para o feedback imediato.
         const correct = answerIndex === question.answer;
-        if (correct) state.score++;
 
-        all("#answerOptions .answer-option").forEach((button) => {
-            const index = Number(button.dataset.answer);
-            button.disabled = true;
-            button.setAttribute("aria-pressed", String(index === answerIndex));
-            button.classList.toggle("selected", index === answerIndex);
+        if (correct) {
+            state.score++;
+        }
 
-            if (index === question.answer) {
-                button.classList.add("correct");
-            } else if (index === answerIndex) {
-                button.classList.add("incorrect");
+        all("#answerOptions .answer-option").forEach(
+            (button) => {
+                const index = Number(button.dataset.answer);
+
+                button.disabled = true;
+
+                button.setAttribute(
+                    "aria-pressed",
+                    String(index === answerIndex)
+                );
+
+                button.classList.toggle(
+                    "selected",
+                    index === answerIndex
+                );
+
+                if (index === question.answer) {
+                    button.classList.add("correct");
+                } else if (index === answerIndex) {
+                    button.classList.add("incorrect");
+                }
             }
-        });
+        );
 
         const feedback = $("answerFeedback");
+
         if (feedback) {
-            feedback.className = `answer-feedback ${correct ? "correct" : "incorrect"}`;
+            feedback.className =
+                `answer-feedback ${
+                    correct ? "correct" : "incorrect"
+                }`;
+
             feedback.innerHTML = `
-                <strong>${correct ? "RESPOSTA CORRETA" : "RESPOSTA INCORRETA"}</strong>
+                <strong>
+                    ${
+                        correct
+                            ? "RESPOSTA CORRETA"
+                            : "RESPOSTA INCORRETA"
+                    }
+                </strong>
                 <p>${escapeHTML(question.explanation)}</p>
             `;
+
             feedback.hidden = false;
         }
 
         const nextButton = $("nextQuestion");
-        if (nextButton) nextButton.disabled = false;
+
+        if (nextButton) {
+            nextButton.disabled = false;
+        }
     }
 
     function nextQuestion() {
-        if (state.selectedAnswer === null) return;
+        if (
+            state.selectedAnswer === null ||
+            state.isSubmitting
+        ) {
+            return;
+        }
 
-        if (state.questionIndex >= currentQuestions().length - 1) {
+        if (
+            state.questionIndex >=
+            currentQuestions().length - 1
+        ) {
             finishKnowledgeTest();
             return;
         }
@@ -659,97 +750,271 @@
     }
 
     /* =====================================================
-       SALVAR E EXIBIR RESULTADO
+       VALIDAÇÃO OFICIAL NO SERVIDOR
        ===================================================== */
 
-    function finishKnowledgeTest() {
+    async function finishKnowledgeTest() {
+        // Impede envios duplicados.
+        if (state.isSubmitting) return;
+
         const questions = currentQuestions();
-        const total = questions.length;
-        const percentage = Math.round((state.score / total) * 100);
-        const passed = percentage >= CONFIG.passingScore;
         const level = state.currentLevel;
 
-        const result = {
-            level,
-            score: state.score,
-            total,
-            percentage,
-            passed,
-            date: new Date().toISOString()
-        };
-
-        const resultKey = level === "iniciante"
-            ? CONFIG.keys.beginnerResult
-            : CONFIG.keys.intermediateResult;
-
-        saveValue(resultKey, JSON.stringify(result));
-
-        if (passed) {
-            const passKey = level === "iniciante"
-                ? CONFIG.keys.beginner
-                : CONFIG.keys.intermediate;
-            saveValue(passKey, "true");
+        // Confirma que todas as questões foram respondidas.
+        if (
+            !Array.isArray(state.answers) ||
+            state.answers.length !== questions.length ||
+            state.answers.some(
+                (answer) => !Number.isInteger(answer)
+            )
+        ) {
+            showMessage(
+                "Responda todas as questões antes de finalizar o teste."
+            );
+            return;
         }
 
-        addActivity(
-            "teste",
-            passed ? "Teste aprovado" : "Teste finalizado",
-            `${level} — ${percentage}%${passed ? " — aprovado" : " — não aprovado"}`
-        );
-
-        showKnowledgeResult(result);
-        updateTestCards();
-
         const auth = window.CyberNexisAuth;
-        if (auth) {
+
+        if (
+            !auth ||
+            typeof auth.getIdToken !== "function"
+        ) {
+            showMessage(
+                "Não foi possível verificar sua sessão. Entre novamente e tente o teste."
+            );
+            return;
+        }
+
+        state.isSubmitting = true;
+
+        const nextButton = $("nextQuestion");
+        const feedback = $("answerFeedback");
+
+        if (nextButton) {
+            nextButton.disabled = true;
+            nextButton.textContent =
+                "VALIDANDO RESULTADO...";
+        }
+
+        if (feedback) {
+            feedback.className = "answer-feedback";
+            feedback.textContent =
+                "A validar o resultado oficial do teste...";
+            feedback.hidden = false;
+        }
+
+        try {
+            // Obtém o token Firebase do usuário autenticado.
+            const token = await auth.getIdToken();
+
+            // Envia somente as respostas. O servidor possui
+            // o gabarito oficial e calcula a nota.
+            const response = await fetch(
+                "/api/submit-test",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+
+                    body: JSON.stringify({
+                        level: level,
+                        answers: state.answers.slice()
+                    })
+                }
+            );
+
+            let data;
+
+            try {
+                data = await response.json();
+            } catch (error) {
+                throw new Error(
+                    "O servidor retornou uma resposta inválida."
+                );
+            }
+
+            if (
+                !response.ok ||
+                !data.success
+            ) {
+                throw new Error(
+                    data?.error ||
+                    "Não foi possível validar o teste."
+                );
+            }
+
+            // Este resultado vem do servidor e representa
+            // a pontuação oficial.
+            const result = {
+                level: data.level,
+                score: data.score,
+                total: data.total,
+                percentage: data.percentage,
+                passed: data.passed,
+                date: new Date().toISOString(),
+                official: true
+            };
+
+            const resultKey =
+                level === "iniciante"
+                    ? CONFIG.keys.beginnerResult
+                    : CONFIG.keys.intermediateResult;
+
+            // Armazenamento local é usado apenas pela interface.
+            saveValue(
+                resultKey,
+                JSON.stringify(result)
+            );
+
+            // A aprovação local acompanha a decisão oficial
+            // retornada pelo servidor.
+            if (result.passed) {
+                const passKey =
+                    level === "iniciante"
+                        ? CONFIG.keys.beginner
+                        : CONFIG.keys.intermediate;
+
+                saveValue(passKey, "true");
+            }
+
+            addActivity(
+                "teste",
+                result.passed
+                    ? "Teste aprovado"
+                    : "Teste finalizado",
+                `${level} — ${result.percentage}%${
+                    result.passed
+                        ? " — aprovado"
+                        : " — não aprovado"
+                }`
+            );
+
+            showKnowledgeResult(result);
+            updateTestCards();
+
+            // Mantém compatibilidade com versões que possuam
+            // essas funções no módulo de autenticação.
             auth.updateProgressBars?.();
             auth.updateAchievements?.();
             auth.updateNexusAccess?.();
+
+        } catch (error) {
+            console.error(
+                "Erro ao enviar o teste para validação:",
+                error
+            );
+
+            let message =
+                error?.message ||
+                "Não foi possível validar o resultado.";
+
+            if (
+                message.includes("Sessão inválida") ||
+                message.includes("Autenticação necessária")
+            ) {
+                message =
+                    "Sua sessão expirou. Entre novamente e tente o teste outra vez.";
+            }
+
+            if (feedback) {
+                feedback.className =
+                    "answer-feedback warning";
+
+                feedback.textContent = message;
+                feedback.hidden = false;
+            } else {
+                window.alert(message);
+            }
+
+            // Permite tentar novamente caso ocorra uma falha
+            // temporária de conexão.
+            if (nextButton) {
+                nextButton.disabled = false;
+                nextButton.textContent =
+                    "Tentar validar novamente";
+            }
+
+        } finally {
+            state.isSubmitting = false;
         }
     }
+
+    /* =====================================================
+       EXIBIR RESULTADO
+       ===================================================== */
 
     function showKnowledgeResult(result) {
         setVisible($("testPanel"), false);
         setVisible($("testResult"), true);
 
         if ($("resultIcon")) {
-            $("resultIcon").textContent = result.passed ? "✓" : "!";
+            $("resultIcon").textContent =
+                result.passed ? "✓" : "!";
         }
 
         if ($("resultTitle")) {
-            $("resultTitle").textContent = result.passed
-                ? "TESTE CONCLUÍDO"
-                : "REQUISITO NÃO ATINGIDO";
+            $("resultTitle").textContent =
+                result.passed
+                    ? "TESTE CONCLUÍDO"
+                    : "REQUISITO NÃO ATINGIDO";
         }
 
         if ($("resultText")) {
-            $("resultText").textContent = result.passed
-                ? "Parabéns! Você atingiu a pontuação necessária para este nível."
-                : `Você acertou ${result.score} de ${result.total} questões. É necessário atingir pelo menos ${CONFIG.passingScore}% para desbloquear o próximo nível.`;
+            $("resultText").textContent =
+                result.passed
+                    ? "Parabéns! Você atingiu a pontuação necessária para este nível."
+                    : `Você acertou ${result.score} de ${result.total} questões. É necessário atingir pelo menos ${CONFIG.passingScore}% para desbloquear o próximo nível.`;
         }
 
         if ($("scoreValue")) {
-            $("scoreValue").textContent = `${result.percentage}%`;
+            $("scoreValue").textContent =
+                `${result.percentage}%`;
         }
 
         const actions = $("resultActions");
+
         if (actions) {
             actions.innerHTML = `
-                <button type="button" class="btn btn-outline" id="resultBackButton">
+                <button
+                    type="button"
+                    class="btn btn-outline"
+                    id="resultBackButton"
+                >
                     Voltar aos testes
                 </button>
-                <button type="button" class="btn btn-primary" id="resultRetryButton">
+
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="resultRetryButton"
+                >
                     Refazer teste
                 </button>
             `;
 
-            $("resultBackButton")?.addEventListener("click", backToSelection);
-            $("resultRetryButton")?.addEventListener("click", () => {
-                startKnowledgeTest(state.currentLevel);
-            });
+            $("resultBackButton")?.addEventListener(
+                "click",
+                backToSelection
+            );
+
+            $("resultRetryButton")?.addEventListener(
+                "click",
+                () => {
+                    startKnowledgeTest(
+                        state.currentLevel
+                    );
+                }
+            );
         }
 
-        $("testResult")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        $("testResult")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
     }
 
     /* =====================================================
@@ -785,37 +1050,59 @@
         setVisible($("profileTest"), true);
 
         renderProfileQuestions();
-        $("profileTest")?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        $("profileTest")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
     }
 
     function renderProfileQuestions() {
         const container = $("profileQuestions");
+
         if (!container) return;
 
-        container.innerHTML = profileQuestions.map((question, qIndex) => `
-            <article class="profile-question">
-                <div class="profile-question-number">${String(qIndex + 1).padStart(2, "0")}</div>
-                <h3>${escapeHTML(question.question)}</h3>
-                <div class="profile-options">
-                    ${question.options.map((option, oIndex) => `
-                        <label class="profile-option">
-                            <input
-                                type="radio"
-                                name="profileQuestion${qIndex}"
-                                value="${escapeHTML(option.type)}"
-                                data-question="${qIndex}"
-                                data-option="${oIndex}"
-                            >
-                            <span>${escapeHTML(option.text)}</span>
-                        </label>
-                    `).join("")}
-                </div>
-            </article>
-        `).join("");
+        container.innerHTML = profileQuestions
+            .map((question, qIndex) => `
+                <article class="profile-question">
+                    <div class="profile-question-number">
+                        ${String(qIndex + 1).padStart(2, "0")}
+                    </div>
 
-        all("#profileQuestions input[type='radio']").forEach((input) => {
+                    <h3>
+                        ${escapeHTML(question.question)}
+                    </h3>
+
+                    <div class="profile-options">
+                        ${question.options
+                            .map((option, oIndex) => `
+                                <label class="profile-option">
+                                    <input
+                                        type="radio"
+                                        name="profileQuestion${qIndex}"
+                                        value="${escapeHTML(option.type)}"
+                                        data-question="${qIndex}"
+                                        data-option="${oIndex}"
+                                    >
+                                    <span>
+                                        ${escapeHTML(option.text)}
+                                    </span>
+                                </label>
+                            `)
+                            .join("")}
+                    </div>
+                </article>
+            `)
+            .join("");
+
+        all(
+            "#profileQuestions input[type='radio']"
+        ).forEach((input) => {
             input.addEventListener("change", () => {
-                state.profileAnswers[Number(input.dataset.question)] = input.value;
+                state.profileAnswers[
+                    Number(input.dataset.question)
+                ] = input.value;
+
                 updateProfileFinishButton();
             });
         });
@@ -825,20 +1112,33 @@
 
     function updateProfileFinishButton() {
         const button = $("finishProfile");
+
         if (!button) return;
 
-        const complete = state.profileAnswers.length === profileQuestions.length &&
-            profileQuestions.every((_, index) => Boolean(state.profileAnswers[index]));
+        const complete =
+            state.profileAnswers.length ===
+                profileQuestions.length &&
+            profileQuestions.every(
+                (_, index) =>
+                    Boolean(state.profileAnswers[index])
+            );
 
         button.disabled = !complete;
     }
 
     function finishProfileTest() {
-        const complete = state.profileAnswers.length === profileQuestions.length &&
-            profileQuestions.every((_, index) => Boolean(state.profileAnswers[index]));
+        const complete =
+            state.profileAnswers.length ===
+                profileQuestions.length &&
+            profileQuestions.every(
+                (_, index) =>
+                    Boolean(state.profileAnswers[index])
+            );
 
         if (!complete) {
-            showMessage("Responda todas as perguntas antes de finalizar o perfil.");
+            showMessage(
+                "Responda todas as perguntas antes de finalizar o perfil."
+            );
             return;
         }
 
@@ -850,16 +1150,29 @@
         };
 
         state.profileAnswers.forEach((answer) => {
-            if (Object.prototype.hasOwnProperty.call(counts, answer)) {
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    counts,
+                    answer
+                )
+            ) {
                 counts[answer]++;
             }
         });
 
-        const priority = ["analista", "executor", "colaborador", "especialista"];
+        const priority = [
+            "analista",
+            "executor",
+            "colaborador",
+            "especialista"
+        ];
+
         let selected = priority[0];
 
         priority.forEach((type) => {
-            if (counts[type] > counts[selected]) selected = type;
+            if (counts[type] > counts[selected]) {
+                selected = type;
+            }
         });
 
         const result = {
@@ -868,19 +1181,29 @@
             date: new Date().toISOString()
         };
 
-        saveValue(CONFIG.keys.profileResult, JSON.stringify(result));
-        saveValue(CONFIG.keys.profile, "true");
+        saveValue(
+            CONFIG.keys.profileResult,
+            JSON.stringify(result)
+        );
+
+        saveValue(
+            CONFIG.keys.profile,
+            "true"
+        );
 
         addActivity(
             "perfil",
             "Perfil técnico concluído",
-            `Perfil identificado: ${profileDescriptions[selected].title}`
+            `Perfil identificado: ${
+                profileDescriptions[selected].title
+            }`
         );
 
         showProfileResult(result);
         updateTestCards();
 
         const auth = window.CyberNexisAuth;
+
         if (auth) {
             auth.updateProfilePage?.();
             auth.updateProgressBars?.();
@@ -890,20 +1213,24 @@
     }
 
     function showProfileResult(result) {
-        const description = profileDescriptions[result.profile];
+        const description =
+            profileDescriptions[result.profile];
 
         setVisible($("profileTest"), false);
         setVisible($("profileResult"), true);
 
         if ($("profileTitle")) {
-            $("profileTitle").textContent = description.title;
+            $("profileTitle").textContent =
+                description.title;
         }
 
         if ($("profileDescription")) {
-            $("profileDescription").textContent = description.description;
+            $("profileDescription").textContent =
+                description.description;
         }
 
-        // A seção do NEXUS só aparece depois da conclusão do perfil.
+        // A seção do NEXUS só aparece depois da conclusão
+        // do perfil.
         setVisible($("secretAccess"), true);
 
         $("profileResult")?.scrollIntoView({
@@ -919,9 +1246,14 @@
     function showMessage(message) {
         const feedback = $("answerFeedback");
 
-        if (feedback && $("testPanel") && !$("testPanel").hidden) {
+        if (
+            feedback &&
+            $("testPanel") &&
+            !$("testPanel").hidden
+        ) {
             feedback.textContent = message;
-            feedback.className = "answer-feedback warning";
+            feedback.className =
+                "answer-feedback warning";
             feedback.hidden = false;
         } else {
             window.alert(message);
@@ -929,43 +1261,67 @@
     }
 
     function initEvents() {
-        // Os botões de iniciar ficam dentro dos cartões de nível.
-        all(".test-start-button[data-test], .test-start[data-test]").forEach((button) => {
-            button.addEventListener("click", (event) => {
-                event.preventDefault();
-                event.stopPropagation();
+        all(
+            ".test-start-button[data-test], .test-start[data-test]"
+        ).forEach((button) => {
+            button.addEventListener(
+                "click",
+                (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
 
-                if (button.disabled) return;
+                    if (button.disabled) return;
 
-                startSelectedTest(button.dataset.test);
-            });
+                    startSelectedTest(
+                        button.dataset.test
+                    );
+                }
+            );
         });
 
-        $("backToTests")?.addEventListener("click", (event) => {
-            event.preventDefault();
-            backToSelection();
-        });
-
-        $("nextQuestion")?.addEventListener("click", nextQuestion);
-        $("finishProfile")?.addEventListener("click", finishProfileTest);
-
-        $("nexusCardButton")?.addEventListener("click", (event) => {
-            const auth = window.CyberNexisAuth;
-            const educationComplete =
-                hasPassed("iniciante") &&
-                hasPassed("intermediario") &&
-                hasCompletedProfile();
-
-            const canAccess = auth &&
-                typeof auth.canAccessNexus === "function"
-                ? auth.canAccessNexus()
-                : educationComplete;
-
-            if (!canAccess) {
+        $("backToTests")?.addEventListener(
+            "click",
+            (event) => {
                 event.preventDefault();
-                showMessage("O NEXUS exige a conclusão dos requisitos educacionais e, se configurado, autorização de acesso.");
+                backToSelection();
             }
-        });
+        );
+
+        $("nextQuestion")?.addEventListener(
+            "click",
+            nextQuestion
+        );
+
+        $("finishProfile")?.addEventListener(
+            "click",
+            finishProfileTest
+        );
+
+        $("nexusCardButton")?.addEventListener(
+            "click",
+            (event) => {
+                const auth = window.CyberNexisAuth;
+
+                const educationComplete =
+                    hasPassed("iniciante") &&
+                    hasPassed("intermediario") &&
+                    hasCompletedProfile();
+
+                const canAccess =
+                    auth &&
+                    typeof auth.canAccessNexus === "function"
+                        ? auth.canAccessNexus()
+                        : educationComplete;
+
+                if (!canAccess) {
+                    event.preventDefault();
+
+                    showMessage(
+                        "O NEXUS exige a conclusão dos requisitos educacionais e, se configurado, autorização de acesso."
+                    );
+                }
+            }
+        );
     }
 
     /* =====================================================
@@ -976,9 +1332,9 @@
         initEvents();
         updateTestCards();
 
-        // Atualiza o ano do rodapé, caso exista.
         if ($("currentYear")) {
-            $("currentYear").textContent = new Date().getFullYear();
+            $("currentYear").textContent =
+                new Date().getFullYear();
         }
     }
 
@@ -989,14 +1345,30 @@
         hasPassed,
         hasCompletedProfile,
         updateCards: updateTestCards,
-        getBeginnerQuestions: () => beginnerQuestions.slice(),
-        getIntermediateQuestions: () => intermediateQuestions.slice(),
-        getProfileQuestions: () => profileQuestions.slice(),
-        getState: () => ({ ...state })
+
+        getBeginnerQuestions: () =>
+            beginnerQuestions.slice(),
+
+        getIntermediateQuestions: () =>
+            intermediateQuestions.slice(),
+
+        getProfileQuestions: () =>
+            profileQuestions.slice(),
+
+        getState: () => ({
+            ...state,
+            answers: state.answers.slice(),
+            profileAnswers:
+                state.profileAnswers.slice()
+        })
     };
 
     if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init, { once: true });
+        document.addEventListener(
+            "DOMContentLoaded",
+            init,
+            { once: true }
+        );
     } else {
         init();
     }
