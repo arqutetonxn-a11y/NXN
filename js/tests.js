@@ -1,13 +1,20 @@
+
 /* =========================================================
    CYBER NEXIS — SISTEMA DE TESTES
    Arquivo: js/tests.js
+
+   Segurança:
+   - Gabaritos oficiais somente no servidor.
+   - Início de tentativa via /api/start-test.
+   - Envio oficial via /api/submit-test.
+   - Pontuação calculada exclusivamente no servidor.
+   - localStorage utilizado apenas como cache visual.
+   - NEXUS nunca é liberado por cache local.
    ========================================================= */
 
 "use strict";
 
 (() => {
-    // Evita inicialização duplicada se o arquivo for incluído
-    // acidentalmente mais de uma vez.
     if (window.__CYBER_NEXIS_TESTS_INITIALIZED__) return;
     window.__CYBER_NEXIS_TESTS_INITIALIZED__ = true;
 
@@ -17,6 +24,10 @@
 
     const CONFIG = {
         passingScore: 70,
+        endpoints: {
+            start: "/api/start-test",
+            submit: "/api/submit-test"
+        },
         keys: {
             beginner: "cyberNexis_iniciante_passed",
             intermediate: "cyberNexis_intermediario_passed",
@@ -29,6 +40,10 @@
 
     /* =====================================================
        QUESTÕES — N0 INICIANTE
+
+       ATENÇÃO:
+       Não adicionar gabaritos neste arquivo.
+       A correção oficial pertence ao servidor.
        ===================================================== */
 
     const beginnerQuestions = [
@@ -40,7 +55,6 @@
                 "Criar senhas automaticamente",
                 "Armazenar arquivos pessoais"
             ],
-            answer: 1,
             explanation: "Um firewall controla o tráfego de rede conforme regras definidas."
         },
         {
@@ -51,7 +65,6 @@
                 "A velocidade do processador",
                 "A memória física do computador"
             ],
-            answer: 1,
             explanation: "HTTPS utiliza TLS para proteger a comunicação entre navegador e servidor."
         },
         {
@@ -62,7 +75,6 @@
                 "Utilizar senhas longas e únicas",
                 "Compartilhar a senha com colegas"
             ],
-            answer: 2,
             explanation: "Senhas longas e únicas reduzem os riscos associados a vazamentos."
         },
         {
@@ -73,7 +85,6 @@
                 "open",
                 "list-network"
             ],
-            answer: 0,
             explanation: "O comando ls lista arquivos e diretórios."
         },
         {
@@ -84,7 +95,6 @@
                 "DNS",
                 "HTML"
             ],
-            answer: 0,
             explanation: "MFA é a autenticação multifator, que utiliza mais de um fator de autenticação."
         },
         {
@@ -95,7 +105,6 @@
                 "Uma página local de documentação",
                 "Um arquivo criado pelo próprio usuário"
             ],
-            answer: 0,
             explanation: "Phishing utiliza mensagens enganosas para tentar obter informações pessoais."
         },
         {
@@ -106,7 +115,6 @@
                 "Remover todos os controles de acesso",
                 "Compartilhar uma única conta"
             ],
-            answer: 1,
             explanation: "Cada usuário deve ter somente os acessos necessários para sua função."
         },
         {
@@ -117,7 +125,6 @@
                 "Uma conta administrativa obtida sem permissão",
                 "Um programa para apagar logs"
             ],
-            answer: 1,
             explanation: "Testes legítimos exigem autorização e limites de atuação claramente definidos."
         }
     ];
@@ -135,7 +142,6 @@
                 "Falhas no monitor",
                 "Configuração do brilho da tela"
             ],
-            answer: 0,
             explanation: "SQL Injection pode ocorrer quando entradas são incorporadas de forma insegura em consultas SQL."
         },
         {
@@ -146,7 +152,6 @@
                 "Concatenar entradas diretamente nas consultas",
                 "Desativar autenticação"
             ],
-            answer: 0,
             explanation: "Consultas parametrizadas separam os dados do usuário da estrutura da consulta."
         },
         {
@@ -157,7 +162,6 @@
                 "Tornam qualquer sistema invulnerável",
                 "Eliminam a necessidade de backups"
             ],
-            answer: 1,
             explanation: "Logs ajudam a detectar eventos e reconstruir acontecimentos durante uma investigação."
         },
         {
@@ -168,7 +172,6 @@
                 "Remover controles para facilitar a manutenção",
                 "Concentrar toda a segurança em uma única senha"
             ],
-            answer: 1,
             explanation: "A defesa em profundidade combina controles diferentes para não depender de uma única barreira."
         },
         {
@@ -179,7 +182,6 @@
                 "Usar uma senha padrão para todos",
                 "Desativar registros de autenticação"
             ],
-            answer: 0,
             explanation: "Limites de tentativas podem reduzir ataques automatizados de força bruta."
         },
         {
@@ -190,7 +192,6 @@
                 "Com um mecanismo adequado de hashing de senhas",
                 "Dentro do HTML"
             ],
-            answer: 2,
             explanation: "Aplicações devem usar hashing apropriado para senhas, com salt e parâmetros seguros."
         },
         {
@@ -201,7 +202,6 @@
                 "Eliminar a necessidade de autorização",
                 "Esconder o teste do responsável"
             ],
-            answer: 0,
             explanation: "O escopo estabelece os limites do trabalho autorizado."
         },
         {
@@ -212,7 +212,6 @@
                 "Problemas no cabo de rede",
                 "Erro de temperatura do processador"
             ],
-            answer: 0,
             explanation: "Cross-Site Scripting envolve conteúdo não confiável executado no contexto da aplicação."
         },
         {
@@ -223,7 +222,6 @@
                 "Substituem backups",
                 "Tornam senhas desnecessárias"
             ],
-            answer: 0,
             explanation: "Atualizações podem corrigir vulnerabilidades e outros problemas de segurança."
         },
         {
@@ -234,7 +232,6 @@
                 "Respeitar limites legais e buscar um canal responsável",
                 "Vender as informações"
             ],
-            answer: 2,
             explanation: "A atuação responsável respeita autorização, privacidade e divulgação adequada."
         }
     ];
@@ -317,15 +314,11 @@
     const state = {
         currentLevel: null,
         questionIndex: 0,
-        score: 0,
         selectedAnswer: null,
-
-        // Respostas enviadas para validação oficial.
         answers: [],
-
-        // Evita múltiplos envios simultâneos.
+        attemptId: null,
+        isStarting: false,
         isSubmitting: false,
-
         profileAnswers: []
     };
 
@@ -354,11 +347,13 @@
         element.classList.toggle("hidden", !visible);
     }
 
+    // O localStorage é apenas um cache visual.
+    // Nunca deve autorizar operações protegidas.
     function readBoolean(key) {
         try {
             return localStorage.getItem(key) === "true";
         } catch (error) {
-            console.warn("Não foi possível ler o progresso salvo.", error);
+            console.warn("Não foi possível ler o cache visual.", error);
             return false;
         }
     }
@@ -368,14 +363,20 @@
             localStorage.setItem(key, value);
             return true;
         } catch (error) {
-            console.warn("Não foi possível salvar o progresso.", error);
+            console.warn("Não foi possível salvar o cache visual.", error);
             return false;
         }
     }
 
     function hasPassed(level) {
-        if (level === "iniciante") return readBoolean(CONFIG.keys.beginner);
-        if (level === "intermediario") return readBoolean(CONFIG.keys.intermediate);
+        if (level === "iniciante") {
+            return readBoolean(CONFIG.keys.beginner);
+        }
+
+        if (level === "intermediario") {
+            return readBoolean(CONFIG.keys.intermediate);
+        }
+
         return false;
     }
 
@@ -387,12 +388,72 @@
         const auth = window.CyberNexisAuth;
 
         if (auth && typeof auth.addActivity === "function") {
-            auth.addActivity(type, title, description);
+            try {
+                auth.addActivity(type, title, description);
+            } catch (error) {
+                console.warn("Não foi possível registrar a atividade.", error);
+            }
         }
     }
 
+    async function getAuthToken() {
+        const auth = window.CyberNexisAuth;
+
+        if (!auth || typeof auth.getIdToken !== "function") {
+            throw new Error(
+                "Não foi possível verificar sua sessão. Entre novamente."
+            );
+        }
+
+        const token = await auth.getIdToken();
+
+        if (!token || typeof token !== "string") {
+            throw new Error(
+                "Sessão inválida. Entre novamente para continuar."
+            );
+        }
+
+        return token;
+    }
+
+    async function postAuthenticated(url, body) {
+        const token = await getAuthToken();
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(body)
+        });
+
+        let data;
+
+        try {
+            data = await response.json();
+        } catch (error) {
+            throw new Error(
+                "O servidor retornou uma resposta inválida."
+            );
+        }
+
+        if (!response.ok || !data || data.success !== true) {
+            const error = new Error(
+                data?.error || "Não foi possível concluir a operação."
+            );
+
+            error.code = data?.code || null;
+            error.status = response.status;
+
+            throw error;
+        }
+
+        return data;
+    }
+
     /* =====================================================
-       CARTÕES E DESBLOQUEIOS
+       CARTÕES E DESBLOQUEIOS VISUAIS
        ===================================================== */
 
     function updateTestCards() {
@@ -415,11 +476,14 @@
                 unlocked = true;
                 completed = beginnerPassed;
             } else if (level === "intermediario") {
+                // Cache visual apenas.
+                // O servidor ainda valida a progressão.
                 unlocked = beginnerPassed;
                 completed = intermediatePassed;
             } else if (level === "perfil") {
-                unlocked = beginnerPassed && intermediatePassed;
+                // Cache visual apenas.
                 completed = profileCompleted;
+                unlocked = beginnerPassed && intermediatePassed;
             } else {
                 return;
             }
@@ -471,20 +535,13 @@
 
         const auth = window.CyberNexisAuth;
 
-        const authAllowsAccess = Boolean(
+        // Não existe fallback para localStorage.
+        // Sem confirmação oficial, o NEXUS permanece bloqueado.
+        const unlocked = Boolean(
             auth &&
             typeof auth.canAccessNexus === "function" &&
-            auth.canAccessNexus()
+            auth.canAccessNexus() === true
         );
-
-        const educationComplete =
-            hasPassed("iniciante") &&
-            hasPassed("intermediario") &&
-            hasCompletedProfile();
-
-        const unlocked = auth
-            ? authAllowsAccess
-            : educationComplete;
 
         button.setAttribute(
             "aria-disabled",
@@ -492,10 +549,11 @@
         );
 
         button.classList.toggle("disabled", !unlocked);
+        button.disabled = !unlocked;
 
         button.textContent = unlocked
             ? "Acessar NEXUS"
-            : "Verificar acesso";
+            : "Acesso em verificação";
 
         if (card) {
             card.classList.toggle("locked", !unlocked);
@@ -540,35 +598,91 @@
         }
     }
 
-    function startKnowledgeTest(level) {
-        state.currentLevel = level;
-        state.questionIndex = 0;
-        state.score = 0;
-        state.selectedAnswer = null;
-        state.answers = [];
-        state.isSubmitting = false;
+    async function startKnowledgeTest(level) {
+        if (state.isStarting || state.isSubmitting) return;
 
-        setVisible($("testSelection"), false);
-        setVisible($("testPanel"), true);
-        setVisible($("testResult"), false);
-        setVisible($("profileTest"), false);
-        setVisible($("profileResult"), false);
-
-        const title = $("currentTestLevel");
-
-        if (title) {
-            title.textContent =
-                level === "iniciante"
-                    ? "N0 INICIANTE"
-                    : "N1 INTERMEDIÁRIO";
+        if (
+            level !== "iniciante" &&
+            level !== "intermediario"
+        ) {
+            showMessage("Nível de teste inválido.");
+            return;
         }
 
-        renderQuestion();
+        state.isStarting = true;
 
-        $("testPanel")?.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
+        const startButtons = all(
+            ".test-start-button[data-test], .test-start[data-test]"
+        );
+
+        startButtons.forEach((button) => {
+            button.disabled = true;
         });
+
+        try {
+            // O servidor cria ou recupera uma tentativa ativa.
+            const data = await postAuthenticated(
+                CONFIG.endpoints.start,
+                { level }
+            );
+
+            if (
+                typeof data.attemptId !== "string" ||
+                !/^[a-zA-Z0-9]{20}$/.test(data.attemptId)
+            ) {
+                throw new Error(
+                    "O servidor não retornou um identificador de tentativa válido."
+                );
+            }
+
+            state.currentLevel = level;
+            state.questionIndex = 0;
+            state.selectedAnswer = null;
+            state.answers = [];
+            state.attemptId = data.attemptId;
+            state.isSubmitting = false;
+
+            setVisible($("testSelection"), false);
+            setVisible($("testPanel"), true);
+            setVisible($("testResult"), false);
+            setVisible($("profileTest"), false);
+            setVisible($("profileResult"), false);
+
+            const title = $("currentTestLevel");
+
+            if (title) {
+                title.textContent =
+                    level === "iniciante"
+                        ? "N0 INICIANTE"
+                        : "N1 INTERMEDIÁRIO";
+            }
+
+            renderQuestion();
+
+            $("testPanel")?.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+        } catch (error) {
+            console.error("Erro ao iniciar tentativa:", error);
+
+            showMessage(
+                error.message ||
+                "Não foi possível iniciar o teste. Tente novamente."
+            );
+
+        } finally {
+            state.isStarting = false;
+
+            startButtons.forEach((button) => {
+                // A atualização visual recalcula quais botões
+                // devem permanecer disponíveis.
+                button.disabled = false;
+            });
+
+            updateTestCards();
+        }
     }
 
     function currentQuestions() {
@@ -618,7 +732,6 @@
 
         if (nextButton) {
             nextButton.disabled = true;
-
             nextButton.textContent =
                 state.questionIndex === questions.length - 1
                     ? "Finalizar teste"
@@ -653,72 +766,55 @@
     }
 
     /* =====================================================
-       RESPOSTA E FEEDBACK
+       RESPOSTA — SEM CORREÇÃO NO NAVEGADOR
        ===================================================== */
 
     function chooseAnswer(answerIndex) {
-        if (state.selectedAnswer !== null) return;
+        if (
+            state.selectedAnswer !== null ||
+            state.isSubmitting
+        ) {
+            return;
+        }
 
         const question =
             currentQuestions()[state.questionIndex];
 
         if (!question) return;
 
-        state.selectedAnswer = answerIndex;
-
-        // Guarda a resposta escolhida para o servidor.
-        state.answers[state.questionIndex] = answerIndex;
-
-        // Mantido temporariamente para o feedback imediato.
-        const correct = answerIndex === question.answer;
-
-        if (correct) {
-            state.score++;
+        if (
+            !Number.isInteger(answerIndex) ||
+            answerIndex < 0 ||
+            answerIndex >= question.options.length
+        ) {
+            return;
         }
 
-        all("#answerOptions .answer-option").forEach(
-            (button) => {
-                const index = Number(button.dataset.answer);
+        state.selectedAnswer = answerIndex;
+        state.answers[state.questionIndex] = answerIndex;
 
-                button.disabled = true;
+        all("#answerOptions .answer-option").forEach((button) => {
+            const index = Number(button.dataset.answer);
 
-                button.setAttribute(
-                    "aria-pressed",
-                    String(index === answerIndex)
-                );
+            button.disabled = true;
 
-                button.classList.toggle(
-                    "selected",
-                    index === answerIndex
-                );
+            button.setAttribute(
+                "aria-pressed",
+                String(index === answerIndex)
+            );
 
-                if (index === question.answer) {
-                    button.classList.add("correct");
-                } else if (index === answerIndex) {
-                    button.classList.add("incorrect");
-                }
-            }
-        );
+            button.classList.toggle(
+                "selected",
+                index === answerIndex
+            );
+        });
 
         const feedback = $("answerFeedback");
 
         if (feedback) {
-            feedback.className =
-                `answer-feedback ${
-                    correct ? "correct" : "incorrect"
-                }`;
-
-            feedback.innerHTML = `
-                <strong>
-                    ${
-                        correct
-                            ? "RESPOSTA CORRETA"
-                            : "RESPOSTA INCORRETA"
-                    }
-                </strong>
-                <p>${escapeHTML(question.explanation)}</p>
-            `;
-
+            feedback.className = "answer-feedback";
+            feedback.textContent =
+                "Resposta registrada. Continue para a próxima questão.";
             feedback.hidden = false;
         }
 
@@ -754,34 +850,30 @@
        ===================================================== */
 
     async function finishKnowledgeTest() {
-        // Impede envios duplicados.
         if (state.isSubmitting) return;
 
         const questions = currentQuestions();
         const level = state.currentLevel;
 
-        // Confirma que todas as questões foram respondidas.
-        if (
-            !Array.isArray(state.answers) ||
-            state.answers.length !== questions.length ||
-            state.answers.some(
-                (answer) => !Number.isInteger(answer)
-            )
-        ) {
+        if (!state.attemptId) {
             showMessage(
-                "Responda todas as questões antes de finalizar o teste."
+                "Esta tentativa não possui uma identificação válida. Volte e inicie o teste novamente."
             );
             return;
         }
 
-        const auth = window.CyberNexisAuth;
-
         if (
-            !auth ||
-            typeof auth.getIdToken !== "function"
+            !Array.isArray(state.answers) ||
+            state.answers.length !== questions.length ||
+            state.answers.some(
+                (answer, index) =>
+                    !Number.isInteger(answer) ||
+                    answer < 0 ||
+                    answer >= questions[index].options.length
+            )
         ) {
             showMessage(
-                "Não foi possível verificar sua sessão. Entre novamente e tente o teste."
+                "Responda todas as questões antes de finalizar o teste."
             );
             return;
         }
@@ -793,67 +885,47 @@
 
         if (nextButton) {
             nextButton.disabled = true;
-            nextButton.textContent =
-                "VALIDANDO RESULTADO...";
+            nextButton.textContent = "VALIDANDO RESULTADO...";
         }
 
         if (feedback) {
             feedback.className = "answer-feedback";
             feedback.textContent =
-                "A validar o resultado oficial do teste...";
+                "Enviando respostas para validação oficial...";
             feedback.hidden = false;
         }
 
         try {
-            // Obtém o token Firebase do usuário autenticado.
-            const token = await auth.getIdToken();
-
-            // Envia somente as respostas. O servidor possui
-            // o gabarito oficial e calcula a nota.
-            const response = await fetch(
-                "/api/submit-test",
+            const data = await postAuthenticated(
+                CONFIG.endpoints.submit,
                 {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    },
-
-                    body: JSON.stringify({
-                        level: level,
-                        answers: state.answers.slice()
-                    })
+                    level,
+                    answers: state.answers.slice(),
+                    attemptId: state.attemptId
                 }
             );
 
-            let data;
-
-            try {
-                data = await response.json();
-            } catch (error) {
-                throw new Error(
-                    "O servidor retornou uma resposta inválida."
-                );
-            }
+            const score = Number(data.score);
+            const total = Number(data.total);
+            const percentage = Number(data.percentage);
 
             if (
-                !response.ok ||
-                !data.success
+                !Number.isFinite(score) ||
+                !Number.isFinite(total) ||
+                !Number.isFinite(percentage) ||
+                total !== questions.length ||
+                typeof data.passed !== "boolean"
             ) {
                 throw new Error(
-                    data?.error ||
-                    "Não foi possível validar o teste."
+                    "O servidor retornou um resultado incompleto ou inválido."
                 );
             }
 
-            // Este resultado vem do servidor e representa
-            // a pontuação oficial.
             const result = {
                 level: data.level,
-                score: data.score,
-                total: data.total,
-                percentage: data.percentage,
+                score,
+                total,
+                percentage,
                 passed: data.passed,
                 date: new Date().toISOString(),
                 official: true
@@ -864,22 +936,18 @@
                     ? CONFIG.keys.beginnerResult
                     : CONFIG.keys.intermediateResult;
 
-            // Armazenamento local é usado apenas pela interface.
+            saveValue(resultKey, JSON.stringify(result));
+
+            // Cache visual atualizado somente com a resposta oficial.
+            const passKey =
+                level === "iniciante"
+                    ? CONFIG.keys.beginner
+                    : CONFIG.keys.intermediate;
+
             saveValue(
-                resultKey,
-                JSON.stringify(result)
+                passKey,
+                result.passed ? "true" : "false"
             );
-
-            // A aprovação local acompanha a decisão oficial
-            // retornada pelo servidor.
-            if (result.passed) {
-                const passKey =
-                    level === "iniciante"
-                        ? CONFIG.keys.beginner
-                        : CONFIG.keys.intermediate;
-
-                saveValue(passKey, "true");
-            }
 
             addActivity(
                 "teste",
@@ -887,55 +955,59 @@
                     ? "Teste aprovado"
                     : "Teste finalizado",
                 `${level} — ${result.percentage}%${
-                    result.passed
-                        ? " — aprovado"
-                        : " — não aprovado"
+                    result.passed ? " — aprovado" : " — não aprovado"
                 }`
             );
+
+            // A tentativa já foi consumida pelo servidor.
+            state.attemptId = null;
 
             showKnowledgeResult(result);
             updateTestCards();
 
-            // Mantém compatibilidade com versões que possuam
-            // essas funções no módulo de autenticação.
-            auth.updateProgressBars?.();
-            auth.updateAchievements?.();
-            auth.updateNexusAccess?.();
-
         } catch (error) {
             console.error(
-                "Erro ao enviar o teste para validação:",
+                "Erro ao validar o teste:",
                 error
             );
 
             let message =
-                error?.message ||
+                error.message ||
                 "Não foi possível validar o resultado.";
 
             if (
+                error.code === "expired" ||
+                error.code === "attempt-expired" ||
+                error.code === "attempt-not-active" ||
+                error.code === "already-used"
+            ) {
+                state.attemptId = null;
+
+                message =
+                    "Esta tentativa expirou ou não está mais ativa. Volte à seleção e inicie uma nova tentativa.";
+            } else if (
+                error.status === 401 ||
                 message.includes("Sessão inválida") ||
                 message.includes("Autenticação necessária")
             ) {
                 message =
-                    "Sua sessão expirou. Entre novamente e tente o teste outra vez.";
+                    "Sua sessão expirou. Entre novamente antes de continuar.";
             }
 
             if (feedback) {
-                feedback.className =
-                    "answer-feedback warning";
-
+                feedback.className = "answer-feedback warning";
                 feedback.textContent = message;
                 feedback.hidden = false;
             } else {
                 window.alert(message);
             }
 
-            // Permite tentar novamente caso ocorra uma falha
-            // temporária de conexão.
             if (nextButton) {
                 nextButton.disabled = false;
                 nextButton.textContent =
-                    "Tentar validar novamente";
+                    state.attemptId
+                        ? "Tentar validar novamente"
+                        : "Voltar aos testes";
             }
 
         } finally {
@@ -1004,9 +1076,7 @@
             $("resultRetryButton")?.addEventListener(
                 "click",
                 () => {
-                    startKnowledgeTest(
-                        state.currentLevel
-                    );
+                    startKnowledgeTest(state.currentLevel);
                 }
             );
         }
@@ -1022,6 +1092,9 @@
        ===================================================== */
 
     function backToSelection() {
+        // Não apaga uma tentativa ativa no servidor.
+        // Se o participante voltar e iniciar novamente,
+        // start-test poderá recuperar a tentativa pendente.
         setVisible($("testSelection"), true);
         setVisible($("testPanel"), false);
         setVisible($("testResult"), false);
@@ -1038,6 +1111,11 @@
 
     /* =====================================================
        QUESTIONÁRIO DE PERFIL
+
+       ATENÇÃO:
+       Este questionário ainda é processado localmente.
+       A validação oficial do perfil será implementada
+       em endpoint próprio antes da liberação do NEXUS.
        ===================================================== */
 
     function startProfileTest() {
@@ -1095,9 +1173,7 @@
             `)
             .join("");
 
-        all(
-            "#profileQuestions input[type='radio']"
-        ).forEach((input) => {
+        all("#profileQuestions input[type='radio']").forEach((input) => {
             input.addEventListener("change", () => {
                 state.profileAnswers[
                     Number(input.dataset.question)
@@ -1116,11 +1192,9 @@
         if (!button) return;
 
         const complete =
-            state.profileAnswers.length ===
-                profileQuestions.length &&
+            state.profileAnswers.length === profileQuestions.length &&
             profileQuestions.every(
-                (_, index) =>
-                    Boolean(state.profileAnswers[index])
+                (_, index) => Boolean(state.profileAnswers[index])
             );
 
         button.disabled = !complete;
@@ -1128,11 +1202,9 @@
 
     function finishProfileTest() {
         const complete =
-            state.profileAnswers.length ===
-                profileQuestions.length &&
+            state.profileAnswers.length === profileQuestions.length &&
             profileQuestions.every(
-                (_, index) =>
-                    Boolean(state.profileAnswers[index])
+                (_, index) => Boolean(state.profileAnswers[index])
             );
 
         if (!complete) {
@@ -1151,10 +1223,7 @@
 
         state.profileAnswers.forEach((answer) => {
             if (
-                Object.prototype.hasOwnProperty.call(
-                    counts,
-                    answer
-                )
+                Object.prototype.hasOwnProperty.call(counts, answer)
             ) {
                 counts[answer]++;
             }
@@ -1178,50 +1247,39 @@
         const result = {
             profile: selected,
             answers: state.profileAnswers.slice(),
-            date: new Date().toISOString()
+            date: new Date().toISOString(),
+            official: false
         };
 
+        // Cache local provisório. Não representa conclusão
+        // oficial para fins de autorização do NEXUS.
         saveValue(
             CONFIG.keys.profileResult,
             JSON.stringify(result)
         );
 
-        saveValue(
-            CONFIG.keys.profile,
-            "true"
-        );
+        saveValue(CONFIG.keys.profile, "true");
 
         addActivity(
             "perfil",
-            "Perfil técnico concluído",
-            `Perfil identificado: ${
-                profileDescriptions[selected].title
-            }`
+            "Questionário de perfil concluído",
+            `Perfil identificado: ${profileDescriptions[selected].title}`
         );
 
         showProfileResult(result);
         updateTestCards();
-
-        const auth = window.CyberNexisAuth;
-
-        if (auth) {
-            auth.updateProfilePage?.();
-            auth.updateProgressBars?.();
-            auth.updateAchievements?.();
-            auth.updateNexusAccess?.();
-        }
     }
 
     function showProfileResult(result) {
-        const description =
-            profileDescriptions[result.profile];
+        const description = profileDescriptions[result.profile];
+
+        if (!description) return;
 
         setVisible($("profileTest"), false);
         setVisible($("profileResult"), true);
 
         if ($("profileTitle")) {
-            $("profileTitle").textContent =
-                description.title;
+            $("profileTitle").textContent = description.title;
         }
 
         if ($("profileDescription")) {
@@ -1229,9 +1287,9 @@
                 description.description;
         }
 
-        // A seção do NEXUS só aparece depois da conclusão
-        // do perfil.
-        setVisible($("secretAccess"), true);
+        // Não exibe nem libera a área protegida do NEXUS
+        // com base apenas no resultado local.
+        setVisible($("secretAccess"), false);
 
         $("profileResult")?.scrollIntoView({
             behavior: "smooth",
@@ -1252,8 +1310,7 @@
             !$("testPanel").hidden
         ) {
             feedback.textContent = message;
-            feedback.className =
-                "answer-feedback warning";
+            feedback.className = "answer-feedback warning";
             feedback.hidden = false;
         } else {
             window.alert(message);
@@ -1264,28 +1321,20 @@
         all(
             ".test-start-button[data-test], .test-start[data-test]"
         ).forEach((button) => {
-            button.addEventListener(
-                "click",
-                (event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                event.stopPropagation();
 
-                    if (button.disabled) return;
+                if (button.disabled) return;
 
-                    startSelectedTest(
-                        button.dataset.test
-                    );
-                }
-            );
+                startSelectedTest(button.dataset.test);
+            });
         });
 
-        $("backToTests")?.addEventListener(
-            "click",
-            (event) => {
-                event.preventDefault();
-                backToSelection();
-            }
-        );
+        $("backToTests")?.addEventListener("click", (event) => {
+            event.preventDefault();
+            backToSelection();
+        });
 
         $("nextQuestion")?.addEventListener(
             "click",
@@ -1302,22 +1351,17 @@
             (event) => {
                 const auth = window.CyberNexisAuth;
 
-                const educationComplete =
-                    hasPassed("iniciante") &&
-                    hasPassed("intermediario") &&
-                    hasCompletedProfile();
-
-                const canAccess =
+                const canAccess = Boolean(
                     auth &&
-                    typeof auth.canAccessNexus === "function"
-                        ? auth.canAccessNexus()
-                        : educationComplete;
+                    typeof auth.canAccessNexus === "function" &&
+                    auth.canAccessNexus() === true
+                );
 
                 if (!canAccess) {
                     event.preventDefault();
 
                     showMessage(
-                        "O NEXUS exige a conclusão dos requisitos educacionais e, se configurado, autorização de acesso."
+                        "O acesso ao NEXUS ainda não foi confirmado pelo servidor. Conclua os requisitos e aguarde a verificação oficial."
                     );
                 }
             }
@@ -1346,20 +1390,39 @@
         hasCompletedProfile,
         updateCards: updateTestCards,
 
+        // Retorna cópias das questões sem gabaritos.
         getBeginnerQuestions: () =>
-            beginnerQuestions.slice(),
+            beginnerQuestions.map((question) => ({
+                question: question.question,
+                options: question.options.slice(),
+                explanation: question.explanation
+            })),
 
         getIntermediateQuestions: () =>
-            intermediateQuestions.slice(),
+            intermediateQuestions.map((question) => ({
+                question: question.question,
+                options: question.options.slice(),
+                explanation: question.explanation
+            })),
 
         getProfileQuestions: () =>
-            profileQuestions.slice(),
+            profileQuestions.map((question) => ({
+                question: question.question,
+                options: question.options.map((option) => ({
+                    text: option.text,
+                    type: option.type
+                }))
+            })),
 
         getState: () => ({
-            ...state,
+            currentLevel: state.currentLevel,
+            questionIndex: state.questionIndex,
+            selectedAnswer: state.selectedAnswer,
             answers: state.answers.slice(),
-            profileAnswers:
-                state.profileAnswers.slice()
+            attemptId: state.attemptId,
+            isStarting: state.isStarting,
+            isSubmitting: state.isSubmitting,
+            profileAnswers: state.profileAnswers.slice()
         })
     };
 
