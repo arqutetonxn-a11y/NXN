@@ -1,767 +1,447 @@
 
-import { initializeApp, cert, getApps } from "firebase-admin/app";
+/* =========================================================
+   CYBER NEXIS — INÍCIO SEGURO DOS TESTES
+   Arquivo: api/start-test.js
+   Endpoint: /api/start-test
+
+   Responsabilidades:
+   - Validar autenticação Firebase
+   - Verificar acesso ao nível solicitado
+   - Controlar intervalo entre tentativas
+   - Criar uma tentativa válida por 30 minutos
+   - Reutilizar tentativa pendente ainda válida
+   - Registrar tentativa no Firestore
+   ========================================================= */
+
+import { randomBytes } from "node:crypto";
+
+import {
+    initializeApp,
+    cert,
+    getApps
+} from "firebase-admin/app";
+
 import { getAuth } from "firebase-admin/auth";
+
 import {
     getFirestore,
-    FieldValue
+    FieldValue,
+    Timestamp
 } from "firebase-admin/firestore";
 
 // =====================================================
-// CYBER NEXIS — VALIDAÇÃO SEGURA DOS TESTES
-// Endpoint: /api/submit-test
-//
-// Responsabilidades:
-// - Verificar autenticação Firebase
-// - Exigir tentativa iniciada pelo servidor
-// - Validar respostas
-// - Calcular resultado exclusivamente no servidor
-// - Controlar cooldown
-// - Registrar histórico oficial
-// - Consumir a tentativa ativa
-// - Proteger a progressão N0 → N1
-// =====================================================
-
-
-// =====================================================
-// CONFIGURAÇÃO
+// CONFIGURAÇÕES
 // =====================================================
 
 const CONFIG = {
-    passingScore: 70,
     cooldownMinutes: 10,
-
-    get cooldownMilliseconds() {
-        return this.cooldownMinutes * 60 * 1000;
-    }
+    validityMinutes: 30,
+    levels: ["iniciante", "intermediario"]
 };
-
 
 // =====================================================
 // FIREBASE ADMIN
 // =====================================================
 
 const projectId = process.env.FIREBASE_PROJECT_ID;
-
 const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
 
-const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(
-    /\\n/g,
-    "\n"
-);
+const privateKey = process.env.FIREBASE_PRIVATE_KEY
+    ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
+    : null;
 
-if (!getApps().length) {
-    if (!projectId || !clientEmail || !privateKey) {
-        throw new Error(
-            "Credenciais do Firebase não configuradas."
-        );
-    }
+if (!projectId || !clientEmail || !privateKey) {
+    console.error(
+        "CYBER NEXIS: variáveis do Firebase não configuradas."
+    );
+}
 
-    initializeApp({
+const firebaseApp = getApps().length
+    ? getApps()[0]
+    : initializeApp({
         credential: cert({
             projectId,
             clientEmail,
             privateKey
         })
     });
+
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+
+// =====================================================
+// FUNÇÕES AUXILIARES
+// =====================================================
+
+function sendError(res, status, message, extra = {}) {
+    return res.status(status).json({
+        success: false,
+        message,
+        ...extra
+    });
 }
 
-
-// =====================================================
-// SERVIÇOS
-// =====================================================
-
-const auth = getAuth();
-const db = getFirestore();
-
-
-// =====================================================
-// GABARITOS OFICIAIS — SOMENTE NO SERVIDOR
-// =====================================================
-
-const answerKeys = {
-    iniciante: [
-        1, 1, 2, 0, 0, 0, 1, 1
-    ],
-
-    intermediario: [
-        0, 0, 1, 1, 0, 2, 0, 0, 0, 2
-    ]
-};
-
-
-// =====================================================
-// UTILITÁRIOS
-// =====================================================
+function generateAttemptId() {
+    // 20 caracteres alfanuméricos.
+    return randomBytes(10).toString("hex");
+}
 
 function isValidLevel(level) {
-    return (
-        typeof level === "string" &&
-        Object.prototype.hasOwnProperty.call(
-            answerKeys,
-            level
-        )
-    );
+    return CONFIG.levels.includes(level);
 }
 
+function getBearerToken(req) {
+    const header = req.headers.authorization || "";
 
-function isValidAttemptId(attemptId) {
-    return (
-        typeof attemptId === "string" &&
-        /^[A-Za-z0-9]{20}$/.test(attemptId)
-    );
-}
-
-
-function isValidAnswers(answers, correctAnswers) {
-    if (!Array.isArray(answers)) {
-        return false;
+    if (!header.startsWith("Bearer ")) {
+        return null;
     }
 
-    if (answers.length !== correctAnswers.length) {
-        return false;
-    }
-
-    return answers.every(
-        (answer) =>
-            Number.isInteger(answer) &&
-            answer >= 0 &&
-            answer <= 3
-    );
+    return header.slice(7).trim();
 }
-
-
-function calculateScore(answers, correctAnswers) {
-    let score = 0;
-
-    correctAnswers.forEach((correctAnswer, index) => {
-        if (answers[index] === correctAnswer) {
-            score++;
-        }
-    });
-
-    const total = correctAnswers.length;
-
-    const percentage = Math.round(
-        (score / total) * 100
-    );
-
-    return {
-        score,
-        total,
-        percentage,
-        passed: percentage >= CONFIG.passingScore
-    };
-}
-
-
-function calculateRemainingCooldown(lastAttemptTimestamp) {
-    if (
-        !lastAttemptTimestamp ||
-        typeof lastAttemptTimestamp.toMillis !== "function"
-    ) {
-        return {
-            active: false,
-            remainingMilliseconds: 0,
-            remainingSeconds: 0,
-            remainingMinutes: 0
-        };
-    }
-
-    const nextAllowedAttempt =
-        lastAttemptTimestamp.toMillis() +
-        CONFIG.cooldownMilliseconds;
-
-    const remainingMilliseconds =
-        nextAllowedAttempt - Date.now();
-
-    if (remainingMilliseconds <= 0) {
-        return {
-            active: false,
-            remainingMilliseconds: 0,
-            remainingSeconds: 0,
-            remainingMinutes: 0
-        };
-    }
-
-    const remainingSeconds = Math.ceil(
-        remainingMilliseconds / 1000
-    );
-
-    return {
-        active: true,
-        remainingMilliseconds,
-        remainingSeconds,
-        remainingMinutes: Math.ceil(
-            remainingSeconds / 60
-        )
-    };
-}
-
-
-function createError(code, message) {
-    const error = new Error(message);
-    error.code = code;
-    return error;
-}
-
 
 // =====================================================
-// HANDLER
+// ENDPOINT
 // =====================================================
 
 export default async function handler(req, res) {
-    res.setHeader(
-        "Cache-Control",
-        "no-store, no-cache, must-revalidate"
-    );
+
+    // -------------------------------------------------
+    // Método HTTP
+    // -------------------------------------------------
 
     if (req.method !== "POST") {
-        return res.status(405).json({
-            success: false,
-            error: "Método não permitido."
-        });
+        res.setHeader("Allow", "POST");
+
+        return sendError(
+            res,
+            405,
+            "Método não permitido."
+        );
     }
 
     try {
 
-        // =============================================
-        // 1. AUTENTICAÇÃO FIREBASE
-        // =============================================
+        // -------------------------------------------------
+        // Verificar configuração Firebase
+        // -------------------------------------------------
 
-        const authorization =
-            req.headers.authorization || "";
+        if (!projectId || !clientEmail || !privateKey) {
+            console.error(
+                "Configuração Firebase incompleta."
+            );
 
-        if (!authorization.startsWith("Bearer ")) {
-            return res.status(401).json({
-                success: false,
-                error: "Autenticação necessária."
-            });
+            return sendError(
+                res,
+                500,
+                "Configuração do servidor incompleta."
+            );
         }
 
-        const token = authorization.slice(7);
+        // -------------------------------------------------
+        // Autenticação
+        // -------------------------------------------------
 
-        const decodedToken = await auth.verifyIdToken(
-            token,
-            true
-        );
+        const token = getBearerToken(req);
+
+        if (!token) {
+            return sendError(
+                res,
+                401,
+                "Autenticação necessária."
+            );
+        }
+
+        let decodedToken;
+
+        try {
+            decodedToken = await auth.verifyIdToken(
+                token,
+                true
+            );
+        } catch (error) {
+            return sendError(
+                res,
+                401,
+                "Sessão inválida ou expirada. Entre novamente."
+            );
+        }
 
         const uid = decodedToken.uid;
 
+        // -------------------------------------------------
+        // Validar nível solicitado
+        // -------------------------------------------------
 
-        // =============================================
-        // 2. VALIDAR DADOS RECEBIDOS
-        // =============================================
-
-        const {
-            level,
-            answers,
-            attemptId
-        } = req.body || {};
+        const level = req.body?.level;
 
         if (!isValidLevel(level)) {
-            return res.status(400).json({
-                success: false,
-                error: "Nível de teste inválido."
-            });
+            return sendError(
+                res,
+                400,
+                "Nível de teste inválido."
+            );
         }
 
-        if (!isValidAttemptId(attemptId)) {
-            return res.status(400).json({
-                success: false,
-                error: "Identificador de tentativa inválido."
-            });
-        }
-
-        const correctAnswers = answerKeys[level];
-
-        if (!isValidAnswers(answers, correctAnswers)) {
-            return res.status(400).json({
-                success: false,
-                error: "Respostas inválidas."
-            });
-        }
-
-
-        // =============================================
-        // 3. REFERÊNCIAS FIRESTORE
-        // =============================================
+        // -------------------------------------------------
+        // Referências do Firestore
+        // -------------------------------------------------
 
         const userRef = db.collection("users").doc(uid);
 
-        const resultsRef = userRef.collection("testResults");
+        const resultRef = userRef
+            .collection("testResults")
+            .doc(level);
 
-        const currentResultRef = resultsRef.doc(level);
-
-        // Tentativa criada pelo start-test.js.
-        const testAttemptRef = userRef
-            .collection("testAttempts")
-            .doc(attemptId);
-
-        // Controle da tentativa ativa por nível.
         const activeRef = userRef
             .collection("activeTestAttempts")
             .doc(level);
 
-        // Histórico oficial desta tentativa.
-        const historyRef = currentResultRef
-            .collection("attempts")
-            .doc();
+        const attemptCollection = userRef
+            .collection("testAttempts");
 
+        const beginnerRef = userRef
+            .collection("testResults")
+            .doc("iniciante");
 
-        // =============================================
-        // 4. CALCULAR RESULTADO NO SERVIDOR
-        // =============================================
+        // ID preparado antes da transação.
+        const newAttemptId = generateAttemptId();
 
-        const result = calculateScore(
-            answers,
-            correctAnswers
+        const newAttemptRef = attemptCollection
+            .doc(newAttemptId);
+
+        const now = Date.now();
+
+        const expiresAt = Timestamp.fromMillis(
+            now + CONFIG.validityMinutes * 60 * 1000
         );
 
+        // -------------------------------------------------
+        // Transação
+        // -------------------------------------------------
 
-        // =============================================
-        // 5. TRANSAÇÃO ATÔMICA
-        //
-        // Todas as leituras são realizadas antes
-        // de qualquer escrita.
-        // =============================================
+        const result = await db.runTransaction(
+            async (transaction) => {
 
-        let transactionResult;
-
-        await db.runTransaction(async (transaction) => {
-
-            // -----------------------------------------
-            // 5.1 LER DOCUMENTOS
-            // -----------------------------------------
-
-            const activeDoc = await transaction.get(
-                activeRef
-            );
-
-            const testAttemptDoc = await transaction.get(
-                testAttemptRef
-            );
-
-            const currentDoc = await transaction.get(
-                currentResultRef
-            );
-
-            let beginnerDoc = null;
-
-            if (level === "intermediario") {
-                const beginnerRef = resultsRef.doc(
-                    "iniciante"
+                // Leituras
+                const resultSnap = await transaction.get(
+                    resultRef
                 );
 
-                beginnerDoc = await transaction.get(
-                    beginnerRef
+                const activeSnap = await transaction.get(
+                    activeRef
                 );
-            }
 
+                let beginnerSnap = null;
 
-            // -----------------------------------------
-            // 5.2 VALIDAR TENTATIVA ATIVA
-            // -----------------------------------------
+                if (level === "intermediario") {
+                    beginnerSnap = await transaction.get(
+                        beginnerRef
+                    );
+                }
 
-            if (!activeDoc.exists) {
-                throw createError(
-                    "attempt-not-active",
-                    "Não existe uma tentativa ativa."
-                );
-            }
+                let activeAttemptSnap = null;
+                let activeAttemptRef = null;
 
-            const activeData = activeDoc.data();
-
-            if (
-                activeData?.attemptId !== attemptId ||
-                activeData?.uid !== uid ||
-                activeData?.level !== level
-            ) {
-                throw createError(
-                    "attempt-not-active",
-                    "Esta não é a tentativa ativa."
-                );
-            }
-
-
-            // -----------------------------------------
-            // 5.3 VALIDAR DOCUMENTO DA TENTATIVA
-            // -----------------------------------------
-
-            if (!testAttemptDoc.exists) {
-                throw createError(
-                    "attempt-not-found",
-                    "Tentativa não encontrada."
-                );
-            }
-
-            const attemptData = testAttemptDoc.data();
-
-            if (
-                attemptData?.uid !== uid ||
-                attemptData?.level !== level
-            ) {
-                throw createError(
-                    "attempt-not-active",
-                    "Tentativa não pertence a esta sessão."
-                );
-            }
-
-            if (attemptData?.status !== "pending") {
-                throw createError(
-                    "attempt-already-used",
-                    "Esta tentativa já foi utilizada."
-                );
-            }
-
-
-            // -----------------------------------------
-            // 5.4 VALIDAR EXPIRAÇÃO
-            // -----------------------------------------
-
-            const expiresAt = attemptData?.expiresAt;
-
-            if (
-                !expiresAt ||
-                typeof expiresAt.toMillis !== "function" ||
-                expiresAt.toMillis() <= Date.now()
-            ) {
-                throw createError(
-                    "attempt-expired",
-                    "Esta tentativa expirou. Inicie um novo teste."
-                );
-            }
-
-
-            // -----------------------------------------
-            // 5.5 PROGRESSÃO N0 → N1
-            // -----------------------------------------
-
-            if (level === "intermediario") {
+                const activeData = activeSnap.exists
+                    ? activeSnap.data()
+                    : null;
 
                 if (
-                    !beginnerDoc?.exists ||
-                    beginnerDoc.data()?.passed !== true
+                    activeData &&
+                    typeof activeData.attemptId === "string" &&
+                    /^[a-fA-F0-9]{20}$/.test(
+                        activeData.attemptId
+                    )
                 ) {
-                    throw createError(
-                        "progression-required",
-                        "É necessário ser aprovado oficialmente no N0 antes de realizar o N1."
+                    activeAttemptRef = attemptCollection.doc(
+                        activeData.attemptId
+                    );
+
+                    activeAttemptSnap = await transaction.get(
+                        activeAttemptRef
                     );
                 }
 
-            }
+                // -------------------------------------------------
+                // Exigir aprovação no N0 antes do N1
+                // -------------------------------------------------
 
+                if (level === "intermediario") {
+                    const beginnerPassed =
+                        beginnerSnap?.exists &&
+                        beginnerSnap.data()?.passed === true;
 
-            // -----------------------------------------
-            // 5.6 VERIFICAR COOLDOWN
-            // -----------------------------------------
-
-            const currentData = currentDoc.exists
-                ? currentDoc.data()
-                : null;
-
-            if (currentData?.lastAttemptAt) {
-
-                const cooldown =
-                    calculateRemainingCooldown(
-                        currentData.lastAttemptAt
-                    );
-
-                if (cooldown.active) {
-                    const error = createError(
-                        "cooldown-active",
-                        "Aguarde antes de realizar uma nova tentativa."
-                    );
-
-                    error.cooldown = cooldown;
-
-                    throw error;
+                    if (!beginnerPassed) {
+                        return {
+                            error: "N0_REQUIRED"
+                        };
+                    }
                 }
-            }
 
+                // -------------------------------------------------
+                // Reutilizar tentativa pendente válida
+                // -------------------------------------------------
 
-            // -----------------------------------------
-            // 5.7 NÚMERO DA TENTATIVA
-            // -----------------------------------------
+                if (
+                    activeData &&
+                    activeData.uid === uid &&
+                    activeData.level === level &&
+                    activeAttemptSnap?.exists
+                ) {
+                    const attemptData =
+                        activeAttemptSnap.data();
 
-            const previousAttempts = Number.isInteger(
-                currentData?.attemptCount
-            )
-                ? currentData.attemptCount
-                : 0;
+                    const validPending =
+                        attemptData.uid === uid &&
+                        attemptData.level === level &&
+                        attemptData.status === "pending" &&
+                        attemptData.expiresAt &&
+                        typeof attemptData.expiresAt.toMillis === "function" &&
+                        attemptData.expiresAt.toMillis() > now;
 
-            const attemptNumber = previousAttempts + 1;
+                    if (validPending) {
+                        return {
+                            reused: true,
+                            attemptId: activeData.attemptId,
+                            expiresAt: attemptData.expiresAt
+                        };
+                    }
 
+                    // Tentativa pendente vencida.
+                    if (
+                        attemptData.status === "pending"
+                    ) {
+                        transaction.update(
+                            activeAttemptRef,
+                            {
+                                status: "expired",
+                                expiredAt: FieldValue.serverTimestamp()
+                            }
+                        );
+                    }
 
-            // -----------------------------------------
-            // 5.8 PRESERVAR APROVAÇÃO E MELHOR NOTA
-            // -----------------------------------------
+                    transaction.delete(activeRef);
+                } else if (activeSnap.exists) {
+                    // Remove referência ativa inconsistente.
+                    transaction.delete(activeRef);
+                }
 
-            const wasPreviouslyPassed =
-                currentData?.passed === true;
+                // -------------------------------------------------
+                // Verificar intervalo entre tentativas
+                // -------------------------------------------------
 
-            const officiallyPassed =
-                wasPreviouslyPassed || result.passed;
+                if (resultSnap.exists) {
+                    const resultData = resultSnap.data();
 
-            const previousBestPercentage =
-                Number.isFinite(currentData?.bestPercentage)
-                    ? currentData.bestPercentage
-                    : 0;
+                    const lastAttemptAt =
+                        resultData.lastAttemptAt;
 
-            const bestPercentage = Math.max(
-                previousBestPercentage,
-                result.percentage
-            );
+                    if (
+                        lastAttemptAt &&
+                        typeof lastAttemptAt.toMillis === "function"
+                    ) {
+                        const cooldownEndsAt =
+                            lastAttemptAt.toMillis() +
+                            CONFIG.cooldownMinutes * 60 * 1000;
 
-            const previousBestScore =
-                Number.isFinite(currentData?.bestScore)
-                    ? currentData.bestScore
-                    : 0;
+                        if (cooldownEndsAt > now) {
+                            const remainingMs =
+                                cooldownEndsAt - now;
 
-            const bestScore = Math.max(
-                previousBestScore,
-                result.score
-            );
+                            const remainingSeconds =
+                                Math.ceil(remainingMs / 1000);
 
+                            return {
+                                error: "COOLDOWN",
+                                remainingSeconds
+                            };
+                        }
+                    }
+                }
 
-            // -----------------------------------------
-            // 5.9 REGISTRAR HISTÓRICO
-            // -----------------------------------------
+                // -------------------------------------------------
+                // Criar nova tentativa
+                // -------------------------------------------------
 
-            transaction.set(historyRef, {
-                uid,
-                level,
-                attemptNumber,
-
-                score: result.score,
-                total: result.total,
-                percentage: result.percentage,
-                passed: result.passed,
-
-                official: true,
-
-                createdAt: FieldValue.serverTimestamp()
-            });
-
-
-            // -----------------------------------------
-            // 5.10 ATUALIZAR RESUMO DO NÍVEL
-            // -----------------------------------------
-
-            transaction.set(
-                currentResultRef,
-                {
+                transaction.set(newAttemptRef, {
                     uid,
                     level,
+                    status: "pending",
+                    createdAt: FieldValue.serverTimestamp(),
+                    expiresAt
+                });
 
-                    passed: officiallyPassed,
+                // Registrar tentativa ativa do participante.
+                transaction.set(activeRef, {
+                    uid,
+                    level,
+                    attemptId: newAttemptId,
+                    createdAt: FieldValue.serverTimestamp(),
+                    expiresAt
+                });
 
-                    lastScore: result.score,
-                    lastTotal: result.total,
-                    lastPercentage: result.percentage,
-                    lastPassed: result.passed,
+                return {
+                    reused: false,
+                    attemptId: newAttemptId,
+                    expiresAt
+                };
+            }
+        );
 
-                    bestScore,
-                    bestPercentage,
+        // -------------------------------------------------
+        // Tratar bloqueios da transação
+        // -------------------------------------------------
 
-                    // Corrigido: utiliza a variável declarada.
-                    attemptCount: attemptNumber,
-
-                    lastAttemptAt:
-                        FieldValue.serverTimestamp(),
-
-                    updatedAt:
-                        FieldValue.serverTimestamp(),
-
-                    official: true,
-
-                    ...(currentData
-                        ? {}
-                        : {
-                            createdAt:
-                                FieldValue.serverTimestamp()
-                        })
-                },
-                { merge: true }
+        if (result.error === "N0_REQUIRED") {
+            return sendError(
+                res,
+                403,
+                "Você precisa concluir e ser aprovado no N0 antes de iniciar o N1."
             );
+        }
 
+        if (result.error === "COOLDOWN") {
+            return sendError(
+                res,
+                429,
+                "Aguarde antes de iniciar outra tentativa.",
+                {
+                    remainingSeconds: result.remainingSeconds,
+                    cooldownMinutes: CONFIG.cooldownMinutes
+                }
+            );
+        }
 
-            // -----------------------------------------
-            // 5.11 CONSUMIR TENTATIVA
-            // -----------------------------------------
+        // -------------------------------------------------
+        // Resposta de sucesso
+        // -------------------------------------------------
 
-            transaction.update(testAttemptRef, {
-                status: "submitted",
-
-                submittedAt:
-                    FieldValue.serverTimestamp(),
-
-                resultAttemptId: historyRef.id
-            });
-
-            // Remove o controle ativo.
-            // Uma tentativa já enviada não pode ser reutilizada.
-            transaction.delete(activeRef);
-
-
-            // -----------------------------------------
-            // 5.12 RESULTADO DA TRANSAÇÃO
-            // -----------------------------------------
-
-            transactionResult = {
-                attemptId: historyRef.id,
-                attemptNumber,
-
-                score: result.score,
-                total: result.total,
-                percentage: result.percentage,
-
-                attemptPassed: result.passed,
-                passed: officiallyPassed
-            };
-
-        });
-
-
-        // =============================================
-        // 6. RESPOSTA AO NAVEGADOR
-        // =============================================
-
-        return res.status(200).json({
+        return res.status(result.reused ? 200 : 201).json({
             success: true,
-
+            message: result.reused
+                ? "Sua tentativa em andamento foi recuperada."
+                : "Teste iniciado com sucesso.",
+            attemptId: result.attemptId,
             level,
-
-            attemptId:
-                transactionResult.attemptId,
-
-            attemptNumber:
-                transactionResult.attemptNumber,
-
-            score:
-                transactionResult.score,
-
-            total:
-                transactionResult.total,
-
-            percentage:
-                transactionResult.percentage,
-
-            attemptPassed:
-                transactionResult.attemptPassed,
-
-            passed:
-                transactionResult.passed,
-
-            cooldownMinutes:
-                CONFIG.cooldownMinutes
+            expiresAt: result.expiresAt
+                .toDate()
+                .toISOString(),
+            validityMinutes: CONFIG.validityMinutes,
+            reused: result.reused
         });
-
 
     } catch (error) {
 
-        // =============================================
-        // 7. COOLDOWN
-        // =============================================
-
-        if (error?.code === "cooldown-active") {
-
-            const cooldown = error.cooldown;
-
-            return res.status(429).json({
-                success: false,
-
-                error:
-                    `Aguarde ${cooldown.remainingMinutes} minuto(s) antes de realizar uma nova tentativa.`,
-
-                cooldown: {
-                    active: true,
-                    remainingSeconds:
-                        cooldown.remainingSeconds,
-                    remainingMinutes:
-                        cooldown.remainingMinutes
-                }
-            });
-        }
-
-
-        // =============================================
-        // 8. ERROS DE TENTATIVA
-        // =============================================
-
-        const attemptErrors = {
-            "attempt-not-active": {
-                status: 409,
-                message:
-                    "Esta tentativa não está ativa. Inicie o teste novamente."
-            },
-
-            "attempt-not-found": {
-                status: 404,
-                message:
-                    "Tentativa não encontrada. Inicie o teste novamente."
-            },
-
-            "attempt-already-used": {
-                status: 409,
-                message:
-                    "Esta tentativa já foi utilizada."
-            },
-
-            "attempt-expired": {
-                status: 410,
-                message:
-                    "Sua tentativa expirou. Inicie um novo teste."
-            },
-
-            "progression-required": {
-                status: 403,
-                message:
-                    "É necessário concluir e passar no N0 antes de realizar o N1."
-            }
-        };
-
-        const knownError = attemptErrors[error?.code];
-
-        if (knownError) {
-            return res.status(knownError.status).json({
-                success: false,
-                error: knownError.message
-            });
-        }
-
-
-        // =============================================
-        // 9. ERROS DE AUTENTICAÇÃO
-        // =============================================
-
-        if (
-            error?.code === "auth/id-token-expired" ||
-            error?.code === "auth/id-token-revoked" ||
-            error?.code === "auth/argument-error" ||
-            error?.code === "auth/invalid-id-token"
-        ) {
-            return res.status(401).json({
-                success: false,
-                error:
-                    "Sessão inválida. Entre novamente."
-            });
-        }
-
-
-        // =============================================
-        // 10. ERRO INTERNO
-        // =============================================
-
         console.error(
-            "Erro na validação do teste:",
+            "Erro em /api/start-test:",
             error
         );
 
-        return res.status(500).json({
-            success: false,
-            error:
-                "Não foi possível validar o teste."
-        });
-
+        return sendError(
+            res,
+            500,
+            "Não foi possível iniciar o teste. Tente novamente."
+        );
     }
 }
